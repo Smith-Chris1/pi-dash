@@ -69,7 +69,8 @@ def scan():
                 sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                 try:
                     scans.append(render_template('card.html', 
-                                                 ip=sysinfo[0]+" " + info[1].replace("(", "").replace(")",""),
+                                                 host = sysinfo[0],
+                                                 ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                                  reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
                                                  accordian_id=info[3].replace(":",""),
