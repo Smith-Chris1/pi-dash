@@ -17,8 +17,10 @@
                 setInterval(function() {
                     let headersList = {
                     "Accept": "*/*",
-                    "User-Agent": "Thunder Client (https://www.thunderclient.io)"
-                }
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)",
+                    "Access-Control-Allow-Origin": "*"
+                    }
+                
 
                 fetch("http://{{ ip }}:5000/sysinfo", {
                     method: "POST",
