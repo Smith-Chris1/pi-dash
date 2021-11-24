@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request
+from flask_cors import CORS, cross_origin
 from subprocess import Popen, PIPE
 import config
 import os
@@ -15,6 +16,8 @@ scans = []
 macAddresses = ['e4:5f:01:35:25:9b','dc:a6:32:8b:42:e1']
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 
