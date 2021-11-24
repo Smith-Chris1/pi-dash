@@ -20,7 +20,6 @@ app = Flask(__name__)
 
 def index():
     h_name = socket.gethostname()
-    # IP_addres = socket.gethostbyname(h_name)
     IP_addres = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
     return render_template("home.html", this_ip=IP_addres, this_host=h_name, scanresults=" ".join(scans))
 
@@ -49,7 +48,7 @@ def sysinfo():
 def fetch():
     print('updating from the repo')
     command = "cd ~/pi/pi-dash && git pull https://github.com/Smith-Chris1/pi-dash.git"
-    subprocess.run(['cd', '~/pi/pi-dash', '&&', 'git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'])
+    subprocess.run(['git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='~/pi/pi-dash')
     return 'success'
 
 @app.route('/scan')
