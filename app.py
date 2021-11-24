@@ -60,27 +60,15 @@ def scan():
         info = pi.split(' ')
         try:
             if info[3] in macAddresses:
-                name = requests.request('GET','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text
-                try:
-                    cpu = psutil.cpu_percent()
-                except:
-                    cpu = "unknown"
-                try:
-                    vm = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
-                except:
-                    vm = "unknown"  
-                try:  
-                    network = psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv
-                except:
-                    network = "unknown"
+                sysinfo = requests.request('GET','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text
                 try:
                     scans.append(render_template('card.html', 
-                                                 ip=name+" " + info[1].replace("(", "").replace(")",""),
+                                                 ip=sysinfo[0]+" " + info[1].replace("(", "").replace(")",""),
                                                  reboot_path="http://"+info[1].replace("(", "").replace(")","")+"/reboot",
                                                  accordian_id=info[3].replace(":",""),
-                                                 cpu=cpu,
-                                                 vm=vm,
-                                                 network=network
+                                                 cpu=sysinfo[1],
+                                                 vm=sysinfo[2],
+                                                 network=sysinfo[3]
                                                  ))
                 except:
                     print('error')
@@ -90,4 +78,4 @@ def scan():
 
 if __name__ == '__main__':
     from waitress import serve
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, port=5000)
