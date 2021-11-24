@@ -42,8 +42,21 @@ def name():
     
 @app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
+    def net_usage(inf):   #change the inf variable according to the interface
+        net_stat = psutil.net_io_counters(pernic=True, nowrap=True)[inf]
+        net_in_1 = net_stat.bytes_recv
+        net_out_1 = net_stat.bytes_sent
+        time.sleep(1)
+        net_stat = psutil.net_io_counters(pernic=True, nowrap=True)[inf]
+        net_in_2 = net_stat.bytes_recv
+        net_out_2 = net_stat.bytes_sent
+
+        net_in = round((net_in_2 - net_in_1) / 1024 / 1024, 3)
+        net_out = round((net_out_2 - net_out_1) / 1024 / 1024, 3)
+        return net_out
+        # print(f"Current net-usage:\nIN: {net_in} MB/s, OUT: {net_out} MB/s")
     try:
-        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{round(psutil.net_io_counters().bytes_recv/1000000, 3)}"
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{net_usage('eth0')}"
     except:
         return "unknown,unknown,unknown,unknown"
 
