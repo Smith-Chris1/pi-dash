@@ -44,7 +44,7 @@ def sysinfo():
     except:
         return "unknown,unknown,unknown,unknown"
 
-@app.route('/fetch')
+@app.route('/fetch',methods = ['POST'])
 
 def fetch():
     print('updating from the repo')
