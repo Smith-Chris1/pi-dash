@@ -45,7 +45,9 @@ def sysinfo():
         return "unknown,unknown,unknown,unknown"
 
 @app.route('/fetch')
+
 def fetch():
+    print('updating from the repo')
     command = "cd ~/pi/pi-dash && git fetch https://github.com/Smith-Chris1/pi-dash.git"
     subprocess.run(['cd', '~/pi/pi-dash', '&&', 'git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'])
 
