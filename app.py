@@ -43,7 +43,7 @@ def name():
 @app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
     try:
-        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv}"
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{(psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv) / 2**10}"
     except:
         return "unknown,unknown,unknown,unknown"
 
