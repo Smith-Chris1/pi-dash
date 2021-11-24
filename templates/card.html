@@ -6,14 +6,32 @@
         <div class="card-body">
             <iframe src="http://{{ ip }}:8080/mobile.html" style="min-width:400px; min-height: 250px;"></iframe>
         </div>
-        <div class="card-footer">
+        <div id={{host}} class="card-footer">
             <div class='row'>
-                <div class='col bg-info'>{{cpu}}</div>
-                <div class='col'>{{vm}}</div>
-                <div class='col'>{{network}}</div>
+                <div id="cpu" class='col bg-info'>{{cpu}}</div>
+                <div id="vm" class='col'>{{vm}}</div>
+                <div id="net" class='col'>{{network}}</div>
                 <a href = "#" onclick="javascript:{{reboot_function }}()" class="col btn btn-primary">Restart</a>
             </div>
             <script>
+                setInterval(function() {
+                    let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                }
+
+                fetch("http://{{ ip }}:5000/sysinfo", {
+                    method: "POST",
+                    headers: headersList
+                }).then(function (response) {
+                    sysinfo = response.text.split(",");
+                    document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1];
+                    document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2];
+                    document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3];
+                }).then(function (data) {
+                    console.log(data);
+                })
+                }, 13000);
                 function {{reboot_function}} () {
                 let headersList = {
                     "Accept": "*/*",
