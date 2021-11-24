@@ -50,8 +50,8 @@ def fetch():
     # command = 'git fetch https://github.com/Smith-Chris1/pi-dash.git'.split()
     # process = subprocess.Popen(["git", "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
     # output = process.communicate()[0]
-    process = subprocess.Popen(['git', 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', stdout=subprocess.PIPE, shell=True)
-    process.communicate()[0]
+    subprocess.run(['git', 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', stdout=subprocess.PIPE, shell=True)
+    # process.communicate()[0]
     return 'success'
 
 @app.route('/scan')
