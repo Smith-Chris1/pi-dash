@@ -64,7 +64,8 @@ def scan():
                 try:
                     scans.append(render_template('card.html', 
                                                  ip=sysinfo[0]+" " + info[1].replace("(", "").replace(")",""),
-                                                 reboot_path="http://"+info[1].replace("(", "").replace(")","")+"/reboot",
+                                                 reboot_function="javascript:reboot{sysinfo[0]}",
+                                                 reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
                                                  accordian_id=info[3].replace(":",""),
                                                  cpu=sysinfo[1],
                                                  vm=sysinfo[2],

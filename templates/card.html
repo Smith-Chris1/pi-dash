@@ -11,7 +11,24 @@
             <div>{{cpu}}</div>
             <div>{{vm}}</div>
             <div>{{network}}</div>
-            <a href={{ reboot_path }} class="btn btn-primary">Restart</a>
+            <a href="javascript:{{reboot_function }}" class="btn btn-primary">Restart</a>
+            <script>
+                function {{reboot_function}}{
+                let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                }
+
+                fetch("{{ reboot_path }}", {
+                    method: "GET",
+                    headers: headersList
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+            }
+            </script>
         </div>
     </div>
 </div>
