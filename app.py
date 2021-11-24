@@ -44,12 +44,12 @@ def sysinfo():
     except:
         return "unknown,unknown,unknown,unknown"
 
-@app.route('/fetch',methods = ['POST'])
-
+@app.route('/fetch',methods = ['GET'])
 def fetch():
     print('updating from the repo')
     command = "cd ~/pi/pi-dash && git pull https://github.com/Smith-Chris1/pi-dash.git"
     subprocess.run(['cd', '~/pi/pi-dash', '&&', 'git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'])
+    return 'success'
 
 @app.route('/scan')
 def scan():
