@@ -41,14 +41,14 @@ def name():
 def sysinfo():
     sysinfo = []
     try:
-        sysinfo.append(socket.gethostname())
-        sysinfo.append(psutil.cpu_percent())
-        sysinfo.append(psutil.virtual_memory().available * 100 / psutil.virtual_memory().total)
-        sysinfo.append(psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv)
-        print(sysinfo)
-        return str(sysinfo)
+        # sysinfo.append(socket.gethostname())
+        # sysinfo.append(psutil.cpu_percent())
+        # sysinfo.append(psutil.virtual_memory().available * 100 / psutil.virtual_memory().total)
+        # sysinfo.append(psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv)
+        # print(sysinfo)
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv}"
     except:
-        return str(["unknown","unknown","unknown","unknown"])
+        return "unknown,unknown,unknown,unknown"
 
 @app.route('/scan')
 def scan():
@@ -60,7 +60,7 @@ def scan():
         info = pi.split(' ')
         try:
             if info[3] in macAddresses:
-                sysinfo = requests.request('GET','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text
+                sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                 try:
                     scans.append(render_template('card.html', 
                                                  ip=sysinfo[0]+" " + info[1].replace("(", "").replace(")",""),
