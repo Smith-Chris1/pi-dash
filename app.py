@@ -48,9 +48,9 @@ def sysinfo():
 def fetch():
     print('updating from the repo')
     # command = 'git fetch https://github.com/Smith-Chris1/pi-dash.git'.split()
-    # process = subprocess.Popen(["git", "pull"], stdout=subprocess.PIPE)
-    # output = process.communicate()[0]
-    subprocess.call(['git', 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', shell=True)
+    process = subprocess.Popen(["git", "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    # subprocess.call(['git', 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', shell=True)
     return 'success'
 
 @app.route('/scan')
