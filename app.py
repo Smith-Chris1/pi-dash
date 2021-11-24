@@ -9,6 +9,7 @@ import socket
 import platform
 import psutil
 import requests
+import time
 # import waitress
 
 scans = []
