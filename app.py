@@ -20,7 +20,8 @@ app = Flask(__name__)
 
 def index():
     h_name = socket.gethostname()
-    IP_addres = socket.gethostbyname(h_name)
+    # IP_addres = socket.gethostbyname(h_name)
+    IP_addres = subprocess.run(['ip', 'a', '|', 'grep', 'eth0', '|', 'grep', 'inet'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split(' ')[1]
     return render_template("home.html", this_ip=IP_addres, this_host=h_name, scanresults=" ".join(scans))
 
 @app.route('/reboot')
