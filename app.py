@@ -39,16 +39,15 @@ def name():
     
 @app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
-    sysinfo = []
     try:
-        # sysinfo.append(socket.gethostname())
-        # sysinfo.append(psutil.cpu_percent())
-        # sysinfo.append(psutil.virtual_memory().available * 100 / psutil.virtual_memory().total)
-        # sysinfo.append(psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv)
-        # print(sysinfo)
         return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{psutil.net_io_counters().bytes_sent + psutil.net_io_counters().bytes_recv}"
     except:
         return "unknown,unknown,unknown,unknown"
+
+@app.route('/fetch')
+def fetch():
+    command = "cd ~/pi/pi-dash && git fetch https://github.com/Smith-Chris1/pi-dash.git"
+    subprocess.run(['cd', '~/pi/pi-dash', '&&', 'git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'])
 
 @app.route('/scan')
 def scan():
