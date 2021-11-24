@@ -48,7 +48,7 @@ def sysinfo():
 
 def fetch():
     print('updating from the repo')
-    command = "cd ~/pi/pi-dash && git fetch https://github.com/Smith-Chris1/pi-dash.git"
+    command = "cd ~/pi/pi-dash && git pull https://github.com/Smith-Chris1/pi-dash.git"
     subprocess.run(['cd', '~/pi/pi-dash', '&&', 'git', 'fetch', 'https://github.com/Smith-Chris1/pi-dash.git'])
 
 @app.route('/scan')
