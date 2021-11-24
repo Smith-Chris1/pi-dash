@@ -26,6 +26,7 @@
                     method: "POST",
                     headers: headersList
                 }).then(function (response) {
+                    console.log(response.text());
                     sysinfo = response.text().split(",");
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1];
                     document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2];
