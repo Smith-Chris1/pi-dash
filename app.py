@@ -48,7 +48,7 @@ def sysinfo():
 def fetch():
     print('updating from the repo')
     command = 'git fetch https://github.com/Smith-Chris1/pi-dash.git'.split()
-    subprocess.check_output(command, cwd='/home/pi/pi-dash', shell=True)
+    subprocess.call(command, cwd='/home/pi/pi-dash', shell=True)
     return 'success'
 
 @app.route('/scan')
