@@ -86,4 +86,4 @@ def scan():
 
 if __name__ == '__main__':
     from waitress import serve
-    app.run(debug=True, port=5000)
+    app.run('0.0.0.0', debug=True, port=5000)
