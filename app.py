@@ -50,7 +50,7 @@ def fetch():
     # command = 'git fetch https://github.com/Smith-Chris1/pi-dash.git'.split()
     # process = subprocess.Popen(["git", "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
     # output = process.communicate()[0]
-    subprocess.run(['git', 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', shell=True, timeout=None, check=True, stdout=subprocess.PIPE).stdout
+    subprocess.run(['git', '-C', '/home/pi/pi-dash' , 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', shell=True, timeout=None, check=True, stdout=subprocess.PIPE).stdout
     # process.communicate()[0]
     return 'success'
 
