@@ -26,11 +26,14 @@
                     method: "POST",
                     headers: headersList
                 }).then(function (response) {
-                    console.log(response.text);
-                    sysinfo = response.text().split(",");
+                    // console.log(response.text());
+                    response.text().then(sysinfo => {
+                        sysinfo = response.text().split(",");
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1];
                     document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2];
                     document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3];
+                    })
+                    
                 }).then(function (data) {
                     console.log(data);
                 })
