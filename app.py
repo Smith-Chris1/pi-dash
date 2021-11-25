@@ -65,7 +65,7 @@ def sysinfo():
 def fetch():
     print('updating from the repo')
 
-    process = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], sstdin=PIPE, stderr=PIPE,
+    process = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
     output = process.communicate(f'{config.password}\n')[1]
     # process = subprocess.Popen(["git", "-C","/home/pi/pi-dash","pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
