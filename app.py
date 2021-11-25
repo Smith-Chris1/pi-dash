@@ -38,8 +38,8 @@ def index():
                                                 #  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                                  update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                 reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
-                                                 update_path="http://"+info[1].replace("(", "").replace(")","")+":5000/fetch",
+                                                 reboot_path="http://"+info+":5000/reboot",
+                                                 update_path="http://"+info+":5000/fetch",
                                                  accordian_id=info[3].replace(":",""),
                                                  cpu=sysinfo[1],
                                                  vm=sysinfo[2],
@@ -104,6 +104,7 @@ def scan():
         try:
             ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
             # if info[3] in macAddresses:
+            print(ispi.text)
             if ispi.text == True:
                 sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                 try:
