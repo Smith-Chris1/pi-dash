@@ -100,18 +100,18 @@ def scan():
     scans = []
     ### making card for host that is being viewed.
     
-    info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
-    sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
+    info1 = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    sysinfo = requests.request('POST','http://'+info1+':5000/sysinfo').text.split(",")
     if sysinfo[0] not in scans:
         scans.append(render_template('card.html', 
                                                  host = sysinfo[0],
-                                                 ip=info,
+                                                 ip=info1,
                                                 #  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                                  update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                 reboot_path="http://"+info+":5000/reboot",
-                                                 update_path="http://"+info+":5000/fetch",
-                                                 accordian_id=info[3].replace(":",""),
+                                                 reboot_path="http://"+info1+":5000/reboot",
+                                                 update_path="http://"+info1+":5000/fetch",
+                                                #  accordian_id=info[3].replace(":",""),
                                                  cpu=sysinfo[1],
                                                  vm=sysinfo[2],
                                                  network=sysinfo[3]
@@ -142,7 +142,7 @@ def scan():
                                                  update_function=f"update_{sysinfo[0].replace('-','')}",
                                                  reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
                                                  update_path="http://"+info[1].replace("(", "").replace(")","")+":5000/fetch",
-                                                 accordian_id=info[3].replace(":",""),
+                                                #  accordian_id=info[3].replace(":",""),
                                                  cpu=sysinfo[1],
                                                  vm=sysinfo[2],
                                                  network=sysinfo[3]
