@@ -100,22 +100,20 @@ def scan():
     scans = []
     ### making card for host that is being viewed.
     
-    info1 = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
-    sysinfo = requests.request('POST','http://'+info1+':5000/sysinfo').text.split(",")
-    if sysinfo[0] not in scans:
-        scans.append(render_template('card.html', 
-                                                 host = sysinfo[0],
-                                                 ip=info1,
-                                                #  ip=info[1].replace("(", "").replace(")",""),
-                                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                                 update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                 reboot_path="http://"+info1+":5000/reboot",
-                                                 update_path="http://"+info1+":5000/fetch",
-                                                #  accordian_id=info[3].replace(":",""),
-                                                 cpu=sysinfo[1],
-                                                 vm=sysinfo[2],
-                                                 network=sysinfo[3]
-                                                 ))
+    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
+    # if sysinfo[0] not in scans:
+    scans.append(render_template('card.html', 
+        host = sysinfo[0],
+        ip=thisInfo,
+        reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+        update_function=f"update_{sysinfo[0].replace('-','')}",
+        reboot_path="http://"+thisInfo+":5000/reboot",
+        update_path="http://"+thisInfo+":5000/fetch",
+        cpu=sysinfo[1],
+        vm=sysinfo[2],
+        network=sysinfo[3]
+        ))
     
     
     ### find other machines on the network
@@ -124,10 +122,12 @@ def scan():
     print(mac)
     
     for pi in mac:
+        print(pi)
         info = pi.split(' ')
         print(info)
+        
         if str(info[1].replace("(", "").replace(")","")).endswith('.1') == False:
-            print(pi)
+            
             
             try:
             
@@ -137,20 +137,20 @@ def scan():
                 if ispi.text == True:
                     sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                     try:
-                        if sysinfo[0] not in scans:
+                        # if sysinfo[0] not in scans:
                         
-                            scans.append(render_template('card.html', 
-                                                 host = sysinfo[0],
-                                                 ip=info[1].replace("(", "").replace(")",""),
-                                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                                 update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                 reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
-                                                 update_path="http://"+info[1].replace("(", "").replace(")","")+":5000/fetch",
-                                                #  accordian_id=info[3].replace(":",""),
-                                                 cpu=sysinfo[1],
-                                                 vm=sysinfo[2],
-                                                 network=sysinfo[3]
-                                                 ))
+                        scans.append(render_template('card.html', 
+                            host = sysinfo[0],
+                            ip=info[1].replace("(", "").replace(")",""),
+                            reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                            update_function=f"update_{sysinfo[0].replace('-','')}",
+                            reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
+                            update_path="http://"+info[1].replace("(", "").replace(")","")+":5000/fetch",
+                              accordian_id=info[3].replace(":",""),
+                            cpu=sysinfo[1],
+                            vm=sysinfo[2],
+                            network=sysinfo[3]
+                            ))
                     except:
                         print('error')
             except:
