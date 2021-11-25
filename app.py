@@ -33,7 +33,8 @@ def index():
     if sysinfo[0] not in scans:
         scans.append(render_template('card.html', 
                                                  host = sysinfo[0],
-                                                 ip=info[1].replace("(", "").replace(")",""),
+                                                 ip=info,
+                                                #  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                                  update_function=f"update_{sysinfo[0].replace('-','')}",
                                                  reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
