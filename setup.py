@@ -24,7 +24,8 @@ output = process.communicate()[0]
 
 
 print("installing dependancies")
-pythoninstall = subprocess.Popen([ 'pip', 'install', '-r', '/hom/pi/pi-dashrequirements.txt' ], cwd="/home/pi/pi-dash", stdout=subprocess.PIPE, shell=True)
+pythoninstall = subprocess.Popen([ 'pip', 'install', '-r', '/home/pi/pi-dashrequirements.txt' ], cwd="/home/pi/pi-dash", stdout=subprocess.PIPE, shell=True)
+pythoninstall.communicate[0]
 
 print('moving files')
 shutil.copyfile('/home/pi/pi-dash/vlc/temple.html', '/usr/share/vlc/lua/http/temple.html')
