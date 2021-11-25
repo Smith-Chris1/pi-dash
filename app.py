@@ -22,7 +22,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('ispi', methods = ['POST'])
 def ispi():
-    return True
+    return 'True'
 
 @app.route('/')
 
