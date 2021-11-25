@@ -118,13 +118,15 @@ def scan():
                                                  ))
     
     
-    # scans = []
+    ### find other machines on the network
+    
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     print(mac)
+    
     for pi in mac:
         info = pi.split(' ')
         print(info)
-        if info[1].replace("(", "").replace(")","").endswith('.1') == False:
+        if str(info[1].replace("(", "").replace(")","")).endswith('.1') == False:
             print(pi)
             
             try:
