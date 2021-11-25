@@ -42,7 +42,7 @@ def index():
                                                  vm=sysinfo[2],
                                                  network=sysinfo[3]
                                                  ))
-    return render_template("home.html", this_ip=IP_addres, this_host=h_name, scanresults=" ".join(scans))
+    return render_template("home.html", scanresults=" ".join(scans))
 
 @app.route('/reboot')
 def reboot():
