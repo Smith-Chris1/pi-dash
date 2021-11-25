@@ -120,12 +120,13 @@ def scan():
     # scans = []
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     for pi in mac:
-        print(pi)
-        info = pi.split(' ')
-        try:
-            if info[1].replace("(", "").replace(")","").endswith('.1') == False:
+        if info[1].replace("(", "").replace(")","").endswith('.1') == False:
+            print(pi)
+            info = pi.split(' ')
+            try:
+            
                 ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
-            # if info[3] in macAddresses:
+                # if info[3] in macAddresses:
                 print(ispi.text)
                 if ispi.text == True:
                     sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
@@ -146,8 +147,8 @@ def scan():
                                                  ))
                     except:
                         print('error')
-        except:
-            print('error')
+            except:
+                print('error')
     return redirect('/')
 
 if __name__ == '__main__':
