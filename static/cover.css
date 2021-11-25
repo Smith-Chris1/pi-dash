@@ -83,3 +83,7 @@ body {
     left: 4px;
     top: 2px
    } 
+
+   .power {
+     background-image: '../static/power.png';
+   }

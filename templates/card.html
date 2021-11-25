@@ -2,16 +2,29 @@
     <div class="card text-white bg-dark mb-3">
         <div class="card-header bg-info">
             <h5 class="card-title">{{ host }}</h5>
+            <a href = "#" onclick="javascript:{{reboot_function }}()" class="col btn btn-primary">Restart</a>
+            <a href = "#" onclick="javascript:{{reboot_function }}()" class="col power"></a>
         </div>
         <div class="card-body">
-            <iframe src="http://{{ ip }}:8080/temple.html" style="min-width:400px; min-height: 250px;"></iframe>
+            <iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>
         </div>
         <div id={{host}} class="card-footer">
+            <div class="row">
+                <div class="col">
+                <span>CPU</span>
+                    </div>
+                    <div class="col">
+                <span>Mem</span>
+                    </div>
+                <div class="col">
+                <span>Network</span>
+                    </div>
+                </div>
             <div class='row'>
                 <div id="cpu" class='col bg-info'>{{cpu}}</div>
                 <div id="vm" class='col'>{{vm}}</div>
                 <div id="net" class='col'>{{network}}</div>
-                <a href = "#" onclick="javascript:{{reboot_function }}()" class="col btn btn-primary">Restart</a>
+                
             </div>
             <script>
                 setInterval(function() {
