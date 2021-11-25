@@ -121,9 +121,10 @@ def scan():
     # scans = []
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     for pi in mac:
+        info = pi.split(' ')
         if info[1].replace("(", "").replace(")","").endswith('.1') == False:
             print(pi)
-            info = pi.split(' ')
+            
             try:
             
                 ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
