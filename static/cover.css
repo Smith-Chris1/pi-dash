@@ -85,5 +85,17 @@ body {
    } 
 
    .power {
-     background-image: '../static/power.png';
+    background-image: url(../static/power.png);
+    background-size: 20px;
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
+   }
+
+   .update {
+    background-image: url(../static/updates.png);
+    background-size: 20px;
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
    }

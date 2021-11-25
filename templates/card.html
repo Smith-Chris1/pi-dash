@@ -1,9 +1,34 @@
 <div class="col">
     <div class="card text-white bg-dark mb-3">
         <div class="card-header bg-info">
+            <div class="row">
+                <div class="col">
             <h5 class="card-title">{{ host }}</h5>
-            <a href = "#" onclick="javascript:{{reboot_function }}()" class="col btn btn-primary">Restart</a>
-            <a href = "#" onclick="javascript:{{reboot_function }}()" class="col power"></a>
+        </div>
+        <div class="row">
+            <button href = "#" onclick="javascript:{{update_function}}()" class="col update btn"></button>
+            </div>
+            <script>
+                function {{update_function}} () {
+                let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                }
+
+                fetch("{{ update_path }}", {
+                    method: "GET",
+                    headers: headersList
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+            }
+            </script>
+            <div class="row">
+            <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn"></button>
+            </div>
+        </div>
         </div>
         <div class="card-body">
             <iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>
