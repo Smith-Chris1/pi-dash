@@ -125,11 +125,11 @@ def scan():
         print(pi)
         info = pi.split(' ')
         print(info)
-        
-        if str(info[1].replace("(", "").replace(")","")).endswith('.1') == False:
+        try:
+            if info[1].replace("(", "").replace(")","").endswith('.1') == False:
             
             
-            try:
+            
             
                 ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
                 # if info[3] in macAddresses:
@@ -153,8 +153,8 @@ def scan():
                             ))
                     except:
                         print('error')
-            except:
-                print('error')
+        except:
+            print('error')
     return redirect('/')
 
 if __name__ == '__main__':
