@@ -123,14 +123,16 @@ def scan():
         print(pi)
         info = pi.split(' ')
         try:
-            ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
+            if info[1].replace("(", "").replace(")","").endswith('.1') == False:
+                ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
             # if info[3] in macAddresses:
-            print(ispi.text)
-            if ispi.text == True:
-                sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
-                try:
-                    if sysinfo[0] not in scans:
-                        scans.append(render_template('card.html', 
+                print(ispi.text)
+                if ispi.text == True:
+                    sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
+                    try:
+                        if sysinfo[0] not in scans:
+                        
+                            scans.append(render_template('card.html', 
                                                  host = sysinfo[0],
                                                  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
@@ -142,8 +144,8 @@ def scan():
                                                  vm=sysinfo[2],
                                                  network=sysinfo[3]
                                                  ))
-                except:
-                    print('error')
+                    except:
+                        print('error')
         except:
             print('error')
     return redirect('/')
