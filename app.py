@@ -120,6 +120,7 @@ def scan():
     
     # scans = []
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
+    print(mac)
     for pi in mac:
         info = pi.split(' ')
         print(info)
