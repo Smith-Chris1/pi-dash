@@ -64,13 +64,12 @@ def sysinfo():
 @app.route('/fetch',methods = ['GET'])
 def fetch():
     print('updating from the repo')
-    # command = 'git fetch https://github.com/Smith-Chris1/pi-dash.git'.split()
-    process = subprocess.Popen(["git", "-C","/home/pi/pi-dash","pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+
+    process = subprocess.Popen(["python3", "/home/pi/pi-dash/setup.py"], stdout=subprocess.PIPE)
     output = process.communicate()[0]
-    # subprocess.run(['killall','flask'], stdout=subprocess.PIPE)
-    # subprocess.run(['flask', 'run', '--host=0.0.0.0'], cwd='/home/pi/py-dash', shell=True)
-    # subprocess.run(['git', '-C', '/home/pi/pi-dash' , 'pull', 'https://github.com/Smith-Chris1/pi-dash.git'], cwd='/home/pi/pi-dash', shell=True, timeout=None, check=True, stdout=subprocess.PIPE).stdout
-    # process.communicate()[0]
+    # process = subprocess.Popen(["git", "-C","/home/pi/pi-dash","pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
+
     return 'success'
 
 @app.route('/scan')
