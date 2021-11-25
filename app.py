@@ -77,7 +77,7 @@ def sysinfo():
         return net_out
         # print(f"Current net-usage:\nIN: {net_in} MB/s, OUT: {net_out} MB/s")
     try:
-        return f"{socket.gethostname()},{psutil.cpu_percent()},{round(psutil.virtual_memory().available * 100,2) / psutil.virtual_memory().total},{net_usage('eth0')}"
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{round((psutil.virtual_memory().available * 100),2) / psutil.virtual_memory().total},{net_usage('eth0')}"
     except:
         return "unknown,unknown,unknown,unknown"
 
