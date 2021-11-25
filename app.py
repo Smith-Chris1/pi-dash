@@ -28,7 +28,8 @@ def ispi():
 
 def index():
     # h_name = socket.gethostname()
-    print(scans)
+    # print(scans)
+    global scans
     info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
     sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
     if sysinfo[0] not in scans:
@@ -96,7 +97,7 @@ def fetch():
 @app.route('/scan')
 def scan():
     global scans
-    scans = []
+    # scans = []
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     for pi in mac:
         print(pi)
@@ -108,7 +109,8 @@ def scan():
             if ispi.text == True:
                 sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                 try:
-                    scans.append(render_template('card.html', 
+                    if sysinfo[0] not in scans:
+                        scans.append(render_template('card.html', 
                                                  host = sysinfo[0],
                                                  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
