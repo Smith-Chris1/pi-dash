@@ -30,7 +30,8 @@ def index():
     # h_name = socket.gethostname()
     info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
     sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
-    scans.append(render_template('card.html', 
+    if sysinfo[0] not in scans:
+        scans.append(render_template('card.html', 
                                                  host = sysinfo[0],
                                                  ip=info[1].replace("(", "").replace(")",""),
                                                  reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
