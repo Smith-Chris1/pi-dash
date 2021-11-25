@@ -97,6 +97,7 @@ def fetch():
 @app.route('/scan')
 def scan():
     global scans
+    scans = []
     ### making card for host that is being viewed.
     
     info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
