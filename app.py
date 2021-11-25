@@ -28,6 +28,7 @@ def ispi():
 
 def index():
     # h_name = socket.gethostname()
+    print(scans)
     info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
     sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
     if sysinfo[0] not in scans:
