@@ -30,22 +30,22 @@ def index():
     # h_name = socket.gethostname()
     # print(scans)
     global scans
-    info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
-    sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
-    if sysinfo[0] not in scans:
-        scans.append(render_template('card.html', 
-                                                 host = sysinfo[0],
-                                                 ip=info,
-                                                #  ip=info[1].replace("(", "").replace(")",""),
-                                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                                 update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                 reboot_path="http://"+info+":5000/reboot",
-                                                 update_path="http://"+info+":5000/fetch",
-                                                 accordian_id=info[3].replace(":",""),
-                                                 cpu=sysinfo[1],
-                                                 vm=sysinfo[2],
-                                                 network=sysinfo[3]
-                                                 ))
+    # info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    # sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
+    # if sysinfo[0] not in scans:
+    #     scans.append(render_template('card.html', 
+    #                                              host = sysinfo[0],
+    #                                              ip=info,
+    #                                             #  ip=info[1].replace("(", "").replace(")",""),
+    #                                              reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+    #                                              update_function=f"update_{sysinfo[0].replace('-','')}",
+    #                                              reboot_path="http://"+info+":5000/reboot",
+    #                                              update_path="http://"+info+":5000/fetch",
+    #                                              accordian_id=info[3].replace(":",""),
+    #                                              cpu=sysinfo[1],
+    #                                              vm=sysinfo[2],
+    #                                              network=sysinfo[3]
+    #                                              ))
     return render_template("home.html", scanresults=" ".join(scans))
 
 @app.route('/reboot')
@@ -97,6 +97,26 @@ def fetch():
 @app.route('/scan')
 def scan():
     global scans
+    ### making card for host that is being viewed.
+    
+    info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
+    if sysinfo[0] not in scans:
+        scans.append(render_template('card.html', 
+                                                 host = sysinfo[0],
+                                                 ip=info,
+                                                #  ip=info[1].replace("(", "").replace(")",""),
+                                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                                                 update_function=f"update_{sysinfo[0].replace('-','')}",
+                                                 reboot_path="http://"+info+":5000/reboot",
+                                                 update_path="http://"+info+":5000/fetch",
+                                                 accordian_id=info[3].replace(":",""),
+                                                 cpu=sysinfo[1],
+                                                 vm=sysinfo[2],
+                                                 network=sysinfo[3]
+                                                 ))
+    
+    
     # scans = []
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     for pi in mac:
