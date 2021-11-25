@@ -5,9 +5,9 @@
                 <div class="col">
             <h5 class="card-title">{{ host }}</h5>
         </div>
-        <div class="row">
-            <button href = "#" onclick="javascript:{{update_function}}()" class="col update btn"></button>
-            </div>
+        <div class="col">
+            <button href = "#" onclick="javascript:{{update_function}}()" class="col update btn float-end" title="Run Updates"></button>
+            
             <script>
                 function {{update_function}} () {
                 let headersList = {
@@ -25,8 +25,8 @@
                 })
             }
             </script>
-            <div class="row">
-            <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn"></button>
+
+            <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn float-end" title="Reboot"></button>
             </div>
         </div>
         </div>

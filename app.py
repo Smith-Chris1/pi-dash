@@ -14,17 +14,34 @@ import time
 
 scans = []
 
-macAddresses = ['e4:5f:01:35:25:9b','dc:a6:32:8b:42:e1']
+# macAddresses = ['e4:5f:01:35:25:9b','dc:a6:32:8b:42:e1']
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+@app.route('ispi', methods = ['POST'])
+def ispi():
+    return True
+
 @app.route('/')
 
 def index():
-    h_name = socket.gethostname()
-    IP_addres = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    # h_name = socket.gethostname()
+    # IP_addres = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
+    scans.append(render_template('card.html', 
+                                                 host = sysinfo[0],
+                                                 ip=info[1].replace("(", "").replace(")",""),
+                                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                                                 update_function=f"update_{sysinfo[0].replace('-','')}",
+                                                 reboot_path="http://"+info[1].replace("(", "").replace(")","")+":5000/reboot",
+                                                 update_path="http://"+info[1].replace("(", "").replace(")","")+":5000/fetch",
+                                                 accordian_id=info[3].replace(":",""),
+                                                 cpu=sysinfo[1],
+                                                 vm=sysinfo[2],
+                                                 network=sysinfo[3]
+                                                 ))
     return render_template("home.html", this_ip=IP_addres, this_host=h_name, scanresults=" ".join(scans))
 
 @app.route('/reboot')
@@ -57,7 +74,7 @@ def sysinfo():
         return net_out
         # print(f"Current net-usage:\nIN: {net_in} MB/s, OUT: {net_out} MB/s")
     try:
-        return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total},{net_usage('eth0')}"
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{round(psutil.virtual_memory().available * 100,2) / psutil.virtual_memory().total},{net_usage('eth0')}"
     except:
         return "unknown,unknown,unknown,unknown"
 
@@ -82,7 +99,9 @@ def scan():
         print(pi)
         info = pi.split(' ')
         try:
-            if info[3] in macAddresses:
+            ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
+            # if info[3] in macAddresses:
+            if ispi.text == True:
                 sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                 try:
                     scans.append(render_template('card.html', 
