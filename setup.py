@@ -3,12 +3,11 @@ import subprocess
 import shutil
 import os
 
+CURR_DIR = os.path.dirname(os.path.realpath(__file__))
+print(CURR_DIR)
 
 try:
     print("Setting up Temple Pi")
-
-    CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-    print(CURR_DIR)
 
     path = '/home/pi/pi-dash'
 
@@ -34,4 +33,5 @@ try:
     if CURR_DIR != path:
         os.remove(__file__)
 except:
-    os.remove(__file__)
+    if CURR_DIR != path:
+        os.remove(__file__)
