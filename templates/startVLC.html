@@ -1,14 +1,33 @@
 <div>VLC not started...</div>
-<button href = "#" onclick="vlcStart_{{ip}}()" class="col btn btn-info" title="Start VLC"></button>
-            
+<div class='row'>
+<button href = "#" onclick="vlcStartA_{{ip}}()" class="col btn btn-info" title="Start VLC">Start VLC ChannelA</button>
+<button href = "#" onclick="vlcStartB_{{ip}}()" class="col btn btn-info" title="Start VLC">Start VLC ChannelB</button>     
+</div>    
             <script>
-                function vlcStart_{{ip}} () {
+                function vlcStartA_{{ip}} () {
                 let headersList = {
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
                 }
 
-                fetch("http://{{ ip }}:5000/startVLC", {
+                fetch("http://{{ ip }}:5000/startVLCA", {
+                    method: "GET",
+                    headers: headersList
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+            }
+            </script>
+            <script>
+                function vlcStartB_{{ip}} () {
+                let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                }
+
+                fetch("http://{{ ip }}:5000/startVLCB", {
                     method: "GET",
                     headers: headersList
                 }).then(function (response) {
