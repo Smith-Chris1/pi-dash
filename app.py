@@ -127,10 +127,10 @@ def scan():
         print(pi)
         info = pi.split(' ')
         print(info)
-        print('regex: ' + re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1])
+        print('regex: ' + re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[0])
         try:
             
-            if info[1] == re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
+            if info[1] == re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
             # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
             # r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})"
             # r"\((.*?)\)"
