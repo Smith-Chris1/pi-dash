@@ -157,7 +157,7 @@ def scan():
 
 def vlcUp(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex(('irc.myserver.net', 6667))
+    result = sock.connect_ex((ip, 8080))
     return result
 
 if __name__ == '__main__':
