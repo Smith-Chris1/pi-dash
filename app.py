@@ -155,9 +155,9 @@ def scan():
                             network=sysinfo[3]
                             ))
                     except:
-                        print('error')
+                        print('error in updating scans')
         except:
-            print('error')
+            print('error in pi for loop')
     return redirect('/')
 
 if __name__ == '__main__':
