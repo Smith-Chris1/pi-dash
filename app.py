@@ -28,25 +28,9 @@ def ispi():
 @app.route('/')
 
 def index():
-    # h_name = socket.gethostname()
-    # print(scans)
+
     global scans
-    # info = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
-    # sysinfo = requests.request('POST','http://'+info+':5000/sysinfo').text.split(",")
-    # if sysinfo[0] not in scans:
-    #     scans.append(render_template('card.html', 
-    #                                              host = sysinfo[0],
-    #                                              ip=info,
-    #                                             #  ip=info[1].replace("(", "").replace(")",""),
-    #                                              reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-    #                                              update_function=f"update_{sysinfo[0].replace('-','')}",
-    #                                              reboot_path="http://"+info+":5000/reboot",
-    #                                              update_path="http://"+info+":5000/fetch",
-    #                                              accordian_id=info[3].replace(":",""),
-    #                                              cpu=sysinfo[1],
-    #                                              vm=sysinfo[2],
-    #                                              network=sysinfo[3]
-    #                                              ))
+
     return render_template("home.html", scanresults=" ".join(scans))
 
 @app.route('/reboot')
@@ -79,7 +63,7 @@ def sysinfo():
         return net_out
         # print(f"Current net-usage:\nIN: {net_in} MB/s, OUT: {net_out} MB/s")
     try:
-        return f"{socket.gethostname()},{psutil.cpu_percent()},{round((psutil.virtual_memory().available * 100),2) / psutil.virtual_memory().total},{net_usage('eth0')}"
+        return f"{socket.gethostname()},{psutil.cpu_percent()},{round((psutil.virtual_memory().available * 100) / psutil.virtual_memory().total)},{net_usage('eth0')}"
     except:
         return "unknown,unknown,unknown,unknown"
 
@@ -103,7 +87,6 @@ def scan():
     
     thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
     sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
-    # if sysinfo[0] not in scans:
     scans.append(render_template('card.html', 
         host = sysinfo[0],
         ip=thisInfo,
@@ -120,26 +103,18 @@ def scan():
     ### find other machines on the network
     
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
-    # print('mac')
-    # print(mac)
     
     for pi in mac:
-        # print(pi)
+
         info = pi.split(' ')
-        # print(len(info))
-        # print('regex: ' + re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[0])
+
         if len(info) > 1:
-            # try:
-            print(info)
-            print(re.findall(r"\((.*?)\)", info[1])[0])
-            print(re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[1])[0]+'.1')
+
             if re.findall(r"\((.*?)\)", info[1])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[1])[0]+'.1':
                 print(re.findall(r"\((.*?)\)", info[1])[0] + " is not the gateway.")
-            # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
                 print('http://'+re.findall(r"\((.*?)\)", info[1])[0])
                 ispi = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/ispi')
-                # if info[3] in macAddresses:
-                print(ispi.text)
+
                 if ispi.text == "True":
                     sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/sysinfo').text.split(",")
                     try:
@@ -160,8 +135,7 @@ def scan():
                         print('error in updating scans')
             else:
                 print(re.findall(r"\((.*?)\)", info[1])[0] + " is the gateway, will not process.")
-            # except:
-            #     print('error in pi for loop')
+
     return redirect('/')
 
 if __name__ == '__main__':
