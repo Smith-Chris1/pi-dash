@@ -119,13 +119,21 @@ def scan():
                     sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/sysinfo').text.split(",")
                     try:
                         # if sysinfo[0] not in scans:
-                        try:
-                            if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code == 200:
-                                iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
-                                
-                        except:
-                            print("connection refused")
+                        
+                        ### See if VLC is running on the servers
+                        vlc = vlcUp(re.findall(r"\((.*?)\)", info[1])[0])
+                        
+                        if vlc == 0:
+                            iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                        else:
                             iframe = '<div>VLC not started...</div>'
+                        # try:
+                        #     if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code == 200:
+                        #         iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                                
+                        # except:
+                        #     print("connection refused")
+                        #     iframe = '<div>VLC not started...</div>'
                         scans.append(render_template('card.html', 
                             host = sysinfo[0],
                             ip=re.findall(r"\((.*?)\)", info[1])[0],
@@ -146,6 +154,14 @@ def scan():
                 print(re.findall(r"\((.*?)\)", info[1])[0] + " is the gateway, will not process.")
 
     return redirect('/')
+
+def vlcUp(ip):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = sock.connect_ex(('irc.myserver.net', 6667))
+    if result == 0:
+        print "Port is open"
+    else:
+        print "Port is not open"
 
 if __name__ == '__main__':
     # from waitress import serve
