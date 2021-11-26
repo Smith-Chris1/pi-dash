@@ -119,9 +119,10 @@ def scan():
                     sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/sysinfo').text.split(",")
                     try:
                         # if sysinfo[0] not in scans:
-                        if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code != 200:
-                            iframe = render_template('startVLC.html')
-                        else:
+                        try:
+                            if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code != 200:
+                                iframe = render_template('startVLC.html')
+                        except:
                             iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                         scans.append(render_template('card.html', 
                             host = sysinfo[0],
