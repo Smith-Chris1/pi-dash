@@ -124,6 +124,7 @@ def scan():
                                 iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                                 
                         except:
+                            print("connection refused")
                             iframe = '<div>VLC not started...</div>'
                         scans.append(render_template('card.html', 
                             host = sysinfo[0],
@@ -138,6 +139,7 @@ def scan():
                             network=sysinfo[3],
                             cardBody = iframe
                             ))
+                        print(scans)
                     except:
                         print('error in updating scans')
             else:
