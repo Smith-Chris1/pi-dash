@@ -92,9 +92,9 @@ def scan():
         thisInfo.strip()
     vlc = vlcUp(thisInfo)    
     if vlc == 0:
-        iframe = render_template('iframeVLC.html', ip = thisInfo)
+        iframe = 'iframeVLC.html'
     else:
-        iframe = render_template('startVLC.html', ip = thisInfo)
+        iframe = 'startVLC.html'
     sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
     scans.append(render_template('card.html', 
         host = sysinfo[0],
@@ -106,7 +106,7 @@ def scan():
         cpu=sysinfo[1],
         vm=sysinfo[2],
         network=sysinfo[3],
-        cardBody = iframe
+        cardBody = render_template(iframe)
         ))
     
     
@@ -134,9 +134,9 @@ def scan():
                         vlc = vlcUp(re.findall(r"\((.*?)\)", info[1])[0])
                         
                         if vlc == 0:
-                            iframe = render_template('iframeVLC.html', ip = re.findall(r"\((.*?)\)", info[1])[0])
+                            iframe = 'iframeVLC.html'
                         else:
-                            iframe = render_template('startVLC.html', ip = re.findall(r"\((.*?)\)", info[1])[0])
+                            iframe = startVLC.html'
                         # try:
                         #     if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code == 200:
                         #         iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
@@ -155,7 +155,7 @@ def scan():
                             cpu=sysinfo[1],
                             vm=sysinfo[2],
                             network=sysinfo[3],
-                            cardBody = iframe
+                            cardBody = render_template(iframe)
                             ))
                         print(scans)
                     except:
