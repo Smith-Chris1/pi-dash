@@ -124,7 +124,7 @@ def scan():
                                 iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                                 
                         except:
-                            iframe = render_template('startVLC.html')
+                            iframe = '<div>VLC not started...</div>'
                         scans.append(render_template('card.html', 
                             host = sysinfo[0],
                             ip=re.findall(r"\((.*?)\)", info[1])[0],
