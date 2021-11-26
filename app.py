@@ -133,7 +133,7 @@ def scan():
             print(info)
             print(re.findall(r"\((.*?)\)", info[1])[0])
             print(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1])
-            if info[1] != re.findall(r"\((.*?)\)", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
+            if re.findall(r"\((.*?)\)", info[1])[0] != re.findall(r"\((.*?)\)", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
                 print(re.findall(r"\((.*?)\)", info[1])[0] + " is not the gateway.")
             # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
                 print('http://'+re.findall(r"\((.*?)\)", info[1])[0])
