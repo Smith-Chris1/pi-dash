@@ -23,7 +23,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/ispi', methods = ['POST'])
 def ispi():
-    return True
+    return "True"
 
 @app.route('/')
 
@@ -134,15 +134,12 @@ def scan():
                 if info[1] != re.findall(r"\((.*?)\)", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
                     print(re.findall(r"\((.*?)\)", info[1])[0] + " is not the gateway.")
                 # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
-                # r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})"
-                # r"\((.*?)\)"
-
 
 
                     ispi = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/ispi')
                     # if info[3] in macAddresses:
                     print(ispi.text)
-                    if ispi.text == True:
+                    if ispi.text == "True":
                         sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/sysinfo').text.split(",")
                         try:
                             # if sysinfo[0] not in scans:
