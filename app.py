@@ -120,6 +120,7 @@ def scan():
     ### find other machines on the network
     
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
+    print('mac')
     print(mac)
     
     for pi in mac:
