@@ -135,7 +135,7 @@ def scan():
                     print(re.findall(r"\((.*?)\)", info[1])[0] + " is not the gateway.")
                 # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
 
-
+                    print('http://'+re.findall(r"\((.*?)\)", info[1])[0])
                     ispi = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/ispi')
                     # if info[3] in macAddresses:
                     print(ispi.text)
