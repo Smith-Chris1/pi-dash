@@ -10,6 +10,7 @@ import platform
 import psutil
 import requests
 import time
+import re
 # import waitress
 
 scans = []
@@ -126,8 +127,10 @@ def scan():
         info = pi.split(' ')
         print(info)
         try:
-            if info[1].replace("(", "").replace(")","").endswith('.1') == False:
-            
+            if info[1] == re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1")
+            # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
+            # r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})"
+            # r"\((.*?)\)"
             
             
             
@@ -158,5 +161,5 @@ def scan():
     return redirect('/')
 
 if __name__ == '__main__':
-    from waitress import serve
+    # from waitress import serve
     app.run('0.0.0.0', debug=True, port=5000)
