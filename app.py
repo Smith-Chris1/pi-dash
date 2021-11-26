@@ -158,10 +158,7 @@ def scan():
 def vlcUp(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = sock.connect_ex(('irc.myserver.net', 6667))
-    if result == 0:
-        print "Port is open"
-    else:
-        print "Port is not open"
+    return result
 
 if __name__ == '__main__':
     # from waitress import serve
