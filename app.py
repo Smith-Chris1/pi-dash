@@ -85,7 +85,11 @@ def scan():
     scans = []
     ### making card for host that is being viewed.
     
-    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding()).strip()
+    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+    if " " in thisInfo:
+        thisInfo = thisInfo.split(' ')[0].strip()
+    else:
+        thisInfo.strip()
     sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
     scans.append(render_template('card.html', 
         host = sysinfo[0],
