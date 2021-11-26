@@ -128,7 +128,7 @@ def scan():
         info = pi.split(' ')
         print(len(info))
         # print('regex: ' + re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[0])
-        if len(info) > 0:
+        if len(info) > 1:
             try:
 
                 if info[1] == re.findall(r"\((.*?)\)", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
