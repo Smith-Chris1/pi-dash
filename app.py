@@ -136,7 +136,7 @@ def scan():
                         if vlc == 0:
                             iframe = 'iframeVLC.html'
                         else:
-                            iframe = startVLC.html'
+                            iframe = 'startVLC.html'
                         # try:
                         #     if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code == 200:
                         #         iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
