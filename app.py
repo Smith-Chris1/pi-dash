@@ -126,18 +126,18 @@ def scan():
     for pi in mac:
         print(pi)
         info = pi.split(' ')
-        print(info)
+        print(len(info))
         # print('regex: ' + re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[0])
         if len(info) > 0:
             try:
-                
+
                 if info[1] == re.findall(r"\((.*?)\)", info[1])[0].replace(re.findall(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})", info[1])[1], "1"):
                 # if info[1].replace("(", "").replace(")","") == info[1].replace("(", "").replace(")","").
                 # r"\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3})"
                 # r"\((.*?)\)"
-                
-                
-                
+
+
+
                     ispi = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/ispi')
                     # if info[3] in macAddresses:
                     print(ispi.text)
@@ -145,7 +145,7 @@ def scan():
                         sysinfo = requests.request('POST','http://'+info[1].replace("(", "").replace(")","")+':5000/sysinfo').text.split(",")
                         try:
                             # if sysinfo[0] not in scans:
-                            
+
                             scans.append(render_template('card.html', 
                                 host = sysinfo[0],
                                 ip=info[1].replace("(", "").replace(")",""),
