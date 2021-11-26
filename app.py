@@ -15,8 +15,6 @@ import re
 
 scans = []
 
-# macAddresses = ['e4:5f:01:35:25:9b','dc:a6:32:8b:42:e1']
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -61,7 +59,6 @@ def sysinfo():
         net_in = round((net_in_2 - net_in_1) / 1024 / 1024, 3)
         net_out = round((net_out_2 - net_out_1) / 1024 / 1024, 3)
         return net_out
-        # print(f"Current net-usage:\nIN: {net_in} MB/s, OUT: {net_out} MB/s")
     try:
         return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage('eth0')}"
     except:
@@ -74,8 +71,6 @@ def fetch():
     process = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
     output = process.communicate(f'{config.password}\n')[1]
-    # process = subprocess.Popen(["git", "-C","/home/pi/pi-dash","pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
-    # output = process.communicate()[0]
 
     return 'success'
 
@@ -83,8 +78,8 @@ def fetch():
 def scan():
     global scans
     scans = []
-    ### making card for host that is being viewed.
     
+    ### making card for host that is being viewed.
     thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
     if " " in thisInfo:
         thisInfo = thisInfo.split(' ')[0].strip()
@@ -111,7 +106,6 @@ def scan():
     
     
     ### find other machines on the network
-    
     mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     
     for pi in mac:
@@ -127,9 +121,7 @@ def scan():
 
                 if ispi.text == "True":
                     sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':5000/sysinfo').text.split(",")
-                    try:
-                        # if sysinfo[0] not in scans:
-                        
+                    try:                        
                         ### See if VLC is running on the servers
                         vlc = vlcUp(re.findall(r"\((.*?)\)", info[1])[0])
                         
@@ -137,13 +129,7 @@ def scan():
                             iframe = 'iframeVLC.html'
                         else:
                             iframe = 'startVLC.html'
-                        # try:
-                        #     if requests.request('GET','http://'+re.findall(r"\((.*?)\)", info[1])[0]+':8080').status_code == 200:
-                        #         iframe = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
-                                
-                        # except:
-                        #     print("connection refused")
-                        #     iframe = '<div>VLC not started...</div>'
+
                         scans.append(render_template('card.html', 
                             host = sysinfo[0],
                             ip=re.findall(r"\((.*?)\)", info[1])[0],
