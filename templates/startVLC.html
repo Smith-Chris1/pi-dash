@@ -23,7 +23,10 @@
                         while (parent.firstChild) {
                             parent.removeChild(parent.firstChild);
                         }
-                        parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                        setTimeout(function(){
+                            parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                        }, 3000);
+                        // parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                 }})
             }
             </script>
@@ -45,7 +48,10 @@
                         while (parent.firstChild) {
                             parent.removeChild(parent.firstChild);
                         }
-                        parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                        setTimeout(function(){
+                            parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
+                        }, 3000);
+                        // parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                     console.log(data);
                 }})
             }
