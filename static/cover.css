@@ -99,3 +99,12 @@ body {
     width: 25px;
     background-repeat: no-repeat;
    }
+
+   .no-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
