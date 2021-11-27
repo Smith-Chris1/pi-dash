@@ -1,12 +1,12 @@
 <div id="{{ip}}_parent">Start VLC Below</div>
 <div class='row'>
     <div class="col">
-<button href = "#" onclick="vlcStartA_{{ip}}()" class="col btn btn-info" title="Start VLC">ChannelA</button></div>
+<button href = "#" onclick="vlcStartA_{{host}}()" class="col btn btn-info" title="Start VLC">ChannelA</button></div>
 <div class="col">
-<button href = "#" onclick="vlcStartB_{{ip}}()" class="col btn btn-info" title="Start VLC">ChannelB</button>     </div>
+<button href = "#" onclick="vlcStartB_{{host}}()" class="col btn btn-info" title="Start VLC">ChannelB</button>     </div>
 </div>    
             <script>
-                function vlcStartA_{{ip}}() {
+                function vlcStartA_{{host}}() {
                 let headersList = {
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
@@ -28,7 +28,7 @@
             }
             </script>
             <script>
-                function vlcStartB_{{ip}}() {
+                function vlcStartB_{{host}}() {
                 let headersList = {
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
