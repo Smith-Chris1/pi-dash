@@ -63,6 +63,16 @@ def sysinfo():
         return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage('eth0')}"
     except:
         return "unknown,unknown,unknown,unknown"
+    
+@app.route('/startVLCA', methods = ['POST'])
+def startVLCA():
+    vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1234'])
+    return "started"
+
+@app.route('/startVLCB', methods = ['POST'])
+def startVLCA():
+    vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1235'])
+    return "started"
 
 @app.route('/fetch',methods = ['GET'])
 def fetch():

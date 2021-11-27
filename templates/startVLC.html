@@ -1,4 +1,4 @@
-<div>Start VLC Below</div>
+<div id="{{ip}}_parent">Start VLC Below</div>
 <div class='row'>
     <div class="col">
 <button href = "#" onclick="vlcStartA_{{ip}}()" class="col btn btn-info" title="Start VLC">ChannelA</button></div>
@@ -13,12 +13,17 @@
                 }
 
                 fetch("http://{{ ip }}:5000/startVLCA", {
-                    method: "GET",
+                    method: "POST",
                     headers: headersList
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    console.log(data);
+                    if (data == "started"):
+                        parent = document.getElementById("{{ip}}_parent").parentElement;
+                        while (parent.firstChild) {
+                            parent.removeChild(parent.firstChild);
+                        }
+                        parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                 })
             }
             </script>
@@ -30,11 +35,17 @@
                 }
 
                 fetch("http://{{ ip }}:5000/startVLCB", {
-                    method: "GET",
+                    method: "POST",
                     headers: headersList
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
+                    if (data == "started"):
+                        parent = document.getElementById("{{ip}}_parent").parentElement;
+                        while (parent.firstChild) {
+                            parent.removeChild(parent.firstChild);
+                        }
+                        parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                     console.log(data);
                 })
             }
