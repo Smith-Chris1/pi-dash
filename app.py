@@ -111,7 +111,7 @@ def scan():
         cpu=sysinfo[1],
         vm=sysinfo[2],
         network=sysinfo[3],
-        cardBody = render_template(iframe, ip=thisInfo)
+        cardBody = render_template(iframe, ip=sysinfo[0].replace('-',''))
         ))
     
     
@@ -151,7 +151,7 @@ def scan():
                             cpu=sysinfo[1],
                             vm=sysinfo[2],
                             network=sysinfo[3],
-                            cardBody = render_template(iframe, ip=re.findall(r"\((.*?)\)", info[1])[0])
+                            cardBody = render_template(iframe, ip=sysinfo[0].replace('-',''))
                             ))
                         print(scans)
                     except:
