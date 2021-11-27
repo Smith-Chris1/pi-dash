@@ -18,13 +18,13 @@
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    if (data == "started"):
+                    if (data == "started"){
                         parent = document.getElementById("{{ip}}_parent").parentElement;
                         while (parent.firstChild) {
                             parent.removeChild(parent.firstChild);
                         }
                         parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
-                })
+                }})
             }
             </script>
             <script>
@@ -40,13 +40,13 @@
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    if (data == "started"):
+                    if (data == "started"){
                         parent = document.getElementById("{{ip}}_parent").parentElement;
                         while (parent.firstChild) {
                             parent.removeChild(parent.firstChild);
                         }
                         parent.innerHTML = '<iframe src="http://{{ ip }}:8080/temple.html" style="min-width:308px; min-height: 205px;"></iframe>'
                     console.log(data);
-                })
+                }})
             }
             </script>

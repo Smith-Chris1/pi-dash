@@ -71,7 +71,7 @@ def startVLCA():
 
 @app.route('/startVLCB', methods = ['POST'])
 def startVLCB():
-    vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1235'])
+    vlcb = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1235'])
     return "started"
 
 @app.route('/fetch',methods = ['GET'])
