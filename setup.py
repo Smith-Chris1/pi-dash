@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from re import sub
 import subprocess
 import shutil
 import os
@@ -24,6 +25,9 @@ try:
 
     print("installing dependancies")
     process = subprocess.Popen([ 'pip', 'install', '-r', path+'/requirements.txt' ], cwd=path, stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    
+    process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],cwd=path, stdout=subprocess.PIPE)
     output = process.communicate()[0]
 
     print('moving files')
