@@ -35,9 +35,9 @@ ip_net = ipaddress.ip_network(net_addr)
 all_hosts = list(ip_net.hosts())
 
 # Configure subprocess to hide the console window
-info = subprocess.STARTUPINFO()
-info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-info.wShowWindow = subprocess.SW_HIDE
+# info = subprocess.STARTUPINFO()
+# info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+# info.wShowWindow = subprocess.SW_HIDE
 
 # For each IP address in the subnet, 
 # run the ping command with subprocess.popen interface
