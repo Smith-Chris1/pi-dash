@@ -37,6 +37,8 @@ try:
     shutil.copyfile(path+'/scripts/boot.txt', '/boot/config.txt')
     process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
+    process = subprocess.Popen(['sudo', 'systemctl', 'enable', 'pidash.service'], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
     process = subprocess.Popen(['sudo','systemctl', 'start', 'pidash.service'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
 
