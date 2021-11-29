@@ -26,7 +26,7 @@ else:
     
 #Change it to the network CIDR
 
-net_addr = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo+'.0')
+net_addr = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo) +'.0'
 
 # Create the network
 ip_net = ipaddress.ip_network(net_addr)
