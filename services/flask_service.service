@@ -1,0 +1,17 @@
+[Unit]
+Description=Flask Streaming Server
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 app.py
+WorkingDirectory=/home/pi/pi-dash
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/pi/.Xauthority"
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+
+[Install]
+WantedBy=multi-user.target

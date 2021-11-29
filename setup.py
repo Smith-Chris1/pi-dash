@@ -32,6 +32,13 @@ try:
 
     print('moving files')
     shutil.copyfile(path+'/vlc/temple.html', '/usr/share/vlc/lua/http/temple.html')
+    shutil.copyfile('/home/pi/pi-dash/services/flask_service.service' '/etc/systemd/system/')
+    shutil.copyfile('/home/pi/pi-dash/services/channel.desktop' '/etc/xdg/autostart')
+    shutil.copyfile('/home/pi/pi-dash/scripts/boot.txt', '/boot/config.txt')
+    process = subprocess.Popen(['systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    process = subprocess.Popen(['systemctl', 'start', ''], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
 
     print('cleaning up')
     if CURR_DIR != path:
