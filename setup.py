@@ -32,8 +32,8 @@ try:
 
     print('moving files')
     shutil.copyfile(path+'/vlc/temple.html', '/usr/share/vlc/lua/http/temple.html')
-    shutil.copyfile(path+'/services/flask_service.service' '/etc/systemd/system/')
-    shutil.copyfile(path+'/services/channel.desktop' '/etc/xdg/autostart')
+    shutil.copyfile(path+'/services/flask_service.service', '/etc/systemd/system/')
+    shutil.copyfile(path+'/services/channel.desktop', '/etc/xdg/autostart')
     shutil.copyfile(path+'/scripts/boot.txt', '/boot/config.txt')
     process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
