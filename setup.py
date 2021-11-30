@@ -19,7 +19,7 @@ try:
         print("The new directory is created!")
 
     print('updating from the repo')
-    process = subprocess.Popen(["git", "-C",path,"pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(["git", "-C", path, "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
     output = process.communicate()[0]
 
 
