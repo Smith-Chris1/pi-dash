@@ -127,16 +127,17 @@ def scan():
             if 'Nmap' in pi and 'Starting' not in pi:
                 info = pi.split(' ')
                 print(info)
-                if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
-                    print(re.findall(r"\((.*?)\)", info[4])[0] + " is not the gateway.")
-                    print('http://'+re.findall(r"\((.*?)\)", info[4])[0])
-                    ispi = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[4])[0]+':5000/ispi')
+                # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
+                if re.findall(r"(.*?)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
+                    print(re.findall(r"(.*?)", info[4])[0] + " is not the gateway.")
+                    print('http://'+re.findall(r"(.*?)", info[4])[0])
+                    ispi = requests.request('POST','http://'+re.findall(r"(.*?)", info[4])[0]+':5000/ispi')
 
                     if ispi.text == "True":
-                        sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[4])[0]+':5000/sysinfo').text.split(",")
+                        sysinfo = requests.request('POST','http://'+re.findall(r"(.*?)", info[4])[0]+':5000/sysinfo').text.split(",")
                         try:                        
                             ### See if VLC is running on the servers
-                            vlc = vlcUp(re.findall(r"\((.*?)\)", info[4])[0])
+                            vlc = vlcUp(re.findall(r"(.*?)", info[4])[0])
 
                             if vlc == 0:
                                 iframe = 'iframeVLC.html'
@@ -145,22 +146,22 @@ def scan():
 
                             scans.append(render_template('card.html', 
                                 host = sysinfo[0],
-                                ip=re.findall(r"\((.*?)\)", info[4])[0],
+                                ip=re.findall(r"(.*?)", info[4])[0],
                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                 update_function=f"update_{sysinfo[0].replace('-','')}",
-                                reboot_path="http://"+re.findall(r"\((.*?)\)", info[4])[0]+":5000/reboot",
-                                update_path="http://"+re.findall(r"\((.*?)\)", info[4])[0]+":5000/fetch",
+                                reboot_path="http://"+re.findall(r"(.*?)", info[4])[0]+":5000/reboot",
+                                update_path="http://"+re.findall(r"(.*?)", info[4])[0]+":5000/fetch",
                                   accordian_id=info[3].replace(":",""),
                                 cpu=sysinfo[1],
                                 vm=sysinfo[2],
                                 network=sysinfo[3],
-                                cardBody = render_template(iframe, ip=re.findall(r"\((.*?)\)", info[4])[0], host=sysinfo[0].replace('-',''))
+                                cardBody = render_template(iframe, ip=re.findall(r"(.*?)", info[4])[0], host=sysinfo[0].replace('-',''))
                                 ))
                             print(scans)
                         except:
                             print('error in updating scans')
                 else:
-                    print(re.findall(r"\((.*?)\)", info[4])[0] + " is the gateway, will not process.")
+                    print(re.findall(r"(.*?)", info[4])[0] + " is the gateway, will not process.")
 
     return redirect('/')
 
