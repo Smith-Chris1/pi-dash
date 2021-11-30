@@ -124,7 +124,7 @@ def scan():
         info = pi.split(' ')
 
         if len(info) > 1:
-            if 'Nmap' in pi and 'Starting' not in pi:
+            if 'Nmap' in pi and 'Starting' not in pi and 'done' not in pi:
                 info = pi.split(' ')
                 print(info)
                 # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
@@ -139,12 +139,12 @@ def scan():
                                 try:                        
                                     ### See if VLC is running on the servers
                                     vlc = vlcUp(info[4])
-    
+
                                     if vlc == 0:
                                         iframe = 'iframeVLC.html'
                                     else:
                                         iframe = 'startVLC.html'
-    
+
                                     scans.append(render_template('card.html', 
                                         host = sysinfo[0],
                                         ip=info[4],
