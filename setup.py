@@ -29,7 +29,7 @@ try:
     
     print("installing nmap")
     
-    process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],shell=True, stdout=subprocess.PIPE)
+    process = subprocess.Popen(['apt', 'install', '-y', 'nmap'],shell=True, stdout=subprocess.PIPE)
     output = process.communicate()[0]
 
     print('moving files')
