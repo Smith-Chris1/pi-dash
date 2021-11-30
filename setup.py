@@ -4,6 +4,8 @@ import subprocess
 import shutil
 import os
 
+from werkzeug.datastructures import T
+
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 print(CURR_DIR)
 
@@ -27,7 +29,9 @@ try:
     process = subprocess.Popen([ 'pip', 'install', '-r', path+'/requirements.txt' ], cwd=path, stdout=subprocess.PIPE)
     output = process.communicate()[0]
     
-    process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],cwd=path, stdout=subprocess.PIPE)
+    
+    
+    process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],shell=True, stdout=subprocess.PIPE)
     output = process.communicate()[0]
 
     print('moving files')
