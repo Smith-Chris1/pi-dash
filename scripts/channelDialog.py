@@ -18,40 +18,7 @@ import ipaddress
 import re
 
 # Get the IP of the machine
-thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-if " " in thisInfo:
-    thisInfo = thisInfo.split(' ')[0].strip()
-else:
-    thisInfo.strip()
-    
-#Change it to the network CIDR
 
-subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
-
-# Create the network
-# ip_net = ipaddress.ip_network(net_addr)
-
-# Get all hosts on that network
-network = ipaddress.ip_network(subnet)
-
-# Configure subprocess to hide the console window
-# info = subprocess.STARTUPINFO()
-# info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-# info.wShowWindow = subprocess.SW_HIDE
-
-# For each IP address in the subnet, 
-# run the ping command with subprocess.popen interface
-for i in network.hosts():
-    i=str(i)
-    toping = subprocess.Popen(['ping', '-c', '3', i], stdout=PIPE)
-    output = toping.communicate()[0]
-    hostalive = toping.returncode
-    if hostalive == 0:
-        print(i,'is ' + '\033[92m' + 'reachable' + '\033[0m')
-    else:
-        print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
-
-    audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
 
 keyspressed = 0
 play = ''
@@ -72,6 +39,28 @@ def center(win):
     win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     win.deiconify()
 
+
+thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+if " " in thisInfo:
+    thisInfo = thisInfo.split(' ')[0].strip()
+else:
+    thisInfo.strip()
+
+subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
+
+network = ipaddress.ip_network(subnet)
+
+for i in network.hosts():
+    i=str(i)
+    toping = subprocess.Popen(['ping', '-c', '3', i], stdout=PIPE)
+    output = toping.communicate()[0]
+    hostalive = toping.returncode
+    if hostalive == 0:
+        print(i,'is ' + '\033[92m' + 'reachable' + '\033[0m')
+    else:
+        print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
+
+    audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
 # win = ThemedTk(theme=\"adapta\")
 win = Tk()
 
