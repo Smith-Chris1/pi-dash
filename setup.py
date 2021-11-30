@@ -27,8 +27,8 @@ try:
     process = subprocess.Popen([ 'pip', 'install', '-r', path+'/requirements.txt' ], cwd=path, stdout=subprocess.PIPE)
     output = process.communicate()[0]
     
-    # process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],cwd=path, stdout=subprocess.PIPE)
-    # output = process.communicate()[0]
+    process = subprocess.Popen(['sudo', 'apt', 'install', '-y', 'nmap'],cwd=path, stdout=subprocess.PIPE)
+    output = process.communicate()[0]
 
     print('moving files')
     shutil.copyfile(path+'/vlc/temple.html', '/usr/share/vlc/lua/http/temple.html')

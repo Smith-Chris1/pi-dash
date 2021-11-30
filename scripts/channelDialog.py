@@ -46,19 +46,19 @@ if " " in thisInfo:
 else:
     thisInfo.strip()
 
-subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
+# subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
 
-network = ipaddress.ip_network(subnet)
+# network = ipaddress.ip_network(subnet)
 
-for i in network.hosts():
-    i=str(i)
-    toping = subprocess.Popen(['ping', '-c', '1', i], stdout=PIPE)
-    output = toping.communicate()[0]
-    hostalive = toping.returncode
-    if hostalive == 0:
-        print(i,'is ' + '\033[92m' + 'reachable' + '\033[0m')
-    else:
-        print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
+# for i in network.hosts():
+#     i=str(i)
+#     toping = subprocess.Popen(['ping', '-c', '1', i], stdout=PIPE)
+#     output = toping.communicate()[0]
+#     hostalive = toping.returncode
+#     if hostalive == 0:
+#         print(i,'is ' + '\033[92m' + 'reachable' + '\033[0m')
+#     else:
+#         print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
 
 audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
 # win = ThemedTk(theme=\"adapta\")
