@@ -1,4 +1,4 @@
 [Desktop Entry]
 Type=Application
 Name=ChannelSwitch
-Exec=python3 /home/pi/pi-dash/scripts/channelDialog.py"
+Exec=/usr/bin/python3 /home/pi/pi-dash/scripts/channelDialog.py
