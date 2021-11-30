@@ -129,14 +129,14 @@ def scan():
                 print(info)
                 if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
                     print(re.findall(r"\((.*?)\)", info[4])[0] + " is not the gateway.")
-                    print('http://'+re.findall(r"\((.*?)\)", info[41])[0])
+                    print('http://'+re.findall(r"\((.*?)\)", info[4])[0])
                     ispi = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[4])[0]+':5000/ispi')
 
                     if ispi.text == "True":
                         sysinfo = requests.request('POST','http://'+re.findall(r"\((.*?)\)", info[4])[0]+':5000/sysinfo').text.split(",")
                         try:                        
                             ### See if VLC is running on the servers
-                            vlc = vlcUp(re.findall(r"\((.*?)\)", info[1])[0])
+                            vlc = vlcUp(re.findall(r"\((.*?)\)", info[4])[0])
 
                             if vlc == 0:
                                 iframe = 'iframeVLC.html'
@@ -145,7 +145,7 @@ def scan():
 
                             scans.append(render_template('card.html', 
                                 host = sysinfo[0],
-                                ip=re.findall(r"\((.*?)\)", info[1])[0],
+                                ip=re.findall(r"\((.*?)\)", info[4])[0],
                                 reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
                                 update_function=f"update_{sysinfo[0].replace('-','')}",
                                 reboot_path="http://"+re.findall(r"\((.*?)\)", info[4])[0]+":5000/reboot",
