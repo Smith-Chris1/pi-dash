@@ -108,7 +108,7 @@ myFont = font.Font(family='Aerial', size=24)
 pixelVirtual = PhotoImage(width=1, height=1)
 
 
-mainLabel = ttk.Label(win, text=f"This Pi's IP is: {thisInfo}:", font=('Aerial', 24))
+mainLabel = ttk.Label(win, text=f"IP Address: {thisInfo}:", font=('Aerial', 24))
 mainLabel.pack()
 
 timerLabel = ttk.Label(win)
