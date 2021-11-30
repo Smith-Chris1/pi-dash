@@ -132,7 +132,7 @@ def scan():
                     if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
                         print(info[4][0] + " is not the gateway.")
                         print('http://'+info[4])
-                        ispi = requests.request('POST','http://'+info[4]+':5000/ispi')
+                        ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5)
 
                         if ispi.text == "True":
                             sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
