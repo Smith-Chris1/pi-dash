@@ -3,9 +3,29 @@ from re import sub
 import subprocess
 import shutil
 import os
+from subprocess import run
+import sys
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 print(CURR_DIR)
+
+def apt_install(pkgs):
+    cmd = ['pkexec', 'apt-get', 'install', '-y'] + pkgs
+    print('Running command: {}'.format(' '.join(cmd)))
+    result = run(
+        cmd,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        encoding='utf8',
+        env={**os.environ, 'DEBIAN_FRONTEND': 'noninteractive'}
+    )
+    result.check_returncode()
+
+def accept_eula():
+    cmd = 'echo msttcorefonts msttcorefonts/{}-mscorefonts-eula {} | pkexec debconf-set-selections'
+    run(cmd.format("present", "note ''"), stdout=sys.stdout, stderr=sys.stderr, shell=True)
+    run(cmd.format("accepted", "select true"), stdout=sys.stdout, stderr=sys.stderr, shell=True)
+
 
 try:
     print("Setting up Temple Pi")
@@ -29,8 +49,8 @@ try:
     
     print("installing nmap")
     
-    process = subprocess.Popen(['apt', 'install', '-y', 'nmap'],shell=True, stdout=subprocess.PIPE)
-    output = process.communicate()[0]
+    accept_eula()
+    apt_install(['curl', 'nmap'])
 
     print('moving files')
     shutil.copyfile(path+'/vlc/temple.html', '/usr/share/vlc/lua/http/temple.html')
