@@ -92,6 +92,7 @@ def scan():
     ### making card for host that is being viewed.
     thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
     if " " in thisInfo:
+        hostIP = thisInfo.split(' ')
         thisInfo = thisInfo.split(' ')[0].strip()
     else:
         thisInfo.strip()
@@ -130,7 +131,7 @@ def scan():
                 # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
                 if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
                     if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
-                        if info[4] != thisInfo:
+                        if info[4] not in hostIP:
                             print(info[4][0] + " is not the gateway.")
                             print('http://'+info[4])
                             try:
