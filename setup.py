@@ -4,8 +4,6 @@ import subprocess
 import shutil
 import os
 
-from werkzeug.datastructures import T
-
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 print(CURR_DIR)
 
