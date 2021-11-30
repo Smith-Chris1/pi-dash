@@ -26,13 +26,13 @@ else:
     
 #Change it to the network CIDR
 
-net_addr = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0'
+subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
 
 # Create the network
-ip_net = ipaddress.ip_network(net_addr)
+# ip_net = ipaddress.ip_network(net_addr)
 
 # Get all hosts on that network
-all_hosts = list(ip_net.hosts())
+network = ipaddress.ip_network(subnet)
 
 # Configure subprocess to hide the console window
 # info = subprocess.STARTUPINFO()
@@ -41,15 +41,17 @@ all_hosts = list(ip_net.hosts())
 
 # For each IP address in the subnet, 
 # run the ping command with subprocess.popen interface
-for i in range(len(all_hosts)):
-    output = subprocess.Popen(['ping', '-n', '1', '-w', '500', str(all_hosts[i])], stdout=subprocess.PIPE, startupinfo=info).communicate()[0]
-    
-    if "Destination host unreachable" in output.decode('utf-8'):
-        print(str(all_hosts[i]), "is Offline")
-    elif "Request timed out" in output.decode('utf-8'):
-        print(str(all_hosts[i]), "is Offline")
+for i in network.hosts():
+    i=str(i)
+    toping = subprocess.Popen(['ping', '-c', '3', i], stdout=PIPE)
+    output = toping.communicate()[0]
+    hostalive = toping.returncode
+    if hostalive == 0:
+        print(i,'is ' + '\033[92m' + 'reachable' + '\033[0m')
     else:
-        print(str(all_hosts[i]), "is Online")
+        print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
+
+    audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
 
 keyspressed = 0
 play = ''
