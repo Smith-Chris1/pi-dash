@@ -124,7 +124,7 @@ def scan():
         info = pi.split(' ')
 
         if len(info) > 1:
-            if 'Nmap' in pi:
+            if 'Nmap' in pi and 'Starting' not in pi:
                 info = pi.split(' ')
                 print(info)
                 if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
