@@ -129,39 +129,40 @@ def scan():
                 print(info)
                 # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
                 if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
-                    print(info[4][0] + " is not the gateway.")
-                    print('http://'+info[4])
-                    ispi = requests.request('POST','http://'+info[4]+':5000/ispi')
+                    if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
+                        print(info[4][0] + " is not the gateway.")
+                        print('http://'+info[4])
+                        ispi = requests.request('POST','http://'+info[4]+':5000/ispi')
 
-                    if ispi.text == "True":
-                        sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
-                        try:                        
-                            ### See if VLC is running on the servers
-                            vlc = vlcUp(info[4])
+                        if ispi.text == "True":
+                            sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
+                            try:                        
+                                ### See if VLC is running on the servers
+                                vlc = vlcUp(info[4])
 
-                            if vlc == 0:
-                                iframe = 'iframeVLC.html'
-                            else:
-                                iframe = 'startVLC.html'
+                                if vlc == 0:
+                                    iframe = 'iframeVLC.html'
+                                else:
+                                    iframe = 'startVLC.html'
 
-                            scans.append(render_template('card.html', 
-                                host = sysinfo[0],
-                                ip=info[4],
-                                reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                update_function=f"update_{sysinfo[0].replace('-','')}",
-                                reboot_path="http://"+info[4]+":5000/reboot",
-                                update_path="http://"+info[4]+":5000/fetch",
-                                  accordian_id=info[3].replace(":",""),
-                                cpu=sysinfo[1],
-                                vm=sysinfo[2],
-                                network=sysinfo[3],
-                                cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
-                                ))
-                            print(scans)
-                        except:
-                            print('error in updating scans')
-                else:
-                    print(info[4] + " is the gateway, will not process.")
+                                scans.append(render_template('card.html', 
+                                    host = sysinfo[0],
+                                    ip=info[4],
+                                    reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                                    update_function=f"update_{sysinfo[0].replace('-','')}",
+                                    reboot_path="http://"+info[4]+":5000/reboot",
+                                    update_path="http://"+info[4]+":5000/fetch",
+                                      accordian_id=info[3].replace(":",""),
+                                    cpu=sysinfo[1],
+                                    vm=sysinfo[2],
+                                    network=sysinfo[3],
+                                    cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
+                                    ))
+                                print(scans)
+                            except:
+                                print('error in updating scans')
+                    else:
+                        print(info[4] + " is the gateway, will not process.")
 
     return redirect('/')
 
