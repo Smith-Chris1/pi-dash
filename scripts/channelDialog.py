@@ -60,9 +60,6 @@ else:
 #     else:
 #         print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
 
-['sudo', '--stdin'] + command, stdin=PIPE, stderr=PIPE,
-            universal_newlines=True)
-    p.communicate(f'{config.password}\n')[1]
 
 audio=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '3'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
