@@ -61,6 +61,7 @@ else:
 #         print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
 
 audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
+volume=subprocess.Popen(['amixer', 'cset', 'numid=3', '70%'])
 # win = ThemedTk(theme=\"adapta\")
 win = Tk()
 
