@@ -64,7 +64,7 @@ else:
 audio=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '3'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
 audio.communicate(f'software\n')[1]
-volume=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '70%'], stdin=PIPE, stderr=PIPE,
+volume=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '100%'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
 volume.communicate(f'software\n')[1]
 # win = ThemedTk(theme=\"adapta\")
