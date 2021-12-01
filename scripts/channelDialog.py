@@ -92,7 +92,7 @@ def channela():
     timerLabel['text'] = "Trying to Start Channel A"
     win.after_cancel(win.after_id)
     # os.system('sudo bash /home/pi/Channels/channelaservice.sh')
-    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'play', '--no-video-title-show', '--one-instance', '--fullscreen', '--mmdevice-volume=0.5','udp://@239.27.0.27:1234'])
+    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'play', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-step=256','udp://@239.27.0.27:1234'])
 
 
 def channelb():
@@ -100,7 +100,7 @@ def channelb():
     timerLabel['text'] = "Trying to Start Channel B"
     win.after_cancel(win.after_id)
     # os.system('sudo bash /home/pi/Channels/channelbservice.sh')
-    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'play', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1235'])
+    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'play', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-step=256', 'udp://@239.27.0.27:1235'])
 
 
 
