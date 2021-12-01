@@ -60,8 +60,16 @@ else:
 #     else:
 #         print(i,'is ' + '\033[91m' + 'unreachable' + '\033[0m')
 
-audio=subprocess.Popen(['amixer', 'cset', 'numid=3', '3'])
-volume=subprocess.Popen(['amixer', 'cset', 'numid=3', '70%'])
+['sudo', '--stdin'] + command, stdin=PIPE, stderr=PIPE,
+            universal_newlines=True)
+    p.communicate(f'{config.password}\n')[1]
+
+audio=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '3'], stdin=PIPE, stderr=PIPE,
+            universal_newlines=True)
+audio.communicate(f'software\n')[1]
+volume=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '70%'], stdin=PIPE, stderr=PIPE,
+            universal_newlines=True)
+volume.communicate(f'software\n')[1]
 # win = ThemedTk(theme=\"adapta\")
 win = Tk()
 
