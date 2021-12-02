@@ -42,7 +42,7 @@
     <script type="text/javascript" src="js/controllers.js"></script>
     <script type="text/javascript">
         var pollStatus = true;
-        var state
+        
         $(window).load(function() {
             if ($('#buttonPlay').attr('state') == 'paused') {
                 state = "playing";
@@ -69,6 +69,8 @@
                 }
             });
         });
+
+
         $(function () {
             $('#buttonSout').click(function () {
                 var file = decodeURIComponent($('#buttonPlay').attr('mrl'));
@@ -84,24 +86,18 @@
                 return false;
             });
             $('#channela').click(function () {
-                state = "playing";
-                $("#circle").attr("class", "play");
-                    $("#from_pause_to_play")[0].beginElement();
                 sendCommand({
                     'command': 'in_play',
                     'input': 'udp://@239.27.0.27:1234'
                 });
             });
             $('#channelb').click(function () {
-                state = "playing";
-                $("#circle").attr("class", "play");
-                    $("#from_pause_to_play")[0].beginElement();
                 sendCommand({
                     'command': 'in_play',
                     'input': 'udp://@239.27.0.27:1235'
                 });
             });
-        }) 
+        })
     </script>
     <style>
         svg {
@@ -136,6 +132,10 @@
         #buttonFull {
             background-position: 0;
         }
+        .ui-corner-all {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
     </style>
 </head>
 
@@ -149,7 +149,7 @@ color:white">
                     <div id="buttonPlay" class="ui-corner-all paused" title="Play" style="display: flex;justify-content: space-evenly;align-items: center;">
                         <svg width="104" height="104" id='pause'>
                             <circle id="circle" cx="51" cy="51" r="50" stroke-dasharray="314" stroke-dashoffset="0"
-                                style="stroke-width:2px;stroke:white;" />
+                                style="stroke-width:2px;stroke:white;" class="play"/>
                             <line id='line1' x1="38" y1="30" x2="38" y2="70"
                                 style="stroke-width:4px;stroke:white;stroke-linecap: round;" />
                             <path id='line2' d="M 66 30 L 66 50 L 66 70" rx="10" ry="10"
@@ -170,7 +170,7 @@ color:white">
                     </div>
 
                     <div style="margin: 0 auto;position: relative;width: 288px;display: flex;justify-content: space-evenly;margin-top: 15px;margin-bottom:15px">
-
+                        <div id="buttonFull" class="fullscreen  ui-corner-all" title="Full Screen" ></div>
                     <div id="channela" class="ui-corner-all" style="
                         background: none;
                         border: none;
@@ -186,14 +186,15 @@ color:white">
                         cursor: pointer;
                         background-repeat: no-repeat;"><strong>Channel B</strong>
                     </div>
+
                         </div>
                     <div style="margin: 0 auto;position: relative;width: 288px;display:flex;justify-content: space-evenly;align-items: center;">
 
-                        <div id="buttonFull" class="fullscreen  ui-corner-all" title="Full Screen" style="margin-right: 15px;"></div>
+                        <!-- <div id="buttonFull" class="fullscreen  ui-corner-all" title="Full Screen" style="margin-right: 15px;"></div> -->
                     
-                    <div id="volumeSlider" title="Volume" style="font-size:15px;background:rgba(108,117,125,1) ;">
+                    <!-- <div id="volumeSlider" title="Volume" style="font-size:15px;background:rgba(108,117,125,1) ;">
                         <img src="images/speaker-32.png" class="ui-slider-handle" alt="volume" />
-                    </div>
+                    </div> -->
                 </div>
                 </div>
 
