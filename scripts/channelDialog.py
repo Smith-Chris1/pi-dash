@@ -64,7 +64,7 @@ else:
 audio=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '3'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
 audio.communicate(f'software\n')[1]
-volume=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '100%'], stdin=PIPE, stderr=PIPE,
+volume=subprocess.Popen(['sudo', '--stdin','amixer', 'cset', 'numid=3', '65536'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
 volume.communicate(f'software\n')[1]
 # win = ThemedTk(theme=\"adapta\")
@@ -98,7 +98,7 @@ def channela():
     timerLabel['text'] = "Trying to Start Channel A"
     win.after_cancel(win.after_id)
     # os.system('sudo bash /home/pi/Channels/channelaservice.sh')
-    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256','udp://@239.27.0.27:1234'])
+    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1234'])
 
 
 def channelb():
@@ -106,7 +106,7 @@ def channelb():
     timerLabel['text'] = "Trying to Start Channel B"
     win.after_cancel(win.after_id)
     # os.system('sudo bash /home/pi/Channels/channelbservice.sh')
-    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256', 'udp://@239.27.0.27:1235'])
+    play=subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', 'udp://@239.27.0.27:1235'])
 
 
 
