@@ -28,8 +28,11 @@ def ispi():
 def index():
 
     global scans
-
-    return render_template("home.html", scanresults=" ".join(scans))
+    
+    if len(scans) < 1:
+        return render_template("home.html", scanresults="<div class='lds-ring'><div></div><div></div><div></div><div></div></div>")
+    else:
+        return render_template("home.html", scanresults=" ".join(scans))
 
 @app.route('/reboot')
 def reboot():
