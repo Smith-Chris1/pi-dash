@@ -33,18 +33,23 @@
             <div>
                 <h3 class="float-md-start mb-0">Temple Control</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a id="scan" class="nav-link active" aria-current="page" href="/scan">Scan</a>
+                    <a id="scan" class="nav-link active" aria-current="page" href="#">Scan</a>
                     <script>
                         document.getElementById("scan").addEventListener("click", function() {
                             document.getElementById("scan").classList.remove("hidden");
                         });
+                        setTimeout(() => {
+                          window.location.href = "/scan";  
+                        }, 1000);
+                        
                     </script>
                 </nav>
             </div>
         </header>
         <main class="container-xxl my-md-4 bd-layout d-flex align-items-center justify-content-center">
+            <div id="spinny" class="lds-ring hidden"><div></div><div></div><div></div><div></div></div>
             <div class="row g-4 main-body no-scroll">
-                <div id="spinny" class="lds-ring hidden"><div></div><div></div><div></div><div></div></div>
+                
                 {{scanresults|safe}}
             </div>
         </main>
