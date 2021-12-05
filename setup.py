@@ -42,8 +42,8 @@ try:
     
     # if Path(path+'requirements.txt').is_file():
     print(path+'requirements.txt')
-    print(os.path.isfile(path+'requirements.txt'))
-    if os.path.isfile(path+'requirements.txt'):
+    print(os.path.isfile(path+'/requirements.txt'))
+    if os.path.isfile(path+'/requirements.txt'):
         print('updating from the repo')
         process = subprocess.Popen(["git", "-C", '/home/pi/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
