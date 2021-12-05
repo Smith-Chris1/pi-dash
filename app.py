@@ -141,16 +141,16 @@ def scan():
                                 ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5)
                                 if ispi.text == "True":
                                     sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
-                                    if sysinfo[0] not in scans:
+                                    if sysinfo[0] not in " ".join(scans):
                                         try:                        
                                             ### See if VLC is running on the servers
                                             vlc = vlcUp(info[4])
-    
+
                                             if vlc == 0:
                                                 iframe = 'iframeVLC.html'
                                             else:
                                                 iframe = 'startVLC.html'
-    
+
                                             scans.append(render_template('card.html', 
                                                 host = sysinfo[0],
                                                 ip=info[4],
