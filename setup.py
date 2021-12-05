@@ -45,7 +45,7 @@ try:
     print(os.path.isfile(path+'/requirements.txt'))
     if os.path.isfile(path+'/requirements.txt'):
         print('updating from the repo')
-        process = subprocess.Popen(["git", "-C", '/home/pi/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+        process = subprocess.Popen(["git", "-C", '/home/pi/pi-dash', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
     else:
         print('first install')
