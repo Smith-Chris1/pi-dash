@@ -39,12 +39,14 @@ try:
         os.makedirs(path)
         print("The new directory is created!")
 
-    print('updating from the repo')
+    
     if Path(path+'requirements.txt').is_file():
+        print('updating from the repo')
     # if os.path.exists(path+'requirements.txt'):
         process = subprocess.Popen(["git", "-C", '/home/pi/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
     else:
+        print('first install')
         process = subprocess.Popen(["git", "-C", '/home/pi/', "clone", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
         output = process.communicate()[0] 
     
