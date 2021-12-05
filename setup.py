@@ -5,6 +5,7 @@ import shutil
 import os
 from subprocess import run
 import sys
+from pathlib import Path
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 print(CURR_DIR)
@@ -39,7 +40,8 @@ try:
         print("The new directory is created!")
 
     print('updating from the repo')
-    if os.path.exists(path+'requirements.txt'):
+    if Path(path+'requirements.txt').is_file():
+    # if os.path.exists(path+'requirements.txt'):
         process = subprocess.Popen(["git", "-C", '/home/pi/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
         output = process.communicate()[0]
     else:
