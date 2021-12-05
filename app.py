@@ -141,31 +141,32 @@ def scan():
                                 ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5)
                                 if ispi.text == "True":
                                     sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
-                                    try:                        
-                                        ### See if VLC is running on the servers
-                                        vlc = vlcUp(info[4])
-
-                                        if vlc == 0:
-                                            iframe = 'iframeVLC.html'
-                                        else:
-                                            iframe = 'startVLC.html'
-
-                                        scans.append(render_template('card.html', 
-                                            host = sysinfo[0],
-                                            ip=info[4],
-                                            reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                            update_function=f"update_{sysinfo[0].replace('-','')}",
-                                            reboot_path="http://"+info[4]+":5000/reboot",
-                                            update_path="http://"+info[4]+":5000/fetch",
-                                              accordian_id=info[3].replace(":",""),
-                                            cpu=sysinfo[1],
-                                            vm=sysinfo[2],
-                                            network=sysinfo[3],
-                                            cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
-                                            ))
-                                        print(scans)
-                                    except:
-                                        print('error in updating scans')
+                                    if sysinfo[0] not in scans:
+                                        try:                        
+                                            ### See if VLC is running on the servers
+                                            vlc = vlcUp(info[4])
+    
+                                            if vlc == 0:
+                                                iframe = 'iframeVLC.html'
+                                            else:
+                                                iframe = 'startVLC.html'
+    
+                                            scans.append(render_template('card.html', 
+                                                host = sysinfo[0],
+                                                ip=info[4],
+                                                reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                                                update_function=f"update_{sysinfo[0].replace('-','')}",
+                                                reboot_path="http://"+info[4]+":5000/reboot",
+                                                update_path="http://"+info[4]+":5000/fetch",
+                                                  accordian_id=info[3].replace(":",""),
+                                                cpu=sysinfo[1],
+                                                vm=sysinfo[2],
+                                                network=sysinfo[3],
+                                                cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
+                                                ))
+                                            print(scans)
+                                        except:
+                                            print('error in updating scans')
                             except requests.Timeout:
                                 print("timeout")
 
