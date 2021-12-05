@@ -41,7 +41,7 @@ try:
 
     
     # if Path(path+'requirements.txt').is_file():
-    print(path+'requirements.txt')
+    print(path+'/requirements.txt')
     print(os.path.isfile(path+'/requirements.txt'))
     if os.path.isfile(path+'/requirements.txt'):
         print('updating from the repo')
