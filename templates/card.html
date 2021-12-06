@@ -1,6 +1,6 @@
 <div class="col">
     <div class="card text-white bg-dark mb-3">
-        <div class="card-header bg-info" id={{host}}>
+        <div class="card-header bg-info" id={{host}}-title>
             <div class="row">
                 <div class="col">
             <h5 class="card-title">{{ host }}</h5>
@@ -14,8 +14,8 @@
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
                 }
-                document.getElementById("{{host}}").classList.toggle("bg-info");
-                document.getElementById("{{host}}").classList.toggle("bg-warning");
+                document.getElementById("{{host}}-title").classList.toggle("bg-info");
+                document.getElementById("{{host}}-title").classList.toggle("bg-warning");
                 fetch("{{ update_path }}", {
                     method: "GET",
                     headers: headersList
@@ -23,8 +23,8 @@
                     return response.text();
                 }).then(function (data) {
                     console.log(data);
-                    document.getElementById("{{host}}").classList.toggle("bg-info");
-                    document.getElementById("{{host}}").classList.toggle("bg-warning");
+                    document.getElementById("{{host}}-title").classList.toggle("bg-info");
+                    document.getElementById("{{host}}-title").classList.toggle("bg-warning");
                 })
             }
             </script>
