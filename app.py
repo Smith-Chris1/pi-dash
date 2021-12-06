@@ -85,7 +85,7 @@ def fetch():
     processDL = subprocess.Popen(['sudo', '--stdin', 'wget', 'https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py', '-P', '/home/pi/'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
     processoutput = processDL.communicate(f'{config.password}\n')[1]
-    processInstall = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], stdin=PIPE, stderr=PIPE,
+    processInstall = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/setup.py"], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
     processoutput = processInstall.communicate(f'{config.password}\n')[1]
 
