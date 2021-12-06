@@ -36,6 +36,9 @@
                     <a id="scan" class="nav-link active" aria-current="page" href="#">Scan</a>
                     <script>
                         document.getElementById("scan").addEventListener("click", function() {
+                            while( document.getElementById('pi-list').hasChildNodes()) {
+                                document.getElementById('pi-list').removeChild(document.getElementById('pi-list').firstChild);
+                            }
                             document.getElementById("spinny").classList.remove("hidden");
                             setTimeout(() => {
                           window.location.href = "/scan";  
@@ -52,7 +55,7 @@
             </div>
         <div class="container-xxl my-md-4 bd-layout d-flex align-items-center justify-content-center">
             
-            <div class="row g-4 main-body no-scroll">
+            <div class="row g-4 main-body no-scroll" id='pi-list'>
                 
                 {{scanresults|safe}}
             </div>
