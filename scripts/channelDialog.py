@@ -40,12 +40,16 @@ def center(win):
     win.deiconify()
 
 
-thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-if " " in thisInfo:
-    thisInfo = thisInfo.split(' ')[0].strip()
-else:
-    thisInfo.strip()
+def thisInfoGen():
+    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+    if " " in thisInfo:
+        thisInfo = thisInfo.split(' ')[0].strip()
+    else:
+        thisInfo.strip()
+    return thisInfo
 
+
+thisInfo = thisInfoGen()
 # subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
 
 # network = ipaddress.ip_network(subnet)
@@ -113,6 +117,9 @@ def channelb():
 myFont = font.Font(family='Aerial', size=24)
 pixelVirtual = PhotoImage(width=1, height=1)
 
+if thisInfo == " " or thisInfo:
+    thisInfo = thisInfoGen()
+    
 
 mainLabel = ttk.Label(win, text=f"IP Address: {thisInfo}:", font=('Aerial', 24))
 mainLabel.pack()
