@@ -19,7 +19,8 @@ import re
 
 # Get the IP of the machine
 
-thisInfo = ''
+time.sleep(10)
+
 keyspressed = 0
 play = ''
 def center(win):
@@ -40,20 +41,13 @@ def center(win):
     win.deiconify()
 
 
-def thisInfoGen():
-    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-    if " " in thisInfo:
-        thisInfo = thisInfo.split(' ')[0].strip()
-    else:
-        thisInfo.strip()
-    return thisInfo
 
-match = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo, str)
-while match is not None:
-    match = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo, str)
+thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+if " " in thisInfo:
+    thisInfo = thisInfo.split(' ')[0].strip()
+else:
+    thisInfo.strip()
 
-# while re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo)[0]:
-#     thisInfo = thisInfoGen()
 # subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
 
 # network = ipaddress.ip_network(subnet)
@@ -121,9 +115,6 @@ def channelb():
 myFont = font.Font(family='Aerial', size=24)
 pixelVirtual = PhotoImage(width=1, height=1)
 
-if thisInfo == " " or thisInfo:
-    thisInfo = thisInfoGen()
-    
 
 mainLabel = ttk.Label(win, text=f"IP Address: {thisInfo}:", font=('Aerial', 24))
 mainLabel.pack()
