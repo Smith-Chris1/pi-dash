@@ -1,6 +1,6 @@
 <div class="col">
     <div class="card text-white bg-dark mb-3">
-        <div class="card-header bg-info">
+        <div class="card-header bg-info" id={{host}}>
             <div class="row">
                 <div class="col">
             <h5 class="card-title">{{ host }}</h5>
@@ -14,7 +14,8 @@
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
                 }
-
+                document.getElementById("{{host}}").classList.toggle("bg-info");
+                document.getElementById("{{host}}").classList.toggle("bg-warning");
                 fetch("{{ update_path }}", {
                     method: "GET",
                     headers: headersList
@@ -22,6 +23,8 @@
                     return response.text();
                 }).then(function (data) {
                     console.log(data);
+                    document.getElementById("{{host}}").classList.toggle("bg-info");
+                    document.getElementById("{{host}}").classList.toggle("bg-warning");
                 })
             }
             </script>
@@ -49,7 +52,7 @@
             <div class='row'>
                 <div id="cpu" class='col'>{{cpu}}%</div>
                 <div id="vm" class='col'>{{vm}}%</div>
-                <div id="net" class='col'>{{network}}mbps</div>
+                <div id="net" class='col'>{{network}}</div>
                 
             </div>
             <script>
@@ -82,7 +85,7 @@
                     "Accept": "*/*",
                     "User-Agent": "Thunder Client (https://www.thunderclient.io)"
                 }
-
+                
                 fetch("{{ reboot_path }}", {
                     method: "GET",
                     headers: headersList
