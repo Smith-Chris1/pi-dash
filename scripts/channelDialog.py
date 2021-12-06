@@ -19,7 +19,7 @@ import re
 
 # Get the IP of the machine
 
-
+thisInfo = ''
 keyspressed = 0
 play = ''
 def center(win):
@@ -48,8 +48,12 @@ def thisInfoGen():
         thisInfo.strip()
     return thisInfo
 
+match = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo, str)
+while match is not None:
+    match = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo, str)
 
-thisInfo = thisInfoGen()
+# while re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", thisInfo)[0]:
+#     thisInfo = thisInfoGen()
 # subnet = re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo)[0] +'.0/25'
 
 # network = ipaddress.ip_network(subnet)
