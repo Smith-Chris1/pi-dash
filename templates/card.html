@@ -52,7 +52,7 @@
             <div class='row'>
                 <div id="cpu" class='col'>{{cpu}}%</div>
                 <div id="vm" class='col'>{{vm}}%</div>
-                <div id="net" class='col'>{{network}} Mpbs</div>
+                <div id="net" class='col'>{{network}} <small>Mpbs</small></div>
                 
             </div>
             <script>
@@ -73,7 +73,7 @@
                         sysinfo = sysinfo.split(",");
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1];
                     document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2];
-                    document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3] + " Mbps";
+                    document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3] + "<small>Mbps</small>";
                     })
                     })
                     
