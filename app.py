@@ -61,7 +61,7 @@ def sysinfo():
 
         net_in = round((net_in_2 - net_in_1) / 1024 / 1024, 3)
         net_out = round((net_out_2 - net_out_1) / 1024 / 1024, 3)
-        return net_out
+        return net_in
     try:
         return f"{socket.gethostname()},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage('eth0')}"
     except:
