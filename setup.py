@@ -71,6 +71,7 @@ try:
     shutil.copyfile(path+'/services/flask_service.service', '/etc/systemd/system/pidash.service')
     shutil.copyfile(path+'/services/channel.desktop', '/etc/xdg/autostart/ChannelSwitch.desktop')
     # shutil.copyfile(path+'/scripts/boot.txt', '/boot/config.txt')
+    shutil.copyfile(path+'/scripts/deskpi.conf', '/etc/deskpi.conf')
     process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
     process = subprocess.Popen(['sudo', 'systemctl', 'enable', 'pidash.service'], stdout=subprocess.PIPE)
