@@ -82,12 +82,12 @@ def startVLCB():
 def fetch():
     print('updating from the repo')
 
-    process = subprocess.Popen(['sudo', '--stdin', 'wget', 'https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py', '-P', '/home/pi/',
-                                '&&', 'sudo', 'python3', '/home/pi/setup.py'], stdin=PIPE, stderr=PIPE,
+    processDL = subprocess.Popen(['sudo', '--stdin', 'wget', 'https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py', '-P', '/home/pi/'], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
-    # process = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], stdin=PIPE, stderr=PIPE,
-    #         universal_newlines=True)
-    output = process.communicate(f'{config.password}\n')[1]
+    processoutput = processDL.communicate(f'{config.password}\n')[1]
+    processInstall = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/pi-dash/setup.py"], stdin=PIPE, stderr=PIPE,
+            universal_newlines=True)
+    processoutput = processInstall.communicate(f'{config.password}\n')[1]
 
     return 'success'
 

@@ -73,7 +73,8 @@
                         sysinfo = sysinfo.split(",");
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1];
                     document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2];
-                    document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3];
+                    document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3] + " Mbps";
+                    })
                     })
                     
                 }).then(function (data) {
