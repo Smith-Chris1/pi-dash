@@ -59,7 +59,8 @@ def sysinfo():
         net_in_2 = net_stat.bytes_recv
         net_out_2 = net_stat.bytes_sent
 
-        net_in = round((net_in_2 - net_in_1) / 1024 / 1024, 3)
+        net_in = round(((net_in_2 - net_in_1) * 8) / 1024 / 1024, 3)
+        # net_in = round((net_in_2 - net_in_1) / 1024 / 1024, 3)
         net_out = round((net_out_2 - net_out_1) / 1024 / 1024, 3)
         return net_in
     try:
