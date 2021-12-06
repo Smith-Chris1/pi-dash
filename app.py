@@ -87,7 +87,7 @@ def fetch():
     processoutput = processDL.communicate(f'{config.password}\n')[1]
     processInstall = subprocess.Popen(['sudo', '--stdin', "python3", "/home/pi/setup.py"], stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
-    processoutput = processInstall.communicate(f'{config.password}\n')[1]
+    installoutput = processInstall.communicate(f'{config.password}\n')[1]
 
     return 'success'
 
