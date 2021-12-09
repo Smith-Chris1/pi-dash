@@ -133,11 +133,12 @@ def scan():
         info = pi.split(' ')
 
         if len(info) > 1:
-            if 'Nmap' in pi and 'Starting' not in pi and 'done' not in pi:
+            if 'Nmap scan report for' in pi and 'Starting' not in pi and 'done' not in pi:
                 info = pi.split(' ')
                 print(info)
                 # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
                 if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
+                    print(info[4])
                     if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
                         if info[4] not in hostIP:
                             print(info[4][0] + " is not the gateway.")
