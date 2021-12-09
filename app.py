@@ -19,7 +19,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/ispi', methods = ['GET'])
+@app.route('/ispi', methods = ['POST'])
 def ispi():
     return "True"
 
@@ -142,7 +142,10 @@ def scan():
                             print(info[4][0] + " is not the gateway.")
                             print('http://'+info[4])
                             try:
-                                ispi = requests.request('GET','http://'+info[4]+':5000/ispi', timeout=5)
+                                try:
+                                    ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5)
+                                except:
+                                    ispi = "False"
                                 if ispi.text == "True":
                                     sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
                                     if sysinfo[0] not in " ".join(scans):
