@@ -145,7 +145,7 @@ def scan():
                                 try:
                                     ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5)
                                 except:
-                                    ispi = "False"
+                                    ispi.text = "False"
                                 if ispi.text == "True":
                                     sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
                                     if sysinfo[0] not in " ".join(scans):
