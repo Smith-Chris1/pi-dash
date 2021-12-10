@@ -98,13 +98,17 @@ def scan():
     scans = []
     
     ### making card for host that is being viewed.
-    thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+    try:
+        thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+    except:
+        thisInfo = 'localhost'
+
     if " " in thisInfo:
         hostIP = thisInfo.split(' ')
         thisInfo = thisInfo.split(' ')[0].strip()
     else:
         thisInfo.strip()
-    vlc = vlcUp(thisInfo)    
+    vlc = vlcUp(thisInfo)
     if vlc == 0:
         iframe = 'iframeVLC.html'
     else:
@@ -155,12 +159,12 @@ def scan():
                                             try:                        
                                                 ### See if VLC is running on the servers
                                                 vlc = vlcUp(info[4])
-    
+
                                                 if vlc == 0:
                                                     iframe = 'iframeVLC.html'
                                                 else:
                                                     iframe = 'startVLC.html'
-    
+
                                                 scans.append(render_template('card.html', 
                                                     host = sysinfo[0],
                                                     ip=info[4],
@@ -179,8 +183,8 @@ def scan():
                                                 print('error in updating scans')
                                 except requests.Timeout:
                                     print("timeout")
-    
-    
+
+
                             else:
                                 print(info[4] + " is the gateway, will not process.")
 

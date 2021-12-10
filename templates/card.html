@@ -3,7 +3,7 @@
         <div class="card-header bg-info" id={{host}}-title>
             <div class="row">
                 <div class="col">
-            <h5 class="card-title">{{ host }}</h5>
+            <h5 class="card-title">{{ host }} <small class="smallIP">{{ ip }}</small></h5>
         </div>
         <div class="col">
             <button href = "#" onclick="{{update_function}}()" class="col update btn float-end" title="Run Updates"></button>
@@ -30,10 +30,13 @@
             </script>
 
             <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn float-end" title="Reboot"></button>
-            </div>
+            
+            <button class="col accordion-button float-end" type="button" data-bs-toggle="collapse" data-bs-target="#{{host}}_body" aria-expanded="true" aria-controls="{{host}}_body"></button>
+        </div>
+            
         </div>
         </div>
-        <div class="card-body no-scroll" style="min-width:320px; min-height: 215px;">
+        <div class="card-body no-scroll accordion-collapse collapse show" data-bs-parent="#accordionExample" style="min-width:320px; min-height: 215px;" id="{{host}}_body">
             {{cardBody|safe}}
 
         </div>
@@ -71,10 +74,64 @@
                     // console.log(response.text());
                     response.text().then(sysinfo => {
                         sysinfo = sysinfo.split(",");
+                        console.log(sysinfo);
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1] +"%";
+                    if (sysinfo[1] == 'unknown') {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.add("bg-danger");
+                    }
+                    if (sysinfo[1] > 70) {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.add("bg-danger");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.remove("bg-danger");
+                    }
+                    if (sysinfo[1] > 40) {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.add("bg-warning");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.remove("bg-warning");
+                    }
+                    if (sysinfo[1] < 39) {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.add("bg-success");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#cpu").classList.remove("bg-success");
+                    }
                     document.getElementById("{{host}}").querySelector("#vm").innerHTML = sysinfo[2] +"%";
+                    if (sysinfo[2] == 'unknown') {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.add("bg-danger");
+                    }
+                    if (sysinfo[2] > 70) {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.add("bg-danger");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.remove("bg-danger");
+                    }
+                    if (sysinfo[2] > 40) {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.add("bg-warning");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.remove("bg-warning");
+                    }
+                    if (sysinfo[2] < 39) {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.add("bg-success");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#vm").classList.remove("bg-success");
+                    }
                     document.getElementById("{{host}}").querySelector("#net").innerHTML = sysinfo[3] + "<small>Mbps</small>";
-                    // })
+                    if (sysinfo[3] == 'unknown') {
+                        document.getElementById("{{host}}").querySelector("#net").classList.add("bg-danger");
+                    }
+                    if (sysinfo[3] < 13) {
+                        document.getElementById("{{host}}").querySelector("#net").classList.add("bg-danger");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#net").classList.remove("bg-danger");
+                    }
+                    if (sysinfo[3] < 16.9) {
+                        document.getElementById("{{host}}").querySelector("#net").classList.add("bg-warning");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#net").classList.remove("bg-warning");
+                    }
+                    if (sysinfo[3] > 17) {
+                        document.getElementById("{{host}}").querySelector("#net").classList.add("bg-success");
+                    } else {
+                        document.getElementById("{{host}}").querySelector("#net").classList.remove("bg-success");
+                    }
                     })
                     
                 }).then(function (data) {
