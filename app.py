@@ -133,55 +133,56 @@ def scan():
         info = pi.split(' ')
 
         if len(info) > 1:
-            if 'Nmap scan report for' in pi and 'Starting' not in pi and 'done' not in pi:
+            if 'Nmap' in pi and 'Starting' not in pi and 'done' not in pi:
                 info = pi.split(' ')
                 print(info)
                 # if re.findall(r"\((.*?)\)", info[4])[0] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
-                if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
-                    print(info[4])
-                    if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
-                        if info[4] not in hostIP:
-                            print(info[4][0] + " is not the gateway.")
-                            print('http://'+info[4])
-                            try:
+                if re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4]):    
+                    if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.1':
+                        print(info[4])
+                        if info[4] != re.findall(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", info[4])[0]+'.94':
+                            if info[4] not in hostIP:
+                                print(info[4][0] + " is not the gateway.")
+                                print('http://'+info[4])
                                 try:
-                                    ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5).text
-                                except:
-                                    ispi = "False"
-                                if ispi == "True":
-                                    sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
-                                    if sysinfo[0] not in " ".join(scans):
-                                        try:                        
-                                            ### See if VLC is running on the servers
-                                            vlc = vlcUp(info[4])
-
-                                            if vlc == 0:
-                                                iframe = 'iframeVLC.html'
-                                            else:
-                                                iframe = 'startVLC.html'
-
-                                            scans.append(render_template('card.html', 
-                                                host = sysinfo[0],
-                                                ip=info[4],
-                                                reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
-                                                update_function=f"update_{sysinfo[0].replace('-','')}",
-                                                reboot_path="http://"+info[4]+":5000/reboot",
-                                                update_path="http://"+info[4]+":5000/fetch",
-                                                  accordian_id=info[3].replace(":",""),
-                                                cpu=sysinfo[1],
-                                                vm=sysinfo[2],
-                                                network=sysinfo[3],
-                                                cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
-                                                ))
-                                            print(scans)
-                                        except:
-                                            print('error in updating scans')
-                            except requests.Timeout:
-                                print("timeout")
-
-
-                        else:
-                            print(info[4] + " is the gateway, will not process.")
+                                    try:
+                                        ispi = requests.request('POST','http://'+info[4]+':5000/ispi', timeout=5).text
+                                    except:
+                                        ispi = "False"
+                                    if ispi == "True":
+                                        sysinfo = requests.request('POST','http://'+info[4]+':5000/sysinfo').text.split(",")
+                                        if sysinfo[0] not in " ".join(scans):
+                                            try:                        
+                                                ### See if VLC is running on the servers
+                                                vlc = vlcUp(info[4])
+    
+                                                if vlc == 0:
+                                                    iframe = 'iframeVLC.html'
+                                                else:
+                                                    iframe = 'startVLC.html'
+    
+                                                scans.append(render_template('card.html', 
+                                                    host = sysinfo[0],
+                                                    ip=info[4],
+                                                    reboot_function=f"reboot_{sysinfo[0].replace('-','')}",
+                                                    update_function=f"update_{sysinfo[0].replace('-','')}",
+                                                    reboot_path="http://"+info[4]+":5000/reboot",
+                                                    update_path="http://"+info[4]+":5000/fetch",
+                                                      accordian_id=info[3].replace(":",""),
+                                                    cpu=sysinfo[1],
+                                                    vm=sysinfo[2],
+                                                    network=sysinfo[3],
+                                                    cardBody = render_template(iframe, ip=info[4], host=sysinfo[0].replace('-',''))
+                                                    ))
+                                                print(scans)
+                                            except:
+                                                print('error in updating scans')
+                                except requests.Timeout:
+                                    print("timeout")
+    
+    
+                            else:
+                                print(info[4] + " is the gateway, will not process.")
 
     return redirect('/')
 
