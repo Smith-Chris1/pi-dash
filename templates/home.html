@@ -3,9 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Temple Controllers</title>
+    <title>PI Controllers</title>
     <link href="/static/boostrap.min.css" rel="stylesheet">
     <link href="/static/charts.min.css" rel="stylesheet">
+    <link href="/static/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="/static/font-awesome.min.css" rel="stylesheet">
+    <script src="/static/jquery-3.6.0.min.js"></script>
+    <script src="/static/jquery.dataTables.min.js"></script>
+    <script src="/static/dataTables.cellEdit.js"></script>
+    <script src="/static/socket.io.js"></script>
     <meta name="theme-color" content="#7952b3">
     <style>
         .bd-placeholder-img {
@@ -25,46 +31,589 @@
 
     <link href="/static/cover.css" rel="stylesheet">
     <style data-styled="" data-styled-version="4.4.1"></style>
+    <script>
+        var piinfo = []
+        var setInnerHTML = function (elm, html) {
+            elm.innerHTML = html;
+            Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
+                const newScript = document.createElement("script");
+                Array.from(oldScript.attributes)
+                    .forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        var socket = io();
+        socket.connect('http://localhost:5000/');
+        socket.on('connect', function () {
+            socket.emit('load_one', {
+                'data': "1st load"
+            })
+        })
+        // socket.on('new_pi', function (msg) {
+        //     setInnerHTML(document.getElementById('pi-list'), msg)
+        // })
+        socket.on('new_row', function (msg) {
+            // console.log(piinfo.length)
+            // console.log(msg.host)
+            if (piinfo.length == 0) {
+                piinfo.push(msg)
+                $('#pi-table').DataTable().rows.add(piinfo).draw();
+            } else {
+                piinfo.forEach((pi, index) => {
+                    console.log(pi)
+                    if (pi.host == msg.host) {
+                        console.log("this pi is already in the UI")
+                        // break
+                    } else {
+                        piinfo.push(msg)
+                        $('#pi-table').DataTable().rows.add(piinfo).draw();
+                    }
+
+                })
+            }
+
+            // if (piinfo.includes(msg.host)) {
+            //     // console.log('already exist')
+            // } else {
+            //     piinfo.push(msg)
+            //     $('#pi-table').DataTable().rows.add(piinfo).draw();
+            // }
+            // piinfo.push(msg)
+
+            // newRow.nodes().to$().prop("id", piinfo.host); 
+            // $('#pi-table tr:last').attr('id',piinfo.host);
+            // console.log(newRow.nodes().to$().prop("id", piinfo.host))
+
+        })
+        socket.on('host', function (msg) {
+            document.getElementById('host').innerHTML = msg
+        })
+        $(document).ready(function () {
+
+            var table = $('#pi-table').DataTable({
+                    'dom': "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<'float-md-right ml-2'B>f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    'data': piinfo[0],
+                    'select': 'single',
+                    "autoWidth": true,
+                    'columns': [
+
+                        {
+                            'data': 'host',
+                            'render': function (data, type, full, meta) {
+                                data = '<div class="dropdown">\
+                                <button class="col btn " title="Settings" type="button" id="' + full.host +
+                                    '_dropdown" data-bs-toggle="dropdown" aria-expanded="false"><span style="white-space: nowrap;color: #212529;text-shadow: 0 0.05rem 0.1rem rgb(0 0 0 / 50%);">' +
+                                    full.host + '</span></button>\
+                                <ul class="dropdown-menu" aria-labelledby="' + full.host + '_dropdown">\
+                    <li><a class="dropdown-item" href="#" onclick="javascript:reboot_function(\'http://' + full.ip + '\')" class="col power btn float-end" title="Reboot">Reboot</a></li>\
+                    <li><a class="dropdown-item" href="#" onclick="javascript:shutdown_function(\'http://' + full.ip + ':5000/shutdown\')" class="col power btn float-end" title="Shutdown">Shutdown</a></li>\
+                    <li><a class="dropdown-item" href="#" onclick="javascript:update_function(\'http://' + full.ip + ':5000/update\') class="col power btn float-end" title="Update">Update</a></li>\
+                </ul></div>'
+                                return data
+                            }
+                        },
+                        {
+                            'data': 'location',
+                        },
+                        {
+                            'data': 'ip'
+                        },
+                        {
+                            'data': 'reboot_function',
+                            'class': 'text-right',
+                            'render': function (data, type, full, meta) {
+                                // console.log(full.iframe)
+                                data = full.iframe
+                                // '<iframe src="http://' + full.ip + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+                                return data;
+                            }
+                        },
+                        {
+                            'data': 'cpu',
+                            'sWidth': '30px',
+                            'class': 'text-right',
+                            'render': function (data, type, full, meta) {
+                                data = "<div id='cpu' class='col'>" + data + "%</div>"
+                                // console.log(meta.row)
+                                systemStats(full.ip, meta.row)
+                                return data
+                            }
+                        },
+                        {
+                            'data': 'vm',
+                            'sWidth': '30px',
+                            'render': function (data, type, full, meta) {
+                                data = "<div id='vm' class='col'>" + data + "%</div>"
+                                return data
+                            }
+                        },
+                        {
+                            // "id": "net",
+                            'data': 'network',
+                            'sWidth': '30px',
+                            'render': function (data, type, full, meta) {
+                                data = "<div id='net' class='col'>" + data +
+                                    "<small>Mbps</small></div>"
+                                return data
+                            }
+                        }
+                    ],
+                    'drawCallback': function (settings) {
+                        var api = this.api();
+                        var $table = $(api.table().node());
+
+                        if ($table.hasClass('cards')) {
+
+                            // Create an array of labels containing all table headers
+                            var labels = [];
+                            $('thead th', $table).each(function () {
+                                labels.push($(this).text());
+                            });
+
+                            // Add data-label attribute to each cell
+                            $('tbody tr', $table).each(function () {
+                                $(this).find('td').each(function (column) {
+                                    $(this).attr('data-label', labels[column]);
+                                });
+                            });
+
+                            var max = 0;
+                            $('tbody tr', $table).each(function () {
+                                max = Math.max($(this).height(), max);
+                            }).height(max);
+
+                        } else {
+                            // Remove data-label attribute from each cell
+                            $('tbody td', $table).each(function () {
+                                $(this).removeAttr('data-label');
+                            });
+
+                            $('tbody tr', $table).each(function () {
+                                $(this).height('auto');
+                            });
+                        }
+                    }
+                })
+                .on('select', function (e, dt, type, indexes) {
+                    var rowData = table.rows(indexes).data().toArray()
+                    $('#row-data').html(JSON.stringify(rowData));
+                })
+                .on('deselect', function () {
+                    $('#row-data').empty();
+                })
+
+            function setLocation(updatedCell, updatedRow, oldValue) {
+                ip = updatedRow.cells().nodes()[2].innerHTML
+                let data = new FormData();
+                data.append('location', updatedCell.data())
+                let headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "Thunder Client (https://www.thunderclient.io)",
+                    "Access-Control-Allow-Origin": "*"
+                }
+                fetch("http://" + ip + ":5000/setLocation", {
+                    method: "POST",
+                    headers: headersList,
+                    body: data
+                }).then(function (response) {})
+                console.log("The new value for the cell is: " + updatedCell.data());
+                // console.log("The values for each cell in that row are: " + updatedRow.data());
+            }
+
+            table.MakeCellsEditable({
+                "onUpdate": setLocation,
+                "inputCss": 'my-input-class',
+                "columns": [1],
+                "allowNulls": {
+                    "columns": [1],
+                    "errorClass": 'error'
+                },
+                "confirmationButton": {
+                    "confirmCss": 'my-confirm-class',
+                    "cancelCss": 'my-cancel-class'
+                },
+                "inputTypes": [{
+                    "column": 1,
+                    "type": "text",
+                    "options": null
+                }]
+            });
+        });
+    </script>
 </head>
 
 <body class="d-flex h-100 text-center text-white bg-secondary">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
-            <div>
-                <h3 class="float-md-start mb-0">Temple Control</h3>
-                <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a id="scan" class="nav-link active" aria-current="page" href="#">Scan</a>
-                    <script>
-                        document.getElementById("scan").addEventListener("click", function() {
-                            while( document.getElementById('pi-list').hasChildNodes()) {
-                                document.getElementById('pi-list').removeChild(document.getElementById('pi-list').firstChild);
-                            }
-                            document.getElementById("spinny").classList.remove("hidden");
-                            setTimeout(() => {
-                          window.location.href = "/scan";  
-                        }, 1000);
-                        });
-                        
-                        
-                    </script>
-                </nav>
+            <!-- <div> -->
+            <div class="row">
+                <div class="col align-items-center">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="float-md-start">PI Control</h3>
+                        </div>
+                        <div class="col">
+                            <button id="btToggleDisplay" class="btn btn-primary"><i id='tables'
+                                    class="fa fa-table fa-lg" aria-hidden="true"></i> <i class="fa fa-arrows-h fa-lg"
+                                    aria-hidden="true"></i>
+                                <i id='cards' class="fa fa-id-card-o fa-lg" aria-hidden="true"></i></button>
+                            <script>
+                                $('#btToggleDisplay').click(function () {
+                                    $('#pi-table').toggleClass(['cards', 'tablerow']);
+                                    $('#tables', this).toggleClass(['fa-table', 'fa-id-card-o']);
+                                    $('#cards', this).toggleClass(['fa-table', 'fa-id-card-o']);
+                                    // table.draw('page');
+                                });
+                            </script>
+                        </div>
+                        <div class="col">
+                            <div>VLC Info - user:(leave blank)<br>password:software</div>
+                        </div>
+
+                        <div class="col">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle float-end" type="button"
+                                    id="globalMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fa fa-cog fa-lg" aria-hidden="true"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="globalMenuButton">
+                                    <li>
+                                        <a id="scan" class="dropdown-item" aria-current="page" href="#">Scan</a>
+                                    </li>
+                                    <li>
+                                        <a id="updateAll" class="dropdown-item" aria-current="page" href="#">Update
+                                            All</a>
+                                        <script>
+                                            document.getElementById('updateAll').addEventListener('click', function () {
+                                                piinfo.forEach(pi => {
+                                                    update_function('http://' + pi.ip + ':5000/fetch')
+                                                })
+                                            })
+                                        </script>
+                                    </li>
+                                    <li>
+                                        <a id="restartAll" class="dropdown-item" aria-current="page" href="#">Restart
+                                            All</a>
+                                    </li>
+                                    <script>
+                                        document.getElementById('restartAll').addEventListener('click', function () {
+                                            piinfo.forEach(pi => {
+                                                update_function('http://' + pi.ip + ':5000/reboot')
+                                            })
+                                        })
+                                    </script>
+                                    <li>
+                                        <a id="shutdownAll" class="dropdown-item" aria-current="page" href="#">Shutdown
+                                            All</a>
+                                    </li>
+                                    <script>
+                                        document.getElementById('shutdownAll').addEventListener('click', function () {
+                                            piinfo.forEach(pi => {
+                                                update_function('http://' + pi.ip + ':5000/shutdown')
+                                            })
+                                        })
+                                    </script>
+                                </ul>
+
+                                <!-- <nav class="nav nav-masthead justify-content-center float-md-end">
+                                    <a id="scan" class="nav-link active" aria-current="page" href="#">Scan</a>
+                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Update
+                                        All</a>
+                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Restart
+                                        All</a>
+                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Shutdown
+                                        All</a> -->
+                                <script>
+                                    document.getElementById("scan").addEventListener("click", function () {
+                                        socket.emit('scans', {
+                                            'data': "scan"
+                                        })
+                                    });
+
+                                    function systemStats(ip, row) {
+                                        setInterval(function () {
+                                            let headersList = {
+                                                "Accept": "*/*",
+                                                "User-Agent": "Thunder Client (https://www.thunderclient.io)",
+                                                "Access-Control-Allow-Origin": "*"
+                                            }
+
+
+                                            fetch("http://" + ip + ":5000/sysinfo", {
+                                                method: "POST",
+                                                headers: headersList
+                                            }).then(function (response) {
+
+                                                response.text().then(sysinfo => {
+                                                    sysinfo = sysinfo.split(",");
+
+                                                    $('#pi-table').DataTable().row(0)
+                                                        .cells()
+                                                        .nodes().to$().find('#cpu').html(
+                                                            sysinfo[
+                                                                1] + "%");
+
+                                                    if (sysinfo[1] == 'unknown') {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+                                                    }
+                                                    if (sysinfo[1] > 70) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .removeClass("bg-danger")
+                                                    }
+                                                    if (sysinfo[1] > 40) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .addClass("bg-warning")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .removeClass("bg-warning")
+                                                    }
+                                                    if (sysinfo[1] < 39) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .addClass("bg-success")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#cpu')
+                                                            .parent()
+                                                            .removeClass("bg-success")
+                                                    }
+                                                    $('#pi-table').DataTable().row(0)
+                                                        .cells()
+                                                        .nodes().to$().find('#vm').html(
+                                                            sysinfo[2] +
+                                                            "%");
+
+                                                    if (sysinfo[2] == 'unknown') {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+                                                    }
+                                                    if (sysinfo[2] > 70) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .removeClass("bg-danger")
+                                                    }
+                                                    if (sysinfo[2] > 40) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .addClass("bg-warning")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .removeClass("bg-warning")
+                                                    }
+                                                    if (sysinfo[2] < 39) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .addClass("bg-sucess")
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#vm')
+                                                            .parent()
+                                                            .removeClass("bg-success")
+                                                    }
+                                                    $('#pi-table').DataTable().row(0)
+                                                        .cells()
+                                                        .nodes().to$().find('#net').html(
+                                                            sysinfo[
+                                                                3] + "<small>Mbps</small>");
+
+                                                    if (sysinfo[3] == 'unknown') {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+
+                                                    }
+                                                    if (sysinfo[3] < 13) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .addClass("bg-danger")
+
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .removeClass("bg-danger")
+
+                                                    }
+                                                    if (sysinfo[3] < 16.9) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .addClass("bg-warning")
+
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .removeClass("bg-warning")
+
+                                                    }
+                                                    if (sysinfo[3] > 17) {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .addClass("bg-success")
+
+                                                    } else {
+                                                        $('#pi-table').DataTable().row(0)
+                                                            .cells()
+                                                            .nodes().to$().find('#net')
+                                                            .parent()
+                                                            .removeClass("bg-success")
+
+                                                    }
+                                                })
+
+                                            }).then(function (data) {
+                                                // console.log(data);
+                                            })
+                                        }, 13000)
+                                    }
+
+                                    function reboot_function(server) {
+                                        console.log(server)
+                                        let headersList = {
+                                            "Accept": "*/*",
+                                            "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                                        }
+                                        fetch(server + ':5000/reboot', {
+                                            method: "GET",
+                                            headers: headersList
+                                        }).then(function (response) {
+                                            return response.text();
+                                        }).then(function (data) {})
+                                    }
+
+                                    function shutdown_function(server) {
+
+                                        let headersList = {
+                                            "Accept": "*/*",
+                                            "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                                        }
+                                        fetch(server + ':5000/shutdown', {
+                                            method: "GET",
+                                            headers: headersList
+                                        }).then(function (response) {
+                                            return response.text();
+                                        }).then(function (data) {})
+                                    }
+
+                                    function update_function(server) {
+
+                                        let headersList = {
+                                            "Accept": "*/*",
+                                            "User-Agent": "Thunder Client (https://www.thunderclient.io)"
+                                        }
+                                        fetch(server + ':5000/fetch', {
+                                            method: "GET",
+                                            headers: headersList
+                                        }).then(function (response) {
+                                            return response.text();
+                                        }).then(function (data) {})
+                                    }
+                                </script>
+                                <!-- </div> -->
+                                <!-- </nav> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-3">
+                <h6 class=""><small id='host'></small></h6>
             </div>
         </header>
         <div class="container-xxl my-md-4 bd-layout d-flex align-items-center justify-content-center">
-            <div id="spinny" class="lds-ring hidden"><div></div><div></div><div></div><div></div></div>
+            <div id="spinny" class="lds-ring hidden">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
-        <div class="container-xxl my-md-4 bd-layout d-flex align-items-center justify-content-center">
-            
+        </div>
+        <div class=" align-items-center justify-content-center">
+            <!-- <div class="row">
+            <button id="btToggleDisplay" class="btn btn-primary"><i class="fa fa-table fa-lg" aria-hidden="true"></i> <i class="fa fa-arrows-h fa-lg" aria-hidden="true"></i> <i class="fa fa-id-card-o fa-lg" aria-hidden="true"></i></button>
+        </div> -->
             <div class="row g-4 main-body no-scroll" id='pi-list'>
-                
-                {{scanresults|safe}}
+                <table id="pi-table" class="table table-sm table-hover tablerow" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+
+                            <th>Pi Name</th>
+                            <th>Room</th>
+                            <th>IP</th>
+                            <th>Playback</th>
+                            <th>CPU</th>
+                            <th>Memory</th>
+                            <th>Network</th>
+                        </tr>
+                    </thead>
+                </table>
+                <!-- {{scanresults|safe}} -->
             </div>
         </div>
 
         <footer class="mt-auto text-white-50">
         </footer>
     </div>
-    <script src="/static/bootstrap.min.js"></script>
+    <script src="/static/bootstrap.bundle.min.js"></script>
+    <!-- <script src="/static/bootstrap.min.js"></script> -->
 </body>
 
 </html>

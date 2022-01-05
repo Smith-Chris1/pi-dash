@@ -6,7 +6,7 @@
             <h5 class="card-title">{{ host }} <small class="smallIP">{{ ip }}</small></h5>
         </div>
         <div class="col">
-            <button href = "#" onclick="{{update_function}}()" class="col update btn float-end" title="Run Updates"></button>
+            <!-- <button href = "#" onclick="{{update_function}}()" class="col update btn float-end" title="Run Updates"></button> -->
             
             <script>
                 function {{update_function}} () {
@@ -22,21 +22,30 @@
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                     document.getElementById("{{host}}-title").classList.toggle("bg-info");
                     document.getElementById("{{host}}-title").classList.toggle("bg-warning");
                 })
             }
             </script>
-
-            <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn float-end" title="Reboot"></button>
+            
+            <div class="dropdown"> 
+                <button class="col btn update float-end" title="Settings" type="button" id="{{host}}_dropdown" data-bs-toggle="dropdown" aria-expanded="false">   
+                </button> 
+                <ul class="dropdown-menu" aria-labelledby="{{host}}_dropdown">  
+                    <li><a class="dropdown-item" href="#" onclick="javascript:{{reboot_function }}()" class="col power btn float-end" title="Reboot">Reboot</a></li>  
+                    <li><a class="dropdown-item" href="#" onclick="javascript:{{shutdown_function }}()" class="col power btn float-end" title="Shutdown">Shutdown</a></li>  
+                    <li><a class="dropdown-item" href="#" onclick="javascript:{{update_function}}()" class="col power btn float-end" title="Update">Update</a></li>  
+                </ul>
+            </div>
+            <!-- <button href = "#" onclick="javascript:{{reboot_function }}()" class="col power btn float-end" title="Reboot"></button> -->
             
             <button class="col accordion-button float-end" type="button" data-bs-toggle="collapse" data-bs-target="#{{host}}_body" aria-expanded="true" aria-controls="{{host}}_body"></button>
         </div>
             
         </div>
         </div>
-        <div class="card-body no-scroll accordion-collapse collapse show" data-bs-parent="#accordionExample" style="min-width:320px; min-height: 215px;" id="{{host}}_body">
+        <div class="card-body no-scroll accordion-collapse collapse show" data-bs-parent="#{{host}}_body" style="min-width:320px; min-height: 215px;" id="{{host}}_body">
             {{cardBody|safe}}
 
         </div>
@@ -74,7 +83,7 @@
                     // console.log(response.text());
                     response.text().then(sysinfo => {
                         sysinfo = sysinfo.split(",");
-                        console.log(sysinfo);
+                        // console.log(sysinfo);
                     document.getElementById("{{host}}").querySelector("#cpu").innerHTML = sysinfo[1] +"%";
                     if (sysinfo[1] == 'unknown') {
                         document.getElementById("{{host}}").querySelector("#cpu").classList.add("bg-danger");
@@ -135,7 +144,7 @@
                     })
                     
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                 })
                 }, 13000);
                 function {{reboot_function}} () {
@@ -150,7 +159,7 @@
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                 })
             }
             </script>

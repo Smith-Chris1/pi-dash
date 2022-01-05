@@ -97,6 +97,8 @@ body {
     background-size: 20px;
     height: 25px;
     width: 25px;
+    padding-left: 25px;
+    padding-top:0px;
     background-repeat: no-repeat;
    }
 
@@ -164,3 +166,99 @@ body {
   .smallIP {
       font-size: 11px !important;
   }
+
+  .cards tbody tr {
+    float: left;
+    width: 19rem;
+    margin: 0.5rem;
+    border: 0.0625rem solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+ }
+ 
+ .cards tbody td {
+    display: block;
+ }
+ 
+ .cards thead {
+    display: none;
+ }
+ 
+ .cards td:before {
+    content: attr(data-label);
+    position: relative;
+    float: left;
+    color: #808080;
+    min-width: 4rem;
+    margin-left: 0;
+    margin-right: 1rem;
+    text-align: left;   
+ }
+ 
+ tr.selected td:before {
+    color: #CCC;
+ }
+ 
+ .table .avatar {
+    width: 50px;
+ }
+ 
+ .cards .avatar {
+    width: 150px;
+    margin: 15px;
+ }
+
+ table tr td:nth-of-type(2) {
+  cursor: pointer;
+}
+
+table tr .tablerow {
+  height: initial;
+}
+
+td div button {
+  line-height: inherit !important;
+  text-align: inherit !important; 
+  text-decoration: inherit !important;
+  vertical-align: inherit !important;
+  padding: inherit !important;
+}
+
+.my-input-class {
+  padding: 3px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.my-confirm-class {
+  padding: 3px 6px;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 4px;
+  background-color: #337ab7;
+  text-decoration: none;
+}
+
+.my-cancel-class {
+  padding: 3px 6px;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 4px;
+  background-color: #a94442;
+  text-decoration: none;
+}
+
+.error {
+  border: solid 1px;
+  border-color: #a94442;
+}
+
+.destroy-button{
+  padding:5px 10px 5px 10px;
+  border: 1px blue solid;
+  background-color:lightgray;
+}
