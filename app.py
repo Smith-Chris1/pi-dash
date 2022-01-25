@@ -198,7 +198,7 @@ def name():
 @app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
     inf = 'eth0'
-    print('work ')
+    # print('work ')
     try:
         return f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage(inf)}"
     except:
@@ -273,7 +273,8 @@ def scan():
             print(ispi)
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
-            if sysinfo[0] not in " ".join(scans):
+            print(scans)
+            if host not in " ".join(scans):
                 try:                        
                     ### See if VLC is running on the servers
                     vlc = vlcUp(subnet+str(host))
