@@ -125,12 +125,13 @@ def load_one(message):                        # test_message() is the event call
             thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
         except:
             thisInfo = 'localhost'
-
+        print(thisInfo)
         if " " in thisInfo:
             hostIP = thisInfo.split(' ')
             thisInfo = thisInfo.split(' ')[0].strip()
         else:
             thisInfo.strip()
+        print(thisInfo)
         vlc = vlcUp(thisInfo)
         if vlc == 0:
             iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
