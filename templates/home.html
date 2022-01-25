@@ -45,7 +45,7 @@
         }
 
         var socket = io();
-        socket.connect('http://'+document.domain+':5000/');
+        socket.connect('http://'+document.domain+':5005/');
         socket.on('connect', function () {
             socket.emit('load_one', {
                 'data': "1st load"
