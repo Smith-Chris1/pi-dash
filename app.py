@@ -21,7 +21,7 @@ scans = []
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-socketio = SocketIO(app)
+socketio = SocketIO(app,async_mode=None)
 
 
 @app.route('/')
@@ -136,8 +136,7 @@ def load_one(message):                        # test_message() is the event call
         else:
             thisInfo.strip()
         print(thisInfo)
-        # vlc = vlcUp(thisInfo)
-        vlc = 0
+        vlc = vlcUp(thisInfo)
         print(vlc)
         if vlc == 0:
             iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
