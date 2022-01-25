@@ -73,7 +73,7 @@ def load_all(message):
             socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
         if ispi == "True":
             print(ispi)
-            sysinfo = requests.request('GET','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             if sysinfo[0] not in " ".join(scans):
                 try:                        
@@ -144,7 +144,7 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         print(iframe)
         print(('http://'+thisInfo+':5000/sysinfo'))
-        sysinfo = requests.request('GET','http://'+thisInfo+':5000/sysinfo') #.text.split(",")
+        sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo') #.text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
         print('the sysinfo is ' + sysinfo)
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
@@ -202,9 +202,10 @@ def name():
     except:
         return "unknown"
     
-@app.route('/sysinfo',methods = ['GET'])
+@app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
     inf = 'eth0'
+    print('work ')
     try:
         return f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage(inf)}"
     except:
@@ -259,7 +260,7 @@ def scan():
     #     iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
     # else:
     #     iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
-    sysinfo = requests.request('GET','http://'+thisInfo+':5000/sysinfo').text.split(",")
+    sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
     # print('http://'+thisInfo+':5000/sysinfo')
     # scans.append(render_template('card.html', 
     #     host = sysinfo[0],
@@ -291,7 +292,7 @@ def scan():
         # print(ispi)
         if ispi == "True":
             print(ispi)
-            sysinfo = requests.request('GET','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             if sysinfo[0] not in " ".join(scans):
                 try:                        
