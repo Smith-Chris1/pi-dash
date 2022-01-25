@@ -134,7 +134,7 @@ def load_one(message):                        # test_message() is the event call
             thisInfo.strip()
         print(thisInfo)
         vlc = vlcUp(thisInfo)
-        print('vlc '+vlc)
+        print(vlc)
         if vlc == 0:
             iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
         else:
