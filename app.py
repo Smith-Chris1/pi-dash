@@ -119,30 +119,16 @@ def scan():
         thisInfo.strip()
     vlc = vlcUp(thisInfo)
 
-    # if vlc == 0:
-    #     iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-    # else:
-    #     iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
+    if vlc == 0:
+        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+    else:
+        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
     sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
-    # print('http://'+thisInfo+':5000/sysinfo')
-    # scans.append(render_template('card.html', 
-    #     host = sysinfo[0],
-    #     ip=thisInfo,
-    #     reboot_function=subnet+str(host),
-    #     update_function=f"update_{sysinfo[0].replace('-','')}",
-    #     reboot_path="http://"+thisInfo+":5000/reboot",
-    #     update_path="http://"+thisInfo+":5000/fetch",
-    #     cpu=sysinfo[1],
-    #     vm=sysinfo[2],
-    #     network=sysinfo[3],
-    #     cardBody = render_template(iframe, ip=thisInfo, host=sysinfo[0].replace('-',''))
-    #     ))
+
     
     print(thisInfo.strip()+'/25')
     ### find other machines on the network
-    # mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
-    # mac = subprocess.run(['nmap', '-p', '5000', thisInfo.strip()+'/24'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
-    
+
     if 'localhost' in thisInfo.strip():
         thisInfo = '127.0.0.1'
     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
@@ -240,20 +226,7 @@ def load_all(message):
                     else:
                         print(84)
                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-                    # card = render_template('card.html', 
-                    #     host = sysinfo[0],
-                    #     ip=subnet+str(host),
-                    #     reboot_function=subnet+str(host),
-                    #     update_function=f"update_{sysinfo[0].replace('-','')}",
-                    #     reboot_path="http://"+subnet+str(host)+":5000/reboot",
-                    #     update_path="http://"+subnet+str(host)+":5000/fetch",
-                    #     # accordian_id=info[3].replace(":",""),
-                    #     cpu=sysinfo[1],
-                    #     vm=sysinfo[2],
-                    #     network=sysinfo[3],
-                    #     cardBody = render_template(iframe, ip=subnet+str(host), host=sysinfo[0].replace('-',''))
-                    #     )
-                    # scans.append(card)
+
                     location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
                     row = {"host": sysinfo[0],
                         "ip":subnet+str(host),
