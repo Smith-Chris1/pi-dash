@@ -61,6 +61,7 @@ def load_all(message):
             print(sysinfo)
             print(scans)
             if subnet+str(host) not in " ".join(scans):
+                scans.append(subnet+str(host))
                 try:                        
                     ### See if VLC is running on the servers
                     vlc = vlcUp(subnet+str(host))
@@ -68,7 +69,7 @@ def load_all(message):
                         iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
                     else:
                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-                    scans.append(subnet+str(host))
+                    
                     location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
                     row = {"host": sysinfo[0],
                         "ip":subnet+str(host),
