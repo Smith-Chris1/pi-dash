@@ -120,6 +120,7 @@ def load_all(message):
 def load_one(message):                        # test_message() is the event callback function.
     print(message)
     ### making card for host that is being viewed.
+    print(scans)
     print(len(scans))
     if len(scans) == 0:
         try:
