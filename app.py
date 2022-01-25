@@ -21,7 +21,7 @@ scans = []
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-socketio = SocketIO(app,async_mode=None)
+socketio = SocketIO(app)
 
 
 @app.route('/')
@@ -73,7 +73,7 @@ def load_all(message):
             socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
         if ispi == "True":
             print(ispi)
-            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+            sysinfo = requests.request('GET','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             if sysinfo[0] not in " ".join(scans):
                 try:                        
@@ -144,7 +144,7 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         print(iframe)
         print(('http://'+thisInfo+':5000/sysinfo'))
-        sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo') #.text.split(",")
+        sysinfo = requests.request('GET','http://'+thisInfo+':5000/sysinfo') #.text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
         print('the sysinfo is ' + sysinfo)
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
@@ -202,7 +202,7 @@ def name():
     except:
         return "unknown"
     
-@app.route('/sysinfo',methods = ['POST'])
+@app.route('/sysinfo',methods = ['GET'])
 def sysinfo():
     inf = 'eth0'
     try:
@@ -259,7 +259,7 @@ def scan():
     #     iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
     # else:
     #     iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
-    sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
+    sysinfo = requests.request('GET','http://'+thisInfo+':5000/sysinfo').text.split(",")
     # print('http://'+thisInfo+':5000/sysinfo')
     # scans.append(render_template('card.html', 
     #     host = sysinfo[0],
@@ -291,7 +291,7 @@ def scan():
         # print(ispi)
         if ispi == "True":
             print(ispi)
-            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+            sysinfo = requests.request('GET','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             if sysinfo[0] not in " ".join(scans):
                 try:                        
@@ -336,7 +336,7 @@ def net_usage(inf):   #change the inf variable according to the interface
 
 def vlcUp(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex((ip, 80))
+    result = sock.connect_ex((ip, 8080))
     return result
 
 if __name__ == '__main__':
