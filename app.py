@@ -56,6 +56,15 @@ def load_all(message):
         ispi = False
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
+        except:
+            ispi = False
+        # print(ispi)
+        if host == 127:
+            socketio.emit('host', "Scan Complete")
+            time.sleep(3)
+            socketio.emit('host', "")
+        
+        if ispi == "True":
             print(ispi)
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
@@ -88,16 +97,8 @@ def load_all(message):
                     # print(scans)
                 except:
                     print('error in updating scans')
-        except:
-            ispi = False
-        # print(ispi)
-        if host == 127:
-            socketio.emit('host', "Scan Complete")
-            time.sleep(3)
-            socketio.emit('host', "")
         else:
             socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
-        # if ispi == "True":
             
 
 @socketio.on('load_one')                        # Decorator to catch an event called "my event":
@@ -234,77 +235,77 @@ def fetch():
 def ispi():
     return "True"
 
-@app.route('/scan')
-def scan():
-    global scans
-    scans = []
+# @app.route('/scan')
+# def scan():
+#     global scans
+#     scans = []
     
-    ### making card for host that is being viewed.
-    try:
-        thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-    except:
-        thisInfo = 'localhost'
+#     ### making card for host that is being viewed.
+#     try:
+#         thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+#     except:
+#         thisInfo = 'localhost'
 
-    if " " in thisInfo:
-        hostIP = thisInfo.split(' ')
-        thisInfo = thisInfo.split(' ')[0].strip()
-    else:
-        thisInfo.strip()
-    vlc = vlcUp(thisInfo)
+#     if " " in thisInfo:
+#         hostIP = thisInfo.split(' ')
+#         thisInfo = thisInfo.split(' ')[0].strip()
+#     else:
+#         thisInfo.strip()
+#     vlc = vlcUp(thisInfo)
 
-    if vlc == 0:
-        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-    else:
-        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
-    sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
+#     if vlc == 0:
+#         iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+#     else:
+#         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/startVLC.html" style="min-width:320px; max-height: 50px;"></iframe>'
+#     sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
 
     
-    print(thisInfo.strip()+'/25')
-    ### find other machines on the network
+#     print(thisInfo.strip()+'/25')
+#     ### find other machines on the network
 
-    if 'localhost' in thisInfo.strip():
-        thisInfo = '127.0.0.1'
-    subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
-    print(subnet)
-    for host in range(128):
-        try:
-            ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
-        except:
-            ispi = False
-        # print(ispi)
-        if ispi == "True":
-            print(ispi)
-            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
-            print(sysinfo)
-            print(scans)
-            print(subnet+str(host))
-            if subnet+str(host) not in " ".join(scans):
-                try:                        
-                    ### See if VLC is running on the servers
-                    vlc = vlcUp(subnet+str(host))
-                    if vlc == 0:
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-                    else:
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-                    scans.append(render_template('card.html', 
-                        host = sysinfo[0],
-                        ip=subnet+str(host),
-                        reboot_function=subnet+str(host),
-                        update_function=f"update_{sysinfo[0].replace('-','')}",
-                        reboot_path="http://"+subnet+str(host)+":5000/reboot",
-                        update_path="http://"+subnet+str(host)+":5000/fetch",
-                        # accordian_id=info[3].replace(":",""),
-                        cpu=sysinfo[1],
-                        vm=sysinfo[2],
-                        network=sysinfo[3],
-                        cardBody = render_template(iframe, ip=subnet+str(host), host=sysinfo[0].replace('-',''))
-                        ))
-                    # print(scans)
-                except:
-                    print('error in updating scans')
+#     if 'localhost' in thisInfo.strip():
+#         thisInfo = '127.0.0.1'
+#     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
+#     print(subnet)
+#     for host in range(128):
+#         try:
+#             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
+#         except:
+#             ispi = False
+#         # print(ispi)
+#         if ispi == "True":
+#             print(ispi)
+#             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+#             print(sysinfo)
+#             print(scans)
+#             print(subnet+str(host))
+#             if subnet+str(host) not in " ".join(scans):
+#                 try:                        
+#                     ### See if VLC is running on the servers
+#                     vlc = vlcUp(subnet+str(host))
+#                     if vlc == 0:
+#                         iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+#                     else:
+#                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
+#                     scans.append(render_template('card.html', 
+#                         host = sysinfo[0],
+#                         ip=subnet+str(host),
+#                         reboot_function=subnet+str(host),
+#                         update_function=f"update_{sysinfo[0].replace('-','')}",
+#                         reboot_path="http://"+subnet+str(host)+":5000/reboot",
+#                         update_path="http://"+subnet+str(host)+":5000/fetch",
+#                         # accordian_id=info[3].replace(":",""),
+#                         cpu=sysinfo[1],
+#                         vm=sysinfo[2],
+#                         network=sysinfo[3],
+#                         cardBody = render_template(iframe, ip=subnet+str(host), host=sysinfo[0].replace('-',''))
+#                         ))
+#                     # print(scans)
+#                 except:
+#                     print('error in updating scans')
     
     
-    return redirect('/')
+#     return redirect('/')
 
 
 
