@@ -23,6 +23,135 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 socketio = SocketIO(app, async_mode='eventlet')
 
+@socketio.on('scans')
+def load_all(message):
+    # scans = []
+    print(message)
+    try:
+        thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+    except:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            # doesn't even have to be reachable
+            s.connect(('10.255.255.255', 1))
+            thisInfo = s.getsockname()[0]
+        except Exception:
+            thisInfo = '127.0.0.1'
+
+
+    if " " in thisInfo:
+        hostIP = thisInfo.split(' ')
+        thisInfo = thisInfo.split(' ')[0].strip()
+    else:
+        thisInfo.strip()
+    print(thisInfo.strip()+'/25')
+    ### find other machines on the network
+
+    if 'localhost' in thisInfo.strip():
+        thisInfo = '127.0.0.1'
+        
+    subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
+    print(subnet)
+    for host in range(255):
+        
+        try:
+            ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
+        except:
+            ispi = False
+        # print(ispi)
+        if host == 254:
+            socketio.emit('host', "Scan Complete")
+            time.sleep(3)
+            socketio.emit('host', "")
+        else:
+            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
+        if ispi == "True":
+            print(ispi)
+            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+            print(sysinfo)
+            if sysinfo[0] not in " ".join(scans):
+                try:                        
+                    ### See if VLC is running on the servers
+                    vlc = vlcUp(subnet+str(host))
+                    if vlc == 0:
+                        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+                    else:
+                        print(84)
+                        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
+
+                    location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
+                    row = {"host": sysinfo[0],
+                        "ip":subnet+str(host),
+                        "reboot_function":subnet+str(host),
+                        "update_function":f"update_{sysinfo[0].replace('-','')}",
+                        "reboot_path":subnet+str(host),
+                        "update_path":f"http://{subnet+str(host)}:5000/fetch",
+                        "cpu":sysinfo[1],
+                        "vm":sysinfo[2],
+                        "network":sysinfo[3],
+                        "location":location.text,
+                        "iframe":iframe}
+                    socketio.emit('new_row', row)
+                    # socketio.emit("new_pi", card) 
+                    # print(scans)
+                except:
+                    print('error in updating scans')
+
+@socketio.on('load_one')                        # Decorator to catch an event called "my event":
+def load_one(message):                        # test_message() is the event callback function.
+    print(message)
+    ### making card for host that is being viewed.
+    print(scans)
+    print(len(scans))
+    if len(scans) == 0:
+        try:
+            thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
+        except:
+            thisInfo = 'localhost'
+        print(thisInfo)
+        if "\r" or "\n" in thisInfo:
+            print('line break')
+        if " " in thisInfo:
+            hostIP = thisInfo.split(' ')
+            thisInfo = thisInfo.split(' ')[0].strip()
+        else:
+            thisInfo.strip()
+        print(thisInfo)
+        vlc = vlcUp(thisInfo)
+        print(vlc)
+        if vlc == 0:
+            iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+        else:
+            iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
+        print(iframe)
+        print(('http://'+thisInfo+':5000/sysinfo'))
+        try:
+            sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo', timeout=3).text.split(",")
+        except:
+            sysinfo = ("uknown,unknown,unknown,unknown").split(',')
+        # print('http://'+thisInfo+':5000/sysinfo')
+        print(sysinfo)
+        
+        location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
+        print(location.text)
+
+        row = {"host": sysinfo[0],
+                        "ip":thisInfo,
+                        "reboot_function":thisInfo,
+                        "update_function":f"update_{sysinfo[0].replace('-','')}",
+                        "reboot_path":f"http://{thisInfo}:5000/reboot",
+                        "update_path":f"http://{thisInfo}:5000/fetch",
+                        "cpu":sysinfo[1],
+                        "vm":sysinfo[2],
+                        "network":sysinfo[3],
+                        "location":location.text,
+                        "iframe":iframe}
+        socketio.emit('new_row', row)
+        # scans.append(card)
+        # socketio.emit("new_pi", card) 
+    else:
+        socketio.emit("new_pi", " ".join(scans))
+
 
 @app.route('/')
 def index():
@@ -171,134 +300,6 @@ def scan():
     
     return redirect('/')
 
-@socketio.on('scans')
-def load_all(message):
-    # scans = []
-    print(message)
-    try:
-        thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-    except:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            # doesn't even have to be reachable
-            s.connect(('10.255.255.255', 1))
-            thisInfo = s.getsockname()[0]
-        except Exception:
-            thisInfo = '127.0.0.1'
-
-
-    if " " in thisInfo:
-        hostIP = thisInfo.split(' ')
-        thisInfo = thisInfo.split(' ')[0].strip()
-    else:
-        thisInfo.strip()
-    print(thisInfo.strip()+'/25')
-    ### find other machines on the network
-
-    if 'localhost' in thisInfo.strip():
-        thisInfo = '127.0.0.1'
-        
-    subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
-    print(subnet)
-    for host in range(255):
-        
-        try:
-            ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
-        except:
-            ispi = False
-        # print(ispi)
-        if host == 254:
-            socketio.emit('host', "Scan Complete")
-            time.sleep(3)
-            socketio.emit('host', "")
-        else:
-            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
-        if ispi == "True":
-            print(ispi)
-            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
-            print(sysinfo)
-            if sysinfo[0] not in " ".join(scans):
-                try:                        
-                    ### See if VLC is running on the servers
-                    vlc = vlcUp(subnet+str(host))
-                    if vlc == 0:
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-                    else:
-                        print(84)
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-
-                    location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
-                    row = {"host": sysinfo[0],
-                        "ip":subnet+str(host),
-                        "reboot_function":subnet+str(host),
-                        "update_function":f"update_{sysinfo[0].replace('-','')}",
-                        "reboot_path":subnet+str(host),
-                        "update_path":f"http://{subnet+str(host)}:5000/fetch",
-                        "cpu":sysinfo[1],
-                        "vm":sysinfo[2],
-                        "network":sysinfo[3],
-                        "location":location.text,
-                        "iframe":iframe}
-                    socketio.emit('new_row', row)
-                    # socketio.emit("new_pi", card) 
-                    # print(scans)
-                except:
-                    print('error in updating scans')
-
-@socketio.on('load_one')                        # Decorator to catch an event called "my event":
-def load_one(message):                        # test_message() is the event callback function.
-    print(message)
-    ### making card for host that is being viewed.
-    print(scans)
-    print(len(scans))
-    if len(scans) == 0:
-        try:
-            thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
-        except:
-            thisInfo = 'localhost'
-        print(thisInfo)
-        if "\r" or "\n" in thisInfo:
-            print('line break')
-        if " " in thisInfo:
-            hostIP = thisInfo.split(' ')
-            thisInfo = thisInfo.split(' ')[0].strip()
-        else:
-            thisInfo.strip()
-        print(thisInfo)
-        vlc = vlcUp(thisInfo)
-        print(vlc)
-        if vlc == 0:
-            iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-        else:
-            iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-        print(iframe)
-        print(('http://'+thisInfo+':5000/sysinfo'))
-        try:
-            sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo', timeout=3).text.split(",")
-        except:
-            sysinfo = ("uknown,unknown,unknown,unknown").split(',')
-        # print('http://'+thisInfo+':5000/sysinfo')
-        print(sysinfo)
-        
-        location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
-        print(location.text)
-
-        row = {"host": sysinfo[0],
-                        "ip":thisInfo,
-                        "reboot_function":thisInfo,
-                        "update_function":f"update_{sysinfo[0].replace('-','')}",
-                        "reboot_path":f"http://{thisInfo}:5000/reboot",
-                        "update_path":f"http://{thisInfo}:5000/fetch",
-                        "cpu":sysinfo[1],
-                        "vm":sysinfo[2],
-                        "network":sysinfo[3],
-                        "location":location.text,
-                        "iframe":iframe}
-        socketio.emit('new_row', row)
-        # scans.append(card)
-        # socketio.emit("new_pi", card) 
-    else:
-        socketio.emit("new_pi", " ".join(scans))
 
 
 
@@ -321,5 +322,4 @@ def vlcUp(ip):
     return result
 
 if __name__ == '__main__':
-    app.run(port=5000)
-    socketio.run(app,host='0.0.0.0', debug=True, port=5005)
+    socketio.run(app,host='0.0.0.0', debug=True, port=5000)
