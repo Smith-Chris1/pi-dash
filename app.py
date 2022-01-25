@@ -178,7 +178,7 @@ def reboot():
     p.communicate(f'{config.password}\n')[1]
 
 @app.route('/shutdown')
-def reboot():
+def shutdown():
     command = 'shutdown now'.split()
     p = Popen(['sudo', '--stdin'] + command, stdin=PIPE, stderr=PIPE,
             universal_newlines=True)
