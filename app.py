@@ -119,7 +119,7 @@ def load_all(message):
 def load_one(message):                        # test_message() is the event callback function.
     print(message)
     ### making card for host that is being viewed.
-    print(len(scans))
+    print('scan length: ' + len(scans))
     if len(scans) == 0:
         try:
             thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
