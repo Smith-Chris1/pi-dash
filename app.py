@@ -340,8 +340,10 @@ def net_usage(inf):   #change the inf variable according to the interface
     return net_in
 
 def vlcUp(ip):
+    print("Socket stuck?")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = sock.connect_ex((ip, 8090))
+    print("still stuck?")
     return result
 
 if __name__ == '__main__':
