@@ -79,7 +79,7 @@ def load_all(message):
                     else:
                         print(84)
                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-
+                    scans.append(subnet+str(host))
                     location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
                     row = {"host": sysinfo[0],
                         "ip":subnet+str(host),
@@ -93,6 +93,7 @@ def load_all(message):
                         "location":location.text,
                         "iframe":iframe}
                     socketio.emit('new_row', row)
+                    
                     # socketio.emit("new_pi", card) 
                     # print(scans)
                 except:
@@ -136,7 +137,7 @@ def load_one(message):                        # test_message() is the event call
         
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
-
+        scans.append(thisInfo)
         row = {"host": sysinfo[0],
                         "ip":thisInfo,
                         "reboot_function":thisInfo,
