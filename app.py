@@ -138,6 +138,7 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
+        print(sysinfo)
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
         # card = render_template('card.html', 
@@ -206,10 +207,7 @@ def name():
     
 @app.route('/sysinfo',methods = ['POST'])
 def sysinfo():
-    if 'Darwin' in os.uname():
-        inf = 'lo0'
-    else:
-        inf = 'eth0'
+    inf = 'eth0'
     try:
         return f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage(inf)}"
     except:
