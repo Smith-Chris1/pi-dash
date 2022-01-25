@@ -336,7 +336,7 @@ def net_usage(inf):   #change the inf variable according to the interface
 
 def vlcUp(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex((ip, 8080))
+    result = sock.connect_ex((ip, 80))
     return result
 
 if __name__ == '__main__':
