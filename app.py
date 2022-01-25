@@ -31,7 +31,7 @@ def index():
 
 @socketio.on('scans')
 def load_all(message):
-    scans = []
+    # scans = []
     print(message)
     try:
         thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
@@ -120,7 +120,7 @@ def load_all(message):
 def load_one(message):                        # test_message() is the event callback function.
     print(message)
     ### making card for host that is being viewed.
-    print('scan length: ' + len(scans))
+    print(len(scans))
     if len(scans) == 0:
         try:
             thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
