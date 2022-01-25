@@ -56,16 +56,6 @@ def load_all(message):
         ispi = False
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
-        except:
-            ispi = False
-        # print(ispi)
-        if host == 127:
-            socketio.emit('host', "Scan Complete")
-            time.sleep(3)
-            socketio.emit('host', "")
-        else:
-            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
-        if ispi == "True":
             print(ispi)
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
@@ -97,6 +87,17 @@ def load_all(message):
                     # print(scans)
                 except:
                     print('error in updating scans')
+        except:
+            ispi = False
+        # print(ispi)
+        if host == 127:
+            socketio.emit('host', "Scan Complete")
+            time.sleep(3)
+            socketio.emit('host', "")
+        else:
+            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
+        # if ispi == "True":
+            
 
 @socketio.on('load_one')                        # Decorator to catch an event called "my event":
 def load_one(message):                        # test_message() is the event callback function.
