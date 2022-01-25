@@ -21,7 +21,7 @@ scans = []
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-socketio = SocketIO(app)
+socketio = SocketIO(app,async_mode='threading')
 
 @socketio.on('scans')
 def load_all(message):
