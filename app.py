@@ -52,14 +52,14 @@ def load_all(message):
         
     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
     print(subnet)
-    for host in range(255):
+    for host in range(128):
         
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
         except:
             ispi = False
         # print(ispi)
-        if host == 254:
+        if host == 127:
             socketio.emit('host', "Scan Complete")
             time.sleep(3)
             socketio.emit('host', "")
@@ -69,7 +69,8 @@ def load_all(message):
             print(ispi)
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
-            if sysinfo[0] not in " ".join(scans):
+            print(scans)
+            if subnet+str(host) not in " ".join(scans):
                 try:                        
                     ### See if VLC is running on the servers
                     vlc = vlcUp(subnet+str(host))
@@ -274,7 +275,8 @@ def scan():
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             print(scans)
-            if host not in " ".join(scans):
+            print(subnet+str(host))
+            if subnet+str(host) not in " ".join(scans):
                 try:                        
                     ### See if VLC is running on the servers
                     vlc = vlcUp(subnet+str(host))
@@ -295,7 +297,7 @@ def scan():
                         network=sysinfo[3],
                         cardBody = render_template(iframe, ip=subnet+str(host), host=sysinfo[0].replace('-',''))
                         ))
-                    print(scans)
+                    # print(scans)
                 except:
                     print('error in updating scans')
     
