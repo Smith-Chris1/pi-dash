@@ -146,7 +146,7 @@ def load_one(message):                        # test_message() is the event call
         print(('http://'+thisInfo+':5000/sysinfo'))
         sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
-        print('the sysinfo is ' + sysinfo)
+        print(sysinfo)
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
 
