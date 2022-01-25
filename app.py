@@ -31,6 +31,7 @@ def index():
 
 @socketio.on('scans')
 def load_all(message):
+    scans = []
     print(message)
     try:
         thisInfo = subprocess.check_output(['hostname', '--all-ip-addresses']).decode(sys.getdefaultencoding())
@@ -331,7 +332,7 @@ def net_usage(inf):   #change the inf variable according to the interface
 def vlcUp(ip):
     print("Socket stuck?")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex((ip, 8090))
+    result = sock.connect_ex((ip, 8080))
     print("still stuck?")
     return result
 
