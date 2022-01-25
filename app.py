@@ -128,6 +128,8 @@ def load_one(message):                        # test_message() is the event call
         except:
             thisInfo = 'localhost'
         print(thisInfo)
+        if "\r" or "\n" in thisInfo:
+            print('line break')
         if " " in thisInfo:
             hostIP = thisInfo.split(' ')
             thisInfo = thisInfo.split(' ')[0].strip()
