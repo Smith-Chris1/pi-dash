@@ -144,9 +144,13 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         print(iframe)
         print(('http://'+thisInfo+':5000/sysinfo'))
-        sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
+        try:
+            sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo', timeout=3).text.split(",")
+        except:
+            sysinfo = ("uknown,unknown,unknown,unknown").split(',')
         # print('http://'+thisInfo+':5000/sysinfo')
         print(sysinfo)
+        
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
 
