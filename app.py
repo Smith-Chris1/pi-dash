@@ -21,7 +21,7 @@ scans = []
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-socketio = SocketIO(app, async_mode='eventlet')
+socketio = SocketIO(app)
 
 @socketio.on('scans')
 def load_all(message):
@@ -125,13 +125,15 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         print(iframe)
         print(('http://'+thisInfo+':5000/sysinfo'))
-        
-        sysinfo = f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage('eth0')}".split(',')
+        try:
+            sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo', timeout=3).text.split(",")
+        except:
+            print('exception')
+            sysinfo = ("uknown,unknown,unknown,unknown").split(',')
         # print('http://'+thisInfo+':5000/sysinfo')
         print(sysinfo)
         
-        # location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
-        location = open(os.path.dirname(os.path.realpath(__file__))+"/location", 'r')
+        location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
 
         row = {"host": sysinfo[0],
