@@ -50,7 +50,7 @@ def load_all(message):
         thisInfo = thisInfo.split(' ')[0].strip()
     else:
         thisInfo.strip()
-    print(thisInfo.strip()+'/24')
+    print(thisInfo.strip()+'/25')
     ### find other machines on the network
 
     if 'localhost' in thisInfo.strip():
@@ -70,7 +70,7 @@ def load_all(message):
             time.sleep(3)
             socketio.emit('host', "")
         else:
-            socketio.emit('host', "Scanning Subnet/24 for PI: " + subnet+str(host) + ' ' +str(ispi))
+            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
         if ispi == "True":
             print(ispi)
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
@@ -274,7 +274,7 @@ def scan():
     #     cardBody = render_template(iframe, ip=thisInfo, host=sysinfo[0].replace('-',''))
     #     ))
     
-    print(thisInfo.strip()+'/24')
+    print(thisInfo.strip()+'/25')
     ### find other machines on the network
     # mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     # mac = subprocess.run(['nmap', '-p', '5000', thisInfo.strip()+'/24'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
@@ -283,7 +283,7 @@ def scan():
         thisInfo = '127.0.0.1'
     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
     print(subnet)
-    for host in range(256):
+    for host in range(128):
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
         except:
