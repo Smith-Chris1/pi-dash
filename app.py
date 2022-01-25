@@ -282,7 +282,7 @@ def scan():
     print(thisInfo.strip()+'/24')
     ### find other machines on the network
     # mac = subprocess.run(['arp', '-a'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
-    mac = subprocess.run(['nmap', '-p', '5000', thisInfo.strip()+'/24'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
+    # mac = subprocess.run(['nmap', '-p', '5000', thisInfo.strip()+'/24'], capture_output=True).stdout.decode(sys.getdefaultencoding()).split('\n')
     
     if 'localhost' in thisInfo.strip():
         thisInfo = '127.0.0.1'
