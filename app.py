@@ -133,28 +133,17 @@ def load_one(message):                        # test_message() is the event call
             thisInfo.strip()
         print(thisInfo)
         vlc = vlcUp(thisInfo)
-        print(vlc)
+        print('vlc '+vlc)
         if vlc == 0:
             iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
         else:
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
-        print(sysinfo)
+        print('the sysinfo is ' + sysinfo)
         location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
         print(location.text)
-        # card = render_template('card.html', 
-        #     host = sysinfo[0],
-        #     ip=thisInfo,
-        #     reboot_function=thisInfo,
-        #     update_function=f"update_{sysinfo[0].replace('-','')}",
-        #     reboot_path="http://"+thisInfo+":5000/reboot",
-        #     update_path="http://"+thisInfo+":5000/fetch",
-        #     cpu=sysinfo[1],
-        #     vm=sysinfo[2],
-        #     network=sysinfo[3],
-        #     cardBody = render_template(iframe, ip=thisInfo, host=sysinfo[0].replace('-',''))
-        #     )
+
         row = {"host": sysinfo[0],
                         "ip":thisInfo,
                         "reboot_function":thisInfo,
