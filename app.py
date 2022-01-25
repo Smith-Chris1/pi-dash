@@ -142,6 +142,8 @@ def load_one(message):                        # test_message() is the event call
             iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
         else:
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
+        print(iframe)
+        print(('http://'+thisInfo+':5000/sysinfo'))
         sysinfo = requests.request('POST','http://'+thisInfo+':5000/sysinfo').text.split(",")
         # print('http://'+thisInfo+':5000/sysinfo')
         print('the sysinfo is ' + sysinfo)
@@ -333,10 +335,8 @@ def net_usage(inf):   #change the inf variable according to the interface
     return net_in
 
 def vlcUp(ip):
-    print("Socket stuck?")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = sock.connect_ex((ip, 8080))
-    print("still stuck?")
     return result
 
 if __name__ == '__main__':
