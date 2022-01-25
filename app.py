@@ -53,7 +53,7 @@ def load_all(message):
     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
     print(subnet)
     for host in range(128):
-        
+        ispi = False
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
         except:
@@ -77,7 +77,6 @@ def load_all(message):
                     if vlc == 0:
                         iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
                     else:
-                        print(84)
                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
                     scans.append(subnet+str(host))
                     location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
