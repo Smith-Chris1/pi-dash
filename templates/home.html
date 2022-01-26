@@ -61,8 +61,8 @@
             console.log(msg)
             // if (piinfo.length == 0) {
                 // if (!piinfo.includes( msg.host )) {
-                piinfo.push(msg.host)
-                $('#pi-table').DataTable().rows.add(msg.host).draw();
+                piinfo.push(msg)
+                $('#pi-table').DataTable().rows.add(msg).draw();
                 // }
                 // $('#pi-table').DataTable().rows.add(piinfo).draw();
 
