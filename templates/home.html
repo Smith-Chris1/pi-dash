@@ -59,23 +59,22 @@
             // console.log(piinfo.length)
             // console.log(msg.host)
             // if (piinfo.length == 0) {
-                if (!$('#pi-dash').DataTable().search(msg.host).draw()) {
                 piinfo.push(msg)
-                $('#pi-table').DataTable().rows.add(piinfo).draw();
-                }
+                // $('#pi-table').DataTable().rows.add(piinfo).draw();
+
             // } 
             // else {
-            //     piinfo.forEach((pi, index) => {
-            //         console.log(pi)
-            //         if (pi.host == msg.host) {
-            //             console.log("this pi is already in the UI")
-            //             // break
-            //         } else {
-            //             piinfo.push(msg)
-            //             $('#pi-table').DataTable().rows.add(piinfo).draw();
-            //         }
+                piinfo.forEach((pi, index) => {
+                    console.log(pi)
+                    if (pi.host == msg.host) {
+                        console.log("this pi is already in the UI")
+                        // break
+                    } else {
+                        piinfo.push(msg)
+                        $('#pi-table').DataTable().rows.add(piinfo).draw();
+                    }
 
-            //     })
+                })
             // }
 
             // if (piinfo.includes(msg.host)) {
