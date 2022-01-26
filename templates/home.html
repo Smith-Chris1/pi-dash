@@ -52,18 +52,17 @@
             //     'data': "1st load"
             // })
             console.log('socket connected')
-            $(document).ready(function () {
-            socket.emit('load_one', {
-                'data': "1st load"
-            })
-        })
+            
         socket.on('host', function (msg) {
             document.getElementById('host').innerHTML = msg
         })
+
         socket.on('new_row', function (msg) {
             console.log(msg)
+            if (!piinfo.includes(msg.host)){
                 piinfo.push(msg)
                 $('#pi-table').DataTable().row.add(msg).draw();
+            }
         })
         })
         // socket.on('new_pi', function (msg) {
@@ -78,9 +77,9 @@
         //     document.getElementById('host').innerHTML = msg
         // })
         $(document).ready(function () {
-            // socket.emit('load_one', {
-            //     'data': "1st load"
-            // })
+            socket.emit('load_one', {
+                'data': "1st load"
+            })
             var table = $('#pi-table').DataTable({
                     'dom': "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<'float-md-right ml-2'B>f>>" +
                         "<'row'<'col-sm-12'tr>>" +
