@@ -60,10 +60,10 @@
             // console.log(piinfo.length)
             // console.log(msg.host)
             // if (piinfo.length == 0) {
-                if (!piinfo.includes( msg.host )) {
+                // if (!piinfo.includes( msg.host )) {
                 piinfo.push(msg)
                 $('#pi-table').DataTable().rows.add(msg).draw();
-                }
+                // }
                 // $('#pi-table').DataTable().rows.add(piinfo).draw();
 
             // } 
