@@ -360,8 +360,8 @@
 
                                                 response.text().then(sysinfo => {
                                                     sysinfo = sysinfo.split(",");
-                                                    $('#cpu_'+ip).html(sysinfo[
-                                                                1] + "%")
+                                                    document.gettElementById('cpu_'+ip).innerHTML=sysinfo[
+                                                                1] + "%"
                                                     // $('#pi-table').DataTable().row(0)
                                                     //     .cells()
                                                     //     .nodes().to$().find('#cpu').html(
