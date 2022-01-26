@@ -380,116 +380,53 @@
                                                     } else {
                                                         document.getElementById('cpu_'+ip).parentNode.classList.remove('bg-success')
                                                     }
-                                                    $('#pi-table').DataTable().row(0)
-                                                        .cells()
-                                                        .nodes().to$().find('#vm').html(
-                                                            sysinfo[2] +
-                                                            "%");
+
+                                                    document.getElementById('vm_'+ip).innerHTML = sysinfo[2] +"%";
 
                                                     if (sysinfo[2] == 'unknown') {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .addClass("bg-danger")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.add('bg-danger')
+
                                                     }
                                                     if (sysinfo[2] > 70) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .addClass("bg-danger")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.add('bg-danger')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .removeClass("bg-danger")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.remove('bg-danger')
+
                                                     }
                                                     if (sysinfo[2] > 40) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .addClass("bg-warning")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.add('bg-warning')
+
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .removeClass("bg-warning")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.remove('bg-warning')
+
                                                     }
                                                     if (sysinfo[2] < 39) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .addClass("bg-sucess")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.add('bg-success')
+
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#vm')
-                                                            .parent()
-                                                            .removeClass("bg-success")
+                                                        document.getElementById('vm_'+ip).parentNode.classList.remove('bg-success')
+
                                                     }
-                                                    $('#pi-table').DataTable().row(0)
-                                                        .cells()
-                                                        .nodes().to$().find('#net').html(
-                                                            sysinfo[
-                                                                3] + "<small>Mbps</small>");
+
+                                                    document.getElementById('net_'+ip).innerHTML = sysinfo[3] + "<small>Mbps</small>";
 
                                                     if (sysinfo[3] == 'unknown') {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .addClass("bg-danger")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.add('bg-danger')
                                                     }
                                                     if (sysinfo[3] < 13) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .addClass("bg-danger")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.add('bg-danger')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .removeClass("bg-danger")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.remove('bg-danger')
                                                     }
                                                     if (sysinfo[3] < 16.9) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .addClass("bg-warning")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.add('bg-warning')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .removeClass("bg-warning")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.remove('bg-warning')
                                                     }
                                                     if (sysinfo[3] > 17) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .addClass("bg-success")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.add('bg-success')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#net')
-                                                            .parent()
-                                                            .removeClass("bg-success")
-
+                                                        document.getElementById('net_'+ip).parentNode.classList.remove('bg-success')
                                                     }
                                                 })
 
