@@ -59,7 +59,7 @@
 
         socket.on('new_row', function (msg) {
             console.log(msg)
-            if (piinfo.length <= 0) {
+            if (piinfo.length > 0) {
             piinfo.forEach(pi => {
                 console.log(piinfo)
                 let objectsArray = [];
