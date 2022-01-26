@@ -60,11 +60,11 @@
         socket.on('new_row', function (msg) {
             console.log(msg)
             if (piinfo.length > 0) {
-            piinfo.forEach(pi => {
+            // piinfo.forEach(pi => {
                 console.log(piinfo)
                 let objectsArray = [];
 
-                piinfo.foreach((pi) => {
+                piinfo.forEach((pi) => {
 
                     objectsArray.push(Object.values(pi));
 
@@ -75,7 +75,8 @@
                     $('#pi-table').DataTable().row.add(msg).draw();
                 }
                 
-            })} else {
+            // })
+        } else {
                 piinfo.push(msg)
                 $('#pi-table').DataTable().row.add(msg).draw();
             }
