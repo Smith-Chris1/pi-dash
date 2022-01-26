@@ -91,8 +91,7 @@ def load_all(message):
                         "network":sysinfo[3],
                         "location":location.text,
                         "iframe":iframe}
-                    # socketio.emit('new_row', row)
-                    print(host)
+                    socketio.emit('new_row', row)
                     
                     # socketio.emit("new_pi", card) 
                     # print(scans)
