@@ -67,7 +67,7 @@ try:
     print('moving files')
     process = subprocess.Popen(['sudo', 'chown', 'root:root', path+'/services/channel.desktop'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
-    process = subprocess.Popen(['sudo', 'chown', 'root:root', path+'/location'], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['sudo', 'chmod', '777', path+'/location'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
     shutil.copyfile(path+'/vlc/table.html', '/usr/share/vlc/lua/http/table.html')
     shutil.copyfile(path+'/services/flask_service.service', '/etc/systemd/system/pidash.service')
