@@ -61,22 +61,23 @@
             // if (piinfo.length == 0) {
                 if (!piinfo.includes( msg.host )) {
                 piinfo.push(msg)
+                $('#pi-table').DataTable().rows.add(piinfo).draw();
                 }
                 // $('#pi-table').DataTable().rows.add(piinfo).draw();
 
             // } 
             // else {
-                piinfo.forEach((pi, index) => {
-                    console.log(pi)
-                    if (pi.host == msg.host) {
-                        console.log("this pi is already in the UI")
-                        // break
-                    } else {
-                        piinfo.push(msg)
-                        $('#pi-table').DataTable().rows.add(piinfo).draw();
-                    }
+                // piinfo.forEach((pi, index) => {
+                //     console.log(pi)
+                //     if (pi.host == msg.host) {
+                //         console.log("this pi is already in the UI")
+                //         // break
+                //     } else {
+                //         piinfo.push(msg)
+                //         $('#pi-table').DataTable().rows.add(piinfo).draw();
+                //     }
 
-                })
+                // })
             // }
 
             // if (piinfo.includes(msg.host)) {
