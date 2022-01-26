@@ -146,7 +146,7 @@
                             'sWidth': '30px',
                             'class': 'text-right',
                             'render': function (data, type, full, meta) {
-                                data = "<div id='cpu' class='col'>" + data + "%</div>"
+                                data = "<div id='cpu_" + full.ip + " class='col'>" + data + "%</div>"
                                 // console.log(meta.row)
                                 systemStats(full.ip, meta.row)
                                 return data
@@ -156,7 +156,7 @@
                             'data': 'vm',
                             'sWidth': '30px',
                             'render': function (data, type, full, meta) {
-                                data = "<div id='vm' class='col'>" + data + "%</div>"
+                                data = "<div id='vm_'"+full.ip+" class='col'>" + data + "%</div>"
                                 return data
                             }
                         },
@@ -165,7 +165,7 @@
                             'data': 'network',
                             'sWidth': '30px',
                             'render': function (data, type, full, meta) {
-                                data = "<div id='net' class='col'>" + data +
+                                data = "<div id='net_'"+full.ip+" class='col'>" + data +
                                     "<small>Mbps</small></div>"
                                 return data
                             }
@@ -360,12 +360,13 @@
 
                                                 response.text().then(sysinfo => {
                                                     sysinfo = sysinfo.split(",");
-
-                                                    $('#pi-table').DataTable().row(0)
-                                                        .cells()
-                                                        .nodes().to$().find('#cpu').html(
-                                                            sysinfo[
-                                                                1] + "%");
+                                                    $('cpu_'+ip).html(sysinfo[
+                                                                1] + "%")
+                                                    // $('#pi-table').DataTable().row(0)
+                                                    //     .cells()
+                                                    //     .nodes().to$().find('#cpu').html(
+                                                    //         sysinfo[
+                                                    //             1] + "%");
 
                                                     if (sysinfo[1] == 'unknown') {
                                                         $('#pi-table').DataTable().row(0)
