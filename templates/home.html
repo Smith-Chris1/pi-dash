@@ -62,7 +62,7 @@
             if (piinfo.length != 0) {
             piinfo.forEach(pi => {
                 console.log(piinfo)
-                if (!msg.host in pi ) {
+                if (msg.host != pi.host ) {
                     piinfo.push(msg)
                 $('#pi-table').DataTable().row.add(msg).draw();
                 }
