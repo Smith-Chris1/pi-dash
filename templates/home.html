@@ -59,13 +59,17 @@
 
         socket.on('new_row', function (msg) {
             console.log(msg)
+            if (piinfo.length != 0) {
             piinfo.forEach(pi => {
                 console.log(piinfo)
-                if (!msg.host in pi) {
+                if (!msg.host in pi ) {
                     piinfo.push(msg)
                 $('#pi-table').DataTable().row.add(msg).draw();
                 }
-            })
+            })} else {
+                piinfo.push(msg)
+                $('#pi-table').DataTable().row.add(msg).draw();
+            }
             // if (!piinfo.includes(msg.host)){
             //     piinfo.push(msg)
             //     $('#pi-table').DataTable().row.add(msg).draw();
