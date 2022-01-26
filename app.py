@@ -69,7 +69,7 @@ def load_all(message):
             sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
             print(sysinfo)
             print(scans)
-            if subnet+str(host) not in " ".join(scans):
+            if subnet+str(host) not in scans:
                 scans.append(subnet+str(host))
                 try:                        
                     ### See if VLC is running on the servers
