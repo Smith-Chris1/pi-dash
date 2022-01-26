@@ -52,14 +52,14 @@ def load_all(message):
         
     subnet = re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3})\.", thisInfo.strip())[0]
     print(subnet)
-    for host in range(128):
+    for host in range(127):
         ispi = False
         try:
             ispi = requests.request('POST','http://'+subnet+str(host)+':5000/ispi', timeout=.1).text
         except:
             ispi = False
         # print(ispi)
-        if host == 127:
+        if host == 126:
             socketio.emit('host', "Scan Complete")
             time.sleep(3)
             socketio.emit('host', "")
