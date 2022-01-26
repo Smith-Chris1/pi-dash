@@ -363,22 +363,22 @@
                                                     document.getElementById('cpu_'+ip).innerHTML=sysinfo[
                                                                 1] + "%"
                                                     if (sysinfo[1] == 'unknown') {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.addClass('bg-danger')
                                                     }
                                                     if (sysinfo[1] > 70) {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.addClass('bg-danger')
                                                     } else {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.removeClass('bg-danger')
                                                     }
                                                     if (sysinfo[1] > 40) {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-warning')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.addClass('bg-warning')
                                                     } else {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-warning')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.removeClass('bg-warning')
                                                     }
                                                     if (sysinfo[1] < 39) {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-success')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.addClass('bg-success')
                                                     } else {
-                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-success')
+                                                        document.getElementById('cpu_'+ip).parentNode.classList.removeClass('bg-success')
                                                     }
                                                     $('#pi-table').DataTable().row(0)
                                                         .cells()
