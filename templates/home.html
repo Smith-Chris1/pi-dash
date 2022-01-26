@@ -62,7 +62,7 @@
             // if (piinfo.length == 0) {
                 // if (!piinfo.includes( msg.host )) {
                 piinfo.push(msg)
-                $('#pi-table').DataTable().rows.add(msg).draw();
+                $('#pi-table').DataTable().rows.add(msg.host,msg.location,msg.ip,msg.iframe,msg.cpu,msg.vm,msg.network).draw();
                 // }
                 // $('#pi-table').DataTable().rows.add(piinfo).draw();
 
