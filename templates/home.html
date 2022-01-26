@@ -362,57 +362,23 @@
                                                     sysinfo = sysinfo.split(",");
                                                     document.getElementById('cpu_'+ip).innerHTML=sysinfo[
                                                                 1] + "%"
-                                                    // $('#pi-table').DataTable().row(0)
-                                                    //     .cells()
-                                                    //     .nodes().to$().find('#cpu').html(
-                                                    //         sysinfo[
-                                                    //             1] + "%");
-
                                                     if (sysinfo[1] == 'unknown') {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .addClass("bg-danger")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
                                                     }
                                                     if (sysinfo[1] > 70) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .addClass("bg-danger")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .removeClass("bg-danger")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-danger')
                                                     }
                                                     if (sysinfo[1] > 40) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .addClass("bg-warning")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-warning')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .removeClass("bg-warning")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-warning')
                                                     }
                                                     if (sysinfo[1] < 39) {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .addClass("bg-success")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-success')
                                                     } else {
-                                                        $('#pi-table').DataTable().row(0)
-                                                            .cells()
-                                                            .nodes().to$().find('#cpu')
-                                                            .parent()
-                                                            .removeClass("bg-success")
+                                                        document.getElementById('cpu_'+ip).classList.toggle('bg-success')
                                                     }
                                                     $('#pi-table').DataTable().row(0)
                                                         .cells()
