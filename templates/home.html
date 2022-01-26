@@ -52,55 +52,35 @@
             //     'data': "1st load"
             // })
             console.log('socket connected')
-        })
-        // socket.on('new_pi', function (msg) {
-        //     setInnerHTML(document.getElementById('pi-list'), msg)
-        // })
-        socket.on('new_row', function (msg) {
-            // console.log(piinfo.length)
-            console.log(msg)
-            // if (piinfo.length == 0) {
-                // if (!piinfo.includes( msg.host )) {
-                piinfo.push(msg)
-                $('#pi-table').DataTable().row.add(msg).draw();
-                // }
-                // $('#pi-table').DataTable().rows.add(piinfo).draw();
-
-            // } 
-            // else {
-                // piinfo.forEach((pi, index) => {
-                //     console.log(pi)
-                //     if (pi.host == msg.host) {
-                //         console.log("this pi is already in the UI")
-                //         // break
-                //     } else {
-                //         piinfo.push(msg)
-                //         $('#pi-table').DataTable().rows.add(piinfo).draw();
-                //     }
-
-                // })
-            // }
-
-            // if (piinfo.includes(msg.host)) {
-            //     // console.log('already exist')
-            // } else {
-            //     piinfo.push(msg)
-            //     $('#pi-table').DataTable().rows.add(piinfo).draw();
-            // }
-            // piinfo.push(msg)
-
-            // newRow.nodes().to$().prop("id", piinfo.host); 
-            // $('#pi-table tr:last').attr('id',piinfo.host);
-            // console.log(newRow.nodes().to$().prop("id", piinfo.host))
-
+            $(document).ready(function () {
+            socket.emit('load_one', {
+                'data': "1st load"
+            })
         })
         socket.on('host', function (msg) {
             document.getElementById('host').innerHTML = msg
         })
+        socket.on('new_row', function (msg) {
+            console.log(msg)
+                piinfo.push(msg)
+                $('#pi-table').DataTable().row.add(msg).draw();
+        })
+        })
+        // socket.on('new_pi', function (msg) {
+        //     setInnerHTML(document.getElementById('pi-list'), msg)
+        // })
+        // socket.on('new_row', function (msg) {
+        //     console.log(msg)
+        //         piinfo.push(msg)
+        //         $('#pi-table').DataTable().row.add(msg).draw();
+        // })
+        // socket.on('host', function (msg) {
+        //     document.getElementById('host').innerHTML = msg
+        // })
         $(document).ready(function () {
-            socket.emit('load_one', {
-                'data': "1st load"
-            })
+            // socket.emit('load_one', {
+            //     'data': "1st load"
+            // })
             var table = $('#pi-table').DataTable({
                     'dom': "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<'float-md-right ml-2'B>f>>" +
                         "<'row'<'col-sm-12'tr>>" +
