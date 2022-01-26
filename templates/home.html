@@ -48,9 +48,10 @@
         console.log(document.domain)
         socket.connect('http://'+document.domain+':5000/');
         socket.on('connect', function () {
-            socket.emit('load_one', {
-                'data': "1st load"
-            })
+            // socket.emit('load_one', {
+            //     'data': "1st load"
+            // })
+            console.log('socket connected')
         })
         // socket.on('new_pi', function (msg) {
         //     setInnerHTML(document.getElementById('pi-list'), msg)
@@ -97,7 +98,9 @@
             document.getElementById('host').innerHTML = msg
         })
         $(document).ready(function () {
-
+            socket.emit('load_one', {
+                'data': "1st load"
+            })
             var table = $('#pi-table').DataTable({
                     'dom': "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'<'float-md-right ml-2'B>f>>" +
                         "<'row'<'col-sm-12'tr>>" +
