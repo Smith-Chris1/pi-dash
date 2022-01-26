@@ -59,8 +59,10 @@
             // console.log(piinfo.length)
             // console.log(msg.host)
             // if (piinfo.length == 0) {
+                if (!$('#pi-dash').DataTable().search(msg.host).draw()) {
                 piinfo.push(msg)
                 $('#pi-table').DataTable().rows.add(piinfo).draw();
+                }
             // } 
             // else {
             //     piinfo.forEach((pi, index) => {
@@ -293,7 +295,7 @@
                                         <script>
                                             document.getElementById('updateAll').addEventListener('click', function () {
                                                 piinfo.forEach(pi => {
-                                                    update_function('http://' + pi.ip + ':5000/fetch')
+                                                    update_function('http://' + pi.ip)
                                                 })
                                             })
                                         </script>
@@ -305,7 +307,7 @@
                                     <script>
                                         document.getElementById('restartAll').addEventListener('click', function () {
                                             piinfo.forEach(pi => {
-                                                update_function('http://' + pi.ip + ':5000/reboot')
+                                                update_function('http://' + pi.ip)
                                             })
                                         })
                                     </script>
@@ -316,7 +318,7 @@
                                     <script>
                                         document.getElementById('shutdownAll').addEventListener('click', function () {
                                             piinfo.forEach(pi => {
-                                                update_function('http://' + pi.ip + ':5000/shutdown')
+                                                update_function('http://' + pi.ip)
                                             })
                                         })
                                     </script>
