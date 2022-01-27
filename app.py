@@ -192,7 +192,10 @@ def setLocation():
 def getLocation():
     file = open(os.path.dirname(os.path.realpath(__file__))+"/location", 'r')
     location = file.readlines()
-    return location[0]
+    if len(location) > 0:
+        return location[0]
+    else:
+        return "set"
 
 @app.route('/name',methods = ['GET'])
 def name():
