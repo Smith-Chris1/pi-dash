@@ -183,9 +183,12 @@ def shutdown():
     
 @app.route('/setLocation',methods = ['POST'])
 def setLocation():
-    with open(os.path.dirname(os.path.realpath(__file__))+"/location", 'w') as f:
-        f.write(request.values.get('location'))
-    return "success"
+    try:
+        with open(os.path.dirname(os.path.realpath(__file__))+"/location", 'w') as f:
+            f.write(request.values.get('location'))
+        return "success"
+    except:
+        return "error setting location"
         
 
 @app.route('/getLocation')
