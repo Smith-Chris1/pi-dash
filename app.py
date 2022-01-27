@@ -79,7 +79,7 @@ def load_all(message):
                     else:
                         iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
                     
-                    location = requests.request('GET','http://'+thisInfo+':5000/getLocation')
+                    location = requests.request('GET','http://'+subnet+str(host)+':5000/getLocation')
                     row = {"host": sysinfo[0],
                         "ip":subnet+str(host),
                         "reboot_function":subnet+str(host),
