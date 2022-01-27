@@ -217,9 +217,9 @@
                 })
 
             function setLocation(updatedCell, updatedRow, oldValue) {
-                console.log(updatedCell)
+                console.log(updatedCell.data())
                 console.log(updatedRow)
-                ip = updatedRow.cells().nodes()[2].innerHTML
+                ip = updatedRow.data().ip
                 let data = new FormData();
                 data.append('location', updatedCell.data())
                 let headersList = {
