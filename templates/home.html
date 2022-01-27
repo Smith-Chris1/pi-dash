@@ -71,7 +71,7 @@
 
                 });
 
-                if (!objectsArray.includes(msg.host)) {
+                if (!objectsArray.toString().includes(msg.host)) {
                     piinfo.push(msg)
                     $('#pi-table').DataTable().row.add(msg).draw();
                 }
