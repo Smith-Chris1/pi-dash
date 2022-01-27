@@ -45,7 +45,7 @@
         }
 
         var socket = io();
-        console.log(document.domain)
+        // console.log(document.domain)
         socket.connect('http://'+document.domain+':5000/');
         socket.on('connect', function () {
             // socket.emit('load_one', {
@@ -58,7 +58,7 @@
         })
 
         socket.on('new_row', function (msg) {
-            console.log(msg)
+            // console.log(msg)
             if (piinfo.length > 0) {
             // piinfo.forEach(pi => {
                 console.log(piinfo)
@@ -67,7 +67,7 @@
                 piinfo.forEach((pi) => {
 
                     objectsArray.push(Object.values(pi));
-                    console.log(objectsArray)
+                    // console.log(objectsArray)
 
                 });
 
@@ -217,6 +217,8 @@
                 })
 
             function setLocation(updatedCell, updatedRow, oldValue) {
+                console.log(updatedCell)
+                console.log(updatedRow)
                 ip = updatedRow.cells().nodes()[2].innerHTML
                 let data = new FormData();
                 data.append('location', updatedCell.data())
