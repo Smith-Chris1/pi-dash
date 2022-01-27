@@ -98,7 +98,7 @@ def load_all(message):
                     except:
                         print('error in updating scans')
         
-        socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
+            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
             
 
 @socketio.on('load_one')                        # Decorator to catch an event called "my event":
