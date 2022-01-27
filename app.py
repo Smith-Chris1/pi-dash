@@ -63,42 +63,42 @@ def load_all(message):
             socketio.emit('host', "Scan Complete")
             time.sleep(3)
             socketio.emit('host', "")
-        
-        if ispi == "True":
-            print(ispi)
-            sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
-            print(sysinfo)
-            print(scans)
-            if subnet+str(host) not in scans:
-                scans.append(subnet+str(host))
-                try:                        
-                    ### See if VLC is running on the servers
-                    vlc = vlcUp(subnet+str(host))
-                    if vlc == 0:
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
-                    else:
-                        iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
-                    
-                    location = requests.request('GET','http://'+subnet+str(host)+':5000/getLocation')
-                    row = {"host": sysinfo[0],
-                        "ip":subnet+str(host),
-                        "reboot_function":subnet+str(host),
-                        "update_function":f"update_{sysinfo[0].replace('-','')}",
-                        "reboot_path":subnet+str(host),
-                        "update_path":f"http://{subnet+str(host)}:5000/fetch",
-                        "cpu":sysinfo[1],
-                        "vm":sysinfo[2],
-                        "network":sysinfo[3],
-                        "location":location.text,
-                        "iframe":iframe}
-                    socketio.emit('new_row', row)
-                    
-                    # socketio.emit("new_pi", card) 
-                    # print(scans)
-                except:
-                    print('error in updating scans')
         else:
-            socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
+            if ispi == "True":
+                print(ispi)
+                sysinfo = requests.request('POST','http://'+subnet+str(host)+':5000/sysinfo').text.split(",")
+                print(sysinfo)
+                print(scans)
+                if subnet+str(host) not in scans:
+                    scans.append(subnet+str(host))
+                    try:                        
+                        ### See if VLC is running on the servers
+                        vlc = vlcUp(subnet+str(host))
+                        if vlc == 0:
+                            iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+                        else:
+                            iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
+
+                        location = requests.request('GET','http://'+subnet+str(host)+':5000/getLocation')
+                        row = {"host": sysinfo[0],
+                            "ip":subnet+str(host),
+                            "reboot_function":subnet+str(host),
+                            "update_function":f"update_{sysinfo[0].replace('-','')}",
+                            "reboot_path":subnet+str(host),
+                            "update_path":f"http://{subnet+str(host)}:5000/fetch",
+                            "cpu":sysinfo[1],
+                            "vm":sysinfo[2],
+                            "network":sysinfo[3],
+                            "location":location.text,
+                            "iframe":iframe}
+                        socketio.emit('new_row', row)
+
+                        # socketio.emit("new_pi", card) 
+                        # print(scans)
+                    except:
+                        print('error in updating scans')
+        
+        socketio.emit('host', "Scanning Subnet/25 for PI: " + subnet+str(host) + ' ' +str(ispi))
             
 
 @socketio.on('load_one')                        # Decorator to catch an event called "my event":
