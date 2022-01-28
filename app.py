@@ -219,7 +219,7 @@ def sysinfo():
     
 @app.route('/startVLCA', methods = ['POST'])
 def startVLCA():
-    i = vlc.Instance('–x11-display', ':0')
+    i = vlc.Instance()
     media_player = i.media_player_new()
     media_player.fullscreen()
     media_player.set_mrl('udp://@239.27.0.27:1234')
