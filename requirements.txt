@@ -4,3 +4,4 @@ psutil
 waitress
 flask-socketio
 eventlet
+python-vlc

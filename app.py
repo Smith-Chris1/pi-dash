@@ -13,6 +13,7 @@ import requests
 import time
 import re
 import json
+import vlc
 
 app = Flask(__name__)
 
@@ -218,7 +219,12 @@ def sysinfo():
     
 @app.route('/startVLCA', methods = ['POST'])
 def startVLCA():
-    vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256', 'udp://@239.27.0.27:1234'])
+    i = vlc.Instance()
+    media_player = i.media_player_new('–x11-display', ':0')
+    media_player.fullscreen()
+    media_player.set_mrl('udp://@239.27.0.27:1234')
+    media_player.play()
+    # vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256', 'udp://@239.27.0.27:1234'])
     return "started"
 
 @app.route('/startVLCB', methods = ['POST'])
