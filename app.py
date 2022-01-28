@@ -219,10 +219,11 @@ def sysinfo():
     
 @app.route('/startVLCA', methods = ['POST'])
 def startVLCA():
-    i = vlc.Instance()
-    media_player = i.media_player_new()
-    media_player.fullscreen()
-    media_player.set_mrl('udp://@239.27.0.27:1234')
+    # i = vlc.Instance()
+    media_player = vlc.MediaPlayer('udp://@239.27.0.27:1234')
+    # media_player = i.media_player_new()
+    # media_player.fullscreen()
+    # media_player.set_mrl('udp://@239.27.0.27:1234')
     media_player.play()
     # vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256', 'udp://@239.27.0.27:1234'])
     return "started"
