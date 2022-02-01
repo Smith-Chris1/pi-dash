@@ -87,17 +87,9 @@
             // }
         })
         })
-        // socket.on('new_pi', function (msg) {
-        //     setInnerHTML(document.getElementById('pi-list'), msg)
-        // })
-        // socket.on('new_row', function (msg) {
-        //     console.log(msg)
-        //         piinfo.push(msg)
-        //         $('#pi-table').DataTable().row.add(msg).draw();
-        // })
-        // socket.on('host', function (msg) {
-        //     document.getElementById('host').innerHTML = msg
-        // })
+
+        
+        
         $(document).ready(function () {
             socket.emit('load_one', {
                 'data': "1st load"

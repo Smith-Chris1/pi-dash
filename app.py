@@ -76,7 +76,7 @@ def load_all(message):
                         ### See if VLC is running on the servers
                         vlc = vlcUp(subnet+str(host))
                         if vlc == 0:
-                            iframe = '<iframe src="http://' + subnet+str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+                            iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/table.html?ip='+subnet+str(host)+ '" style="min-width:320px; max-height: 50px;"></iframe>'
                         else:
                             iframe = '<iframe src="http://' + subnet+str(host) + ':5000/static/startVLC.html?ip='+subnet+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
 
@@ -125,7 +125,7 @@ def load_one(message):                        # test_message() is the event call
         vlc = vlcUp(thisInfo)
         print(vlc)
         if vlc == 0:
-            iframe = '<iframe src="http://' + thisInfo + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+            iframe = '<iframe src="http://' + thisInfo + ':5000/static/table.html?ip='+thisInfo + '" style="min-width:320px; max-height: 50px;"></iframe>'
         else:
             iframe = '<iframe src="http://' + thisInfo + ':5000/static/startVLC.html?ip='+thisInfo + '" style="max-width:240px !important; max-height: 50px;"></iframe>'
         print(iframe)
@@ -166,7 +166,27 @@ def index():
     global scans
     return render_template("home.html", scanresults=" ".join(scans))
 
+@app.route('/sendCommand', methods = ['POST'])
+def sendCommand():
+    payload = "new loc"
+    headers = {
+    'Authorization': 'Basic OnNvZnR3YXJl',
+    'Content-Type': 'text/plain'
+    }
+    url = request.get_data()
+    requests.request('POST',url,headers=headers, data=payload)
+    return "Success"
 
+@app.route('/getStatus')
+def getStatus():
+    payload = "new loc"
+    headers = {
+    'Authorization': 'Basic OnNvZnR3YXJl',
+    'Content-Type': 'text/plain'
+    }
+    vlcresponse = requests.request('POST','http://localhost:8080/requests/status.xml',headers=headers, data=payload)
+    return vlcresponse.text
+    
 
 @app.route('/reboot')
 def reboot():
@@ -219,11 +239,13 @@ def sysinfo():
     
 @app.route('/startVLCA', methods = ['POST'])
 def startVLCA():
-    # i = vlc.Instance()
-    media_player = vlc.MediaPlayer('udp://@239.27.0.27:1234')
-    # media_player = i.media_player_new()
-    # media_player.fullscreen()
-    # media_player.set_mrl('udp://@239.27.0.27:1234')
+    #i = vlc.Instance()
+    #media_player = i.media_player_new()
+    #media_player.set_mrl('udp://@239.27.0.27:1234')
+    media_player = vlc.MediaPlayer()
+    media = vlc.Media('udp://@239.27.0.27:1234')
+    media_player.set_media(media)
+    #media_player.media_player.set_fullscreen(True)
     media_player.play()
     # vlca = subprocess.Popen(['cvlc', '-I', 'http', '--http-port', '8080', '--http-password', 'software', '--no-video-title-show', '--one-instance', '--fullscreen', '--volume-save','--volume-step=256', 'udp://@239.27.0.27:1234'])
     return "started"
@@ -255,7 +277,7 @@ def piInfo(host):
     ### See if VLC is running on the servers
     vlc = vlcUp(str(host))
     if vlc == 0:
-        iframe = '<iframe src="http://' +str(host) + ':8080/table.html" style="min-width:320px; max-height: 50px;"></iframe>'
+        iframe = '<iframe src="http://' +str(host) + ':5000/static/table.html?ip='+str(host)+ '" style="min-width:320px; max-height: 50px;"></iframe>'
     else:
         iframe = '<iframe src="http://' + str(host) + ':5000/static/startVLC.html?ip='+str(host)+ '" style="max-width:240px !important; max-height: 50px;"></iframe>'
     

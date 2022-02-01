@@ -1,0 +1,393 @@
+<!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - >
+<  mobile.html: VLC media player web interface - VLM
+< - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - >
+<  Copyright (C) 2005-2014 VLC authors and VideoLAN
+<  $Id$
+<
+<  Authors: Brandon Brooks <bwbrooks -at- archmageinc -dot- com>
+<
+<  This program is free software; you can redistribute it and/or modify
+<  it under the terms of the GNU General Public License as published by
+<  the Free Software Foundation; either version 2 of the License, or
+<  (at your option) any later version.
+<
+<  This program is distributed in the hope that it will be useful,
+<  but WITHOUT ANY WARRANTY; without even the implied warranty of
+<  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<  GNU General Public License for more details.
+<
+<  You should have received a copy of the GNU General Public License
+<  along with this program; if not, write to the Free Software
+<  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+< - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<html>
+
+<head>
+    <title>VLC media player - Web Interface</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <script type="text/javascript" src="js/common.js"></script>
+    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link type="text/css" href="css/mobile.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js">
+    </script>
+    <script type="text/javascript" src="js/jquery.jstree.js"></script>
+    <script type="text/javascript" src="https://releases.flowplayer.org/js/flowplayer-3.2.6.min.js"></script>
+    <script type="text/javascript">
+        var pollStatus = true;
+        
+        function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+var currentArt = null;
+var current_que = 'main';
+var current_playlist_id = -1;
+var previous_playlist_id = -1;
+var prevState = 'paused'
+function updateArt(url) {
+    $('#albumArt').fadeOut(500, function () {
+        $(this).addClass('hidden').removeAttr('height').removeAttr('width').attr('src', url);
+    });
+}
+function updatePlayList(force_refresh) {
+    if (force_refresh) {
+        //refresh playlist..
+        $('#libraryTree').jstree('refresh', -1);
+    } else {
+        //iterate through playlist..
+        var match = false;
+        $('.jstree-leaf').each(function(){
+            var id = $(this).attr('id');
+            if (id != null && id.substr(0,5) == 'plid_') {
+                if ( id.substr(5) == current_playlist_id ) {
+                    $(this).addClass('ui-state-highlight');
+                    $(this).attr('current', 'current');
+                    this.scrollIntoView(true);
+                    match = true;
+                } else {
+                    $(this).removeClass('ui-state-highlight');
+                    $(this).removeAttr('current');
+                }
+                if ($(this).children('a').size() > 0) {
+                    $($(this).children('a')[0]).removeClass('ui-state-active');
+                }
+            }
+    	});
+    	//local title wasn't found - refresh playlist..
+    	if (!match) updatePlayList(true);
+    }
+}
+        $(function () {
+            function sendCommand(command){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "text/plain");
+            
+            if (command.input != null) {
+                cmd = `http://${command.ip}:8080/requests/status.xml?command=${command.command}&input=${command.input}`;
+            } else {
+                cmd = `http://${command.ip}:8080/requests/status.xml?command=${command.command}`;
+            }
+            var requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              redirect: 'follow',
+              body:cmd
+            };
+            fetch(`http://${command.ip}:5000/sendCommand`, requestOptions)
+              .then(response => response.text())
+              .then(result => console.log(result))
+              .catch(error => console.log('error', error));
+        }
+
+$('#buttonPlay').click(function () {
+        if ($(this).attr('state') == 'stopped') {
+            switch (current_que) {
+            case 'main':
+                var id = $('.jstree-clicked', '#libraryTree').length > 0 ? $('.jstree-clicked', '#libraryTree').first().parents().first().attr('id').substr(5) : current_playlist_id;
+                sendCommand({
+                    'ip': getParameterByName('ip'),
+                    'command': 'pl_play',
+                });
+                break;
+            case 'stream':
+                sendVLMCmd('control Current play');
+                flowplayer("player", "https://releases.flowplayer.org/swf/flowplayer-3.2.7.swf");
+                break;
+            }
+        } else {
+            switch (current_que) {
+            case 'main':
+            sendCommand({
+                    'ip': getParameterByName('ip'),
+                    'command': 'pl_pause'
+                });
+                break;
+            case 'stream':
+                sendVLMCmd('control Current pause');
+                break;
+            }
+        }
+        return false;
+    });
+
+            $('#channela').click(function () {
+                sendCommand({
+                    'ip': getParameterByName('ip'),
+                    'command': 'in_play',
+                    'input': 'udp://@239.27.0.27:1234'
+                });
+            });
+            $('#channelb').click(function () {
+                sendCommand({
+                    'command': 'in_play',
+                    'input': 'udp://@239.27.0.27:1235'
+                });
+            });
+        })
+        function updateStatus() {
+            ip = getParameterByName('ip')
+                $.ajax({
+                    url: `http://${ip}:5000/getStatus`,
+                    data: ip,
+                    success: function (data, status, jqXHR) {
+                        if (current_que == 'main') {
+                            $('.dynamic').empty();
+                            $('#mediaTitle').append($('[name="filename"]', data).text());
+                            $('#totalTime').append(format_time($('length', data).text()));
+                            $('#currentTime').append(format_time($('time', data).text()));
+                            if (!$('#seekSlider').data('clicked')) {
+                                $('#seekSlider').slider({
+                                    value: toFloat($('position', data).text()) * 100
+                                });
+                            }
+                            $('#currentVolume').append(Math.round($('volume', data).text() / 2.56) + '%');
+                            /* Don't interfere with the user's action */
+                            if (!$('#volumeSlider').data('clicked')) {
+                                $('#volumeSlider').slider({
+                                    value: ($('volume', data).text() / 5.12)
+                                });
+                            }
+                            $('#rateSlider').slider({
+                                value: ($('rate', data).text())
+                            });
+                            $('#currentRate').append(Math.round($('rate', data).text() * 100) / 100 + 'x');
+                            $('#audioSlider').slider({
+                                value: ($('audiodelay', data).text())
+                            });
+                            $('#currentAudioDelay').append(Math.round($('audiodelay', data).text() * 100) / 100 + 's');
+                            $('#subtitleSlider').slider({
+                                value: ($('subtitledelay', data).text())
+                            });
+                            $('#currentSubtitleDelay').append(Math.round($('subtitledelay', data).text() * 100) / 100 + 's');
+                            $('#seekSlider').attr('totalLength', $('length', data).text());
+                            $('#buttonPlay').attr('state', $('state', data).text()).attr('mrl', $('[name="filename"]', data).text());
+                        
+                            if ($('state', data).text() == 'playing') {
+                            
+                                $('#buttonPlay').removeClass('paused').addClass('playing');
+                            } else {
+
+                                $('#buttonPlay').removeClass('playing').addClass('paused');
+                            }
+                            if ($('random', data).text() == 'true') {
+                                $('#buttonShuffle').removeClass('ui-state-default').addClass('ui-state-active');
+                            } else {
+                                $('#buttonShuffle').addClass('ui-state-default').removeClass('ui-state-active');
+                            }
+                            if ($('loop', data).text() == 'true') {
+                                $('#buttonLoop').removeClass('ui-state-default').addClass('ui-state-active');
+                            } else {
+                                $('#buttonLoop').addClass('ui-state-default').removeClass('ui-state-active');
+                            }
+                            if ($('repeat', data).text() == 'true') {
+                                $('#buttonRepeat').removeClass('ui-state-default').addClass('ui-state-active');
+                            } else {
+                                $('#buttonRepeat').addClass('ui-state-default').removeClass('ui-state-active');
+                            }
+                        
+                            if ($('[name="artwork_url"]', data).text() != currentArt && $('[name="artwork_url"]', data).text() != "") {
+                                var tmp = new Date();
+                                currentArt = $('[name="artwork_url"]', data).text();
+                                updateArt('/art?' + tmp.getTime());
+                            } else if ($('[name="artwork_url"]', data).text() == "" && currentArt != 'images/vlc-48.png') {
+                                currentArt = 'images/vlc-48.png';
+                                updateArt(currentArt);
+                            }
+                        
+                            current_playlist_id = parseInt($('currentplid', data).text());
+                            if (previous_playlist_id != current_playlist_id) {
+                                updatePlayList();
+                                previous_playlist_id = current_playlist_id;
+                            }
+                        
+                            if (pollStatus) {
+                                setTimeout(updateStatus, 1000);
+                            }
+                        
+                        }
+                        $('band', data).each(function () {
+                            var id = $(this).attr('id');
+                            var value = $(this).text() ? $(this).text() : 0;
+                            var freq = ["60 Hz","170 Hz", "310 Hz", "600 Hz", "1 kHz","3 kHz", "6 kHz", "12 kHz" , "14 kHz" , "16 kHz" ];
+                            if (!$('#eq_container' + id).length) {
+                                $('#window_equalizer').append('<div style="float:left;width:44px;" align="center" id="eq_container' + id + '"><div id="eq' + id + '_txt">' + value + 'dB</div><div class="eqBand" id="eq' + id + '" style="font-size: 18px;"></div><div>' + freq[id] + '</div></div>');
+                                $('#eq' + id).slider({
+                                    min: -20,
+                                    max: 20,
+                                    step: 0.1,
+                                    range: "min",
+                                    value: value,
+                                    animate: true,
+                                    orientation: "vertical",
+                                    stop: function (event, ui) {
+                                        $('#' + $(this).attr('id') + '_txt').empty().append(ui.value + 'dB');
+                                        sendCommand({
+                                            command: 'equalizer',
+                                            val: ui.value,
+                                            band: $(this).attr('id').substr(2)
+                                        })
+                                    },
+                                    slide: function (event, ui) {
+                                        $('#' + $(this).attr('id') + '_txt').empty().append(ui.value + 'dB');
+                                    }
+                                });
+                            } else {
+                                $('#eq' + id).slider({
+                                    value: value
+                                });
+                                $('#eq' + id + '_txt').empty().append(Math.round(value * 100) / 100 + 'dB');
+                            }
+                        });
+                        $('#preamp').slider('value', $('preamp', data).text());
+                        $('#preamp_txt').empty().append(Math.round($('preamp', data).text() * 100) / 100 + 'dB');
+                    },
+                    error: function (jqXHR, status, error) {
+                        setTimeout(updateStatus, 500);
+                    }
+                });
+            }
+        $(document).ready(function() {
+            updateStatus()
+        })
+    </script>
+    <style>
+        svg {
+            display: block;
+        }
+
+        #circle {
+            transition: stroke-dashoffset 300ms ease-in;
+            stroke-dashoffset: 0;
+            fill: none;
+        }
+
+        #circle.play {
+            stroke-dashoffset: 314;
+        }
+
+        .ui-slider-range {
+            background: rgba(13, 202, 240, 1) !important;
+        }
+
+        .fullscreen {
+            background-color: transparent;
+            background-origin: content-box;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: 1.5em;
+            border: 0;
+            box-sizing: content-box;
+            cursor: pointer;
+            font-size: 1em;
+            height: 1.5em;
+            min-width: 1.5em;
+            padding: 0.25em;
+            background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2032%2032%22%20style%3D%22%22%20xml%3Aspace%3D%22preserve%22%20height%3D%22100%25%22%20width%3D%22100%25%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%2300000%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%20id%3D%22Rectangle_6%22%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M4.7%2C7.7h4.7V5.4H4.7c-1.3%2C0-2.4%2C1.1-2.4%2C2.4v4.7h2.4V7.7z%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3Cg%20id%3D%22Rectangle_6_copy%22%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M4.7%2C19.5H2.4v4.7c0%2C1.3%2C1.1%2C2.4%2C2.4%2C2.4h4.7v-2.4H4.7V19.5z%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3Cg%20id%3D%22Rectangle_6_copy_2%22%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M27.3%2C5.4h-4.7v2.4h4.7v4.7h2.4V7.7C29.6%2C6.4%2C28.6%2C5.4%2C27.3%2C5.4z%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3Cg%20id%3D%22Rectangle_6_copy_3%22%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M27.3%2C24.3h-4.7v2.4h4.7c1.3%2C0%2C2.4-1.1%2C2.4-2.4v-4.7h-2.4V24.3z%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E");
+        }
+
+        #buttonFull {
+            background-position: 0;
+        }
+
+        .ui-corner-all {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        #mediaTitle {
+            width: auto;
+            margin: auto;
+        }
+        #currentTime {
+            width: auto;
+            margin: auto;
+        }
+        /* #buttonPlay {
+            width: 120px;
+        } */
+        #controls {
+            margin-top: 0px;
+        }
+        #play_controls {
+            margin-top: 0px;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgba(255, 255, 255, 0)!important;">
+    <div id="content" class="centered">
+        <div id="play_controls">
+            <div id="controls">
+                <div id="buttons">
+                    
+                    
+                    <div style="margin-left:5px; display:flex">
+                        <div id="buttonPlay" class="button48  ui-corner-all paused" title='<?vlc gettext("Play") ?>'></div>
+                        <div>
+                            <div style="display: flex;">
+                        <div id="mediaTitle" class="dynamic centered"></div>
+                        <div id="currentTime" class="dynamic centered" style="text-align: center;margin-left: 5px;">00:00:00</div>
+                    </div>
+                        <div style="display: flex;">
+                        <div id="buttonFull" class="fullscreen  ui-corner-all" title="Full Screen"></div>
+                        <div id="channela" class="ui-corner-all" style="
+                        margin-left: 5px;
+                        background: none;
+                        border: none;
+                        display: inline-block;
+                        cursor: pointer;
+                        background-repeat: no-repeat;"><strong>Channel A</strong>
+                        </div>
+
+                        <div id="channelb" class="ui-corner-all" style="
+                        margin-left: 5px;
+                        background: none;
+                        border: none;
+                        display: inline-block;
+                        cursor: pointer;
+                        background-repeat: no-repeat;"><strong>Channel B</strong>
+                        </div>
+
+                    </div>
+                    </div>
+                    </div>
+                    
+                    <div
+                        style="margin: 0 auto;position: relative;width: 288px;display:flex;justify-content: space-evenly;align-items: center;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</body>
+
+</html>
