@@ -309,7 +309,7 @@
                                     <script>
                                         document.getElementById('restartAll').addEventListener('click', function () {
                                             piinfo.forEach(pi => {
-                                                update_function('http://' + pi.ip)
+                                                reboot_function('http://' + pi.ip)
                                             })
                                         })
                                     </script>
@@ -320,20 +320,12 @@
                                     <script>
                                         document.getElementById('shutdownAll').addEventListener('click', function () {
                                             piinfo.forEach(pi => {
-                                                update_function('http://' + pi.ip)
+                                                shutdown_function('http://' + pi.ip)
                                             })
                                         })
                                     </script>
                                 </ul>
 
-                                <!-- <nav class="nav nav-masthead justify-content-center float-md-end">
-                                    <a id="scan" class="nav-link active" aria-current="page" href="#">Scan</a>
-                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Update
-                                        All</a>
-                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Restart
-                                        All</a>
-                                    <a id="updateAll" class="nav-link active" aria-current="page" href="#">Shutdown
-                                        All</a> -->
                                 <script>
                                     document.getElementById("scan").addEventListener("click", function () {
                                         socket.emit('scans', {
