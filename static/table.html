@@ -149,6 +149,7 @@ $('#buttonPlay').click(function () {
             });
             $('#channelb').click(function () {
                 sendCommand({
+                    'ip': getParameterByName('ip'),
                     'command': 'in_play',
                     'input': 'udp://@239.27.0.27:1235'
                 });
