@@ -154,6 +154,12 @@ $('#buttonPlay').click(function () {
                     'input': 'udp://@239.27.0.27:1235'
                 });
             });
+            $('#buttonFull').click(function () {
+                sendCommand({
+                    'ip': getParameterByName('ip'),
+                    'command': 'fullscreen'
+                });
+            });
         })
         function updateStatus() {
             ip = getParameterByName('ip')
