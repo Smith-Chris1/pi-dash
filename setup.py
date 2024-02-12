@@ -56,7 +56,7 @@ try:
 
 
     print("installing dependancies")
-    process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt' ], cwd=path, stdout=subprocess.PIPE)
+    process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
     output = process.communicate()[0]
     
     print("installing nmap")
