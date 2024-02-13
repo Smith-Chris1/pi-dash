@@ -40,6 +40,7 @@ try:
         print("The new directory is created!")
     else:
         subprocess.Popen(['rm', '-r', path])
+        os.makedirs(path)
 
     
     # if Path(path+'requirements.txt').is_file():
