@@ -63,13 +63,14 @@ try:
 
     print("installing docker")
     subprocess.Popen(['sudo', 'apt-get', 'update', '&&', 'sudo', 'apt-get', 'upgrade'])
-    subprocess.Popen(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin'])
-    # docker = subprocess.Popen(['curl', '-sSL', '-L', 'https://get.docker.com | sh'],shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-    # dockerRun = subprocess.Popen(['sh'], input=docker.stdout, capture_output=True)
-    # docker.communicate()[0]
-    # print(output.stdout.decode('utf-8').strip())
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/containerd.io_1.6.9-1_armhf.deb', '-o', path+'/dockerStuff/containerd.io_1.6.9-1_armhf.deb'])
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb', '-o', path+'/dockerStuff/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb', '-o', path+'/dockerStuff/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb', '-o', path+'/dockerStuff/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb', '-o', path+'/dockerStuff/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/dockerStuff/containerd.io_1.6.9-1_armhf.deb', '\\',path+'/dockerStuff/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/dockerStuff/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/dockerStuff/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/dockerStuff/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb'])
     
-    subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
+    # subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
 
     subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
