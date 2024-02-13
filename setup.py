@@ -38,6 +38,8 @@ try:
     if not isExist:
         os.makedirs(path)
         print("The new directory is created!")
+    else:
+        subprocess.Popen(['rm', '-r', path])
 
     
     # if Path(path+'requirements.txt').is_file():
