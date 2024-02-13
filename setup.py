@@ -59,8 +59,13 @@ try:
     
 
 
-    print("installing dependancies")
-    subprocess.Popen(['pip3', 'install', 'docker'])
+    print("installing docker")
+    subprocess.Popen(['sudo', 'apt-get', 'update', '&&', 'sudo', 'apt-get', 'upgrade'])
+    subprocess.Popen(['curl', '-fsSL', 'https://get.docker.com', '-o', 'get-docker.sh'])
+    subprocess.Popen(['sudo', 'sh', 'get-docker.sh'])
+    subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi'])
+    subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'Pi'])
+    # subprocess.Popen(['pip3', 'install', 'docker'])
 
     subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
     # client = docker.from_env()
