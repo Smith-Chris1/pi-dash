@@ -63,10 +63,10 @@ try:
 
     print("installing docker")
     subprocess.Popen(['sudo', 'apt-get', 'update', '&&', 'sudo', 'apt-get', 'upgrade'])
-    docker = subprocess.Popen(['curl', '-sSL', 'https://get.docker.com', '|', 'sh'], stdout=subprocess.PIPE)
-    output = subprocess.check_output(('grep', 'process_name'), stdin=docker.stdout)
-    docker.wait()
-    
+    docker = subprocess.Popen(['curl', '-sSL', 'https://get.docker.com', '|', 'sh'], shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    output = docker.communicate()[0]
+    print(output)
+
     subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
 
