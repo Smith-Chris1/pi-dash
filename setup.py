@@ -59,7 +59,7 @@ try:
     print("installing dependancies")
     subprocess.Popen(['pip3', 'install', 'docker'])
 
-    subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar' '-O', path+"/pi-dash.tar"])
+    subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
     # client = docker.from_env()
     # client.containers.run('pidash')
     # process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
