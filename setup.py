@@ -43,7 +43,7 @@ try:
         subprocess.Popen(['rm', '-r', path])
         time.sleep(10)
         os.makedirs(path)
-        os.makedirs(path+'/dockerStuff')
+        # os.makedirs(path+'/dockerStuff')
 
     
     # if Path(path+'requirements.txt').is_file():
