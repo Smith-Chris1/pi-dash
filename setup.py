@@ -5,6 +5,7 @@ import shutil
 import os
 from subprocess import run
 import sys
+import time
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -40,6 +41,7 @@ try:
         print("The new directory is created!")
     else:
         subprocess.Popen(['rm', '-r', path])
+        time.sleep(10)
         os.makedirs(path)
 
     
