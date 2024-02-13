@@ -63,9 +63,10 @@ try:
 
     print("installing docker")
     subprocess.Popen(['sudo', 'apt-get', 'update', '&&', 'sudo', 'apt-get', 'upgrade'])
-    docker = subprocess.Popen(['curl', '-sSL', '-L', 'https://get.docker.com | sh'],shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    subprocess.Popen(['sudo', 'apt-get', 'install', 'docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-buildx-plugin', 'docker-compose-plugin'])
+    # docker = subprocess.Popen(['curl', '-sSL', '-L', 'https://get.docker.com | sh'],shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     # dockerRun = subprocess.Popen(['sh'], input=docker.stdout, capture_output=True)
-    docker.communicate()[0]
+    # docker.communicate()[0]
     # print(output.stdout.decode('utf-8').strip())
     
     subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
