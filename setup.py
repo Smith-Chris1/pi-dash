@@ -59,6 +59,7 @@ try:
     print('first install')
     process = subprocess.Popen(["git", "-C", '/home/pi/', "clone", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
     output = process.communicate()[0] 
+    os.makedirs(path+'/dockerStuff')
     
 
 
