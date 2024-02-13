@@ -70,7 +70,11 @@ try:
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb', '-O', path+'/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb', '-O', path+'/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb'])
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb', '-O', path+'/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb'])
-    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/containerd.io_1.6.9-1_armhf.deb', '\\',path+'/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb', '\\', path+'/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/containerd.io_1.6.9-1_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb'])
+    subprocess.Popen(['sudo', 'dpkg', '-i', path+'/docker-compose-plugin_2.6.0~raspbian-bullseye_armhf.deb'])
     
     # subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
