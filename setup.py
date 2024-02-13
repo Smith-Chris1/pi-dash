@@ -63,7 +63,7 @@ try:
 
     print("installing docker")
     subprocess.Popen(['sudo', 'apt-get', 'update', '&&', 'sudo', 'apt-get', 'upgrade'])
-    subprocess.Popen('wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/containerd.io_1.6.9-1_armhf.deb', '-O', path+'/dockerStuff/containerd.io_1.6.9-1_armhf.deb')
+    subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/containerd.io_1.6.9-1_armhf.deb', '-O', path+'/dockerStuff/containerd.io_1.6.9-1_armhf.deb'])
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb', '-O', path+'/dockerStuff/docker-ce_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb', '-O', path+'/dockerStuff/docker-ce-cli_25.0.3-1~raspbian.11~bullseye_armhf.deb'])
     subprocess.Popen(['wget', 'https://download.docker.com/linux/raspbian/dists/bullseye/pool/stable/armhf/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb', '-O', path+'/dockerStuff/docker-buildx-plugin_0.12.1-1~raspbian.11~bullseye_armhf.deb'])
