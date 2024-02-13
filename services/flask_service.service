@@ -3,8 +3,7 @@ Description=Flask Streaming Server
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/python3 app.py
-WorkingDirectory=/home/pi/pi-dash
+ExecStart=docker run --rm -it -p 5000:5000 -p 8080:8080 --name pi-dash-container pi-dash
 StandardOutput=inherit
 StandardError=inherit
 Restart=always

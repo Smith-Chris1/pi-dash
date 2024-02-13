@@ -1,7 +1,8 @@
-Flask==1.1.2
-Flask-Cors==3.0.10
-psutil==5.8.0
-waitress==2.0.0
-flask-socketio==5.2.0
-eventlet==0.33.0
-python-vlc==3.0.16120
+Flask
+Flask-Cors
+psutil
+waitress
+flask-socketio
+eventlet
+python-vlc
+requests

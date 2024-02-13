@@ -41,23 +41,29 @@ try:
 
     
     # if Path(path+'requirements.txt').is_file():
-    print(path+'/requirements.txt')
-    print(os.path.isfile(path+'/requirements.txt'))
-    if os.path.isfile(path+'/requirements.txt'):
-        print('updating from the repo')
-        process = subprocess.Popen(["git", "-C", '/home/pi/pi-dash/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
-        print(process.args)
-        output = process.communicate()[0]
-    else:
-        print('first install')
-        process = subprocess.Popen(["git", "-C", '/home/pi/', "clone", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
-        output = process.communicate()[0] 
+    
+    # print(path+'/requirements.txt')
+    # print(os.path.isfile(path+'/requirements.txt'))
+    # if os.path.isfile(path+'/requirements.txt'):
+        # print('updating from the repo')
+        # process = subprocess.Popen(["git", "-C", '/home/pi/pi-dash/', "pull", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+        # print(process.args)
+        # output = process.communicate()[0]
+    # else:
+    print('first install')
+    process = subprocess.Popen(["git", "-C", '/home/pi/', "clone", "https://github.com/Smith-Chris1/pi-dash.git"], stdout=subprocess.PIPE)
+    output = process.communicate()[0] 
     
 
 
     print("installing dependancies")
-    process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
-    output = process.communicate()[0]
+    subprocess.Popen(['pip3', 'install', 'docker'])
+
+    subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar' '-O', path+"/pi-dash.tar"])
+    # client = docker.from_env()
+    # client.containers.run('pidash')
+    # process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
     
     print("installing nmap")
     
