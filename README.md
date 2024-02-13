@@ -4,6 +4,6 @@ to install: wget "https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/se
 
 ```docker build -t pi-dash .```
 
-```docker save -0 "~/Downloads/pi-dash.tar" pi-dash```
+```docker save -o pi-dash.tar pi-dash```
 
 ```sudo docker run --rm -it -p 5000:5000 --name pi-dash-container pi-dash ```
