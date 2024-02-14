@@ -1,6 +1,5 @@
 Flask
 Flask-Cors
-psutil
 waitress
 flask-socketio
 eventlet

@@ -83,7 +83,16 @@ try:
     # process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
     # output = process.communicate()[0]
     
-    print("installing nmap")
+    print("installing hostinfo")
+    process = subprocess.Popen(['pip3', 'install', 'psutil'], stdout=subprocess.PIPE)
+    process.communicate()[0]
+    shutil.copyfile(path+'/services/hostinfo.service', '/etc/systemd/system/hostinfo.service')
+    process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    process = subprocess.Popen(['sudo', 'systemctl', 'enable', 'hostinfo.service'], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    process = subprocess.Popen(['sudo','systemctl', 'start', 'hostinfo.service'], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
     
     accept_eula()
     apt_install(['curl', 'nmap'])
