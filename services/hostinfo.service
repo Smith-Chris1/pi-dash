@@ -3,8 +3,7 @@ Description=Flask Streaming Server
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/python3 /scripts/hostStats.py
-WorkingDirectory=/home/pi/pi-dash
+ExecStart=/usr/bin/python3 /home/pi/pi-dash/scripts/hostStats.py
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
