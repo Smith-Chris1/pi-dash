@@ -5,7 +5,7 @@ to install:
 
 ##Build Docker
 
-```docker build --platform=linux/amd64 -t pi-dash .```
+```docker build -t pi-dash .```
 
 ```docker save -o pi-dash.tar pi-dash```
 
