@@ -20,7 +20,7 @@ path = "/home/pi/pi-dash/scripts/info.txt"
 
 while True:
     time.sleep(10)
-    with open(path, "a") as file:
+    with open(path, "a+") as file:
         # Reading form a file
         file.write(f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage('eth0')}")
 
