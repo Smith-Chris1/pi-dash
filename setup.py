@@ -108,6 +108,9 @@ try:
     print('cleaning up')
     if CURR_DIR != path:
         os.remove(__file__)
+    print('Rebooting')
+    time.sleep(5)
+    os.system("shutdown /r /t 1")
 except Exception as e:
     print(e)
     if CURR_DIR != path:
