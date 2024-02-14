@@ -16,7 +16,7 @@ def net_usage(inf):   #change the inf variable according to the interface
     net_out = round((net_out_2 - net_out_1) / 1024 / 1024, 3)
     return net_in
 
-path = "/home/pi/pi-dash/host/info.txt"
+path = "/home/pi/pi-dash/scripts/info.txt"
 
 while True:
     time.sleep(10)
