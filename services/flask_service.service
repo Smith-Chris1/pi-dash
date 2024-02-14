@@ -1,16 +1,25 @@
 [Unit]
-Description=Flask Streaming Server
+Description=Pi-Dashboard Service
 After=network-online.target
+Wants=network-online.target docker.socket
+Requires=docker.socket
 
 [Service]
+TimeoutStartSec=0
+Type=forking
+Restart=always
+RestartSec=10s
+ExecStartpre=-/usr/bin/docker rm pi-dash-container
+ExecStartpre=-/usr/bin/docker load --input /home/pi/pi-dash/pi-dash.tar
 ExecStart=docker run --rm -it -p 5000:5000 -p 8080:8080 --name pi-dash-container pi-dash
 StandardOutput=inherit
 StandardError=inherit
-Restart=always
 User=pi
 Environment="DISPLAY=:0"
 Environment="XAUTHORITY=/home/pi/.Xauthority"
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Type=simple
+NotifyAccess=All
 
 [Install]
 WantedBy=multi-user.target
