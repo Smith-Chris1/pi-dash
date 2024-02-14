@@ -64,7 +64,8 @@ try:
 
 
     print("installing docker")
-    subprocess.Popen(['sudo', 'apt', 'install', 'docker.io'])
+    process = subprocess.Popen(['sudo', 'apt', 'install', 'docker.io'], stdout=subprocess.PIPE)
+    process.communicate()[0]
     # subprocess.Popen(['sh', path+'/scripts/docker.sh'])
     # subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
