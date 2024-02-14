@@ -118,9 +118,11 @@ try:
     if CURR_DIR != path:
         print('Rebooting')
         time.sleep(5)
-        subprocess.run(['shutdown', '-r', 'now'])
-        # os.system("shutdown -r now")
         os.remove(__file__)
+        # subprocess.run(['shutdown', '-r', 'now'])
+        print('Restart this Pi after installation - shutdown -r now')
+        # os.system("shutdown -r now")
+        
 
 except Exception as e:
     print(e)
