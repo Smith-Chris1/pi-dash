@@ -1,7 +1,7 @@
 to install: 
 
 ##Installation 
-```curl -sSL https://get.docker.com | sh && wget "https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py" -P /home/pi/ && sudo python3 /home/pi/setup.py```
+```wget "https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py" -P /home/pi/ && sudo python3 /home/pi/setup.py```
 
 ##Build Docker
 
