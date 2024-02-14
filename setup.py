@@ -109,7 +109,7 @@ try:
     if CURR_DIR != path:
         print('Rebooting')
         time.sleep(5)
-        subprocess.run(['rm', __file__, '&&', 'shutdown', '-r', 'now'])
+        subprocess.run(['rm', os.path.realpath(__file__), '&&', 'shutdown', '-r', 'now'])
         # os.system("shutdown -r now")
         # os.remove(__file__)
 
