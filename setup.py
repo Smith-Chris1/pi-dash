@@ -74,7 +74,8 @@ try:
     # subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
 
-    subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
+    process = subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
+    process.communicate()[0]
     # client = docker.from_env()
     # client.containers.run('pidash')
     # process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
