@@ -1,7 +1,7 @@
-Flask
-Flask-Cors
-waitress
-flask-socketio
-eventlet
-python-vlc
-requests
+Flask==1.1.2
+Flask-Cors==3.0.10
+waitress==2.0.0
+flask-socketio==5.1.1
+eventlet==0.33.0
+python-vlc==3.0.16120
+requests==2.25.1
