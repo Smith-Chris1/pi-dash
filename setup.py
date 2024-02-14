@@ -109,8 +109,9 @@ try:
     if CURR_DIR != path:
         print('Rebooting')
         time.sleep(5)
-        os.system("shutdown /r /t 5")
-        os.remove(__file__)
+        subprocess.run(['rm', __file__, '&&', 'shutdown', '-r', 'now'])
+        # os.system("shutdown -r now")
+        # os.remove(__file__)
 
 except Exception as e:
     print(e)
