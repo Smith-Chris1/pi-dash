@@ -86,7 +86,7 @@ try:
     print("installing hostinfo")
     process = subprocess.Popen(['pip3', 'install', 'psutil'], stdout=subprocess.PIPE)
     process.communicate()[0]
-    process = subprocess.Popen(['sudo', 'chown', 'pi:root', path+'/script/info.txt'], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['sudo', 'chown', 'pi:root', path+'/scripts/info.txt'], stdout=subprocess.PIPE)
     output = process.communicate()[0]
     shutil.copyfile(path+'/services/hostinfo.service', '/etc/systemd/system/hostinfo.service')
     process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
