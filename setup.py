@@ -107,10 +107,11 @@ try:
 
     print('cleaning up')
     if CURR_DIR != path:
+        print('Rebooting')
+        time.sleep(5)
+        os.system("shutdown /r /t 5")
         os.remove(__file__)
-    print('Rebooting')
-    time.sleep(5)
-    os.system("shutdown /r /t 1")
+
 except Exception as e:
     print(e)
     if CURR_DIR != path:
