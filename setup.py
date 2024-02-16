@@ -64,37 +64,37 @@ try:
 
 
     
-    if os.path.isfile('/usr/bin/docker'):
-        print("Docker already installed")
-    else:
-        print("installing docker")
-        process = subprocess.Popen(['sudo', 'apt', 'install', 'docker.io'], stdout=subprocess.PIPE)
-        process.communicate()[0]
-    process = subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', '$USER'], stdout=subprocess.PIPE)
-    process.communicate()[0]
+    # if os.path.isfile('/usr/bin/docker'):
+    #     print("Docker already installed")
+    # else:
+    #     print("installing docker")
+    #     process = subprocess.Popen(['sudo', 'apt', 'install', 'docker.io'], stdout=subprocess.PIPE)
+    #     process.communicate()[0]
+    # process = subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', '$USER'], stdout=subprocess.PIPE)
+    # process.communicate()[0]
     # subprocess.Popen(['sh', path+'/scripts/docker.sh'])
     # subprocess.Popen(['sudo', 'usermod', '-aG', 'docker', 'pi', '&&', 'sudo', 'usermod', '-aG', 'docker', 'Pi'])
     # subprocess.Popen(['pip3', 'install', 'docker'])
 
-    process = subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
-    process.communicate()[0]
+    # process = subprocess.Popen(['wget', 'https://github.com/Smith-Chris1/pi-dash/releases/download/latest/pi-dash.tar', '-O', path+"/pi-dash.tar"])
+    # process.communicate()[0]
     # client = docker.from_env()
     # client.containers.run('pidash')
     # process = subprocess.Popen([ 'pip3', 'install', '-r', path+'/requirements.txt', '--break-system-packages' ], cwd=path, stdout=subprocess.PIPE)
     # output = process.communicate()[0]
     
-    print("installing hostinfo")
-    process = subprocess.Popen(['pip3', 'install', 'psutil'], stdout=subprocess.PIPE)
-    process.communicate()[0]
-    process = subprocess.Popen(['sudo', 'chown', 'pi:root', path+'/scripts/info.txt'], stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    shutil.copyfile(path+'/services/hostinfo.service', '/etc/systemd/system/hostinfo.service')
-    process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    process = subprocess.Popen(['sudo', 'systemctl', 'enable', 'hostinfo.service'], stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    process = subprocess.Popen(['sudo','systemctl', 'start', 'hostinfo.service'], stdout=subprocess.PIPE)
-    output = process.communicate()[0]
+    # print("installing hostinfo")
+    # process = subprocess.Popen(['pip3', 'install', 'psutil'], stdout=subprocess.PIPE)
+    # process.communicate()[0]
+    # process = subprocess.Popen(['sudo', 'chown', 'pi:root', path+'/scripts/info.txt'], stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
+    # shutil.copyfile(path+'/services/hostinfo.service', '/etc/systemd/system/hostinfo.service')
+    # process = subprocess.Popen(['sudo', 'systemctl', 'daemon-reload'], stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
+    # process = subprocess.Popen(['sudo', 'systemctl', 'enable', 'hostinfo.service'], stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
+    # process = subprocess.Popen(['sudo','systemctl', 'start', 'hostinfo.service'], stdout=subprocess.PIPE)
+    # output = process.communicate()[0]
     
     accept_eula()
     apt_install(['curl', 'nmap'])
@@ -117,12 +117,13 @@ try:
     output = process.communicate()[0]
 
     print('cleaning up')
-    if CURR_DIR != path:
-        print('Rebooting')
-        time.sleep(5)
-        os.remove(__file__)
+    os.remove(__file__)
+    # if CURR_DIR != path:
+        # print('Rebooting')
+        # time.sleep(5)
+        # os.remove(__file__)
         # subprocess.run(['shutdown', '-r', 'now'])
-        print('Restart this Pi after installation - shutdown -r now')
+        # print('Restart this Pi after installation - shutdown -r now')
         # os.system("shutdown -r now")
         
 

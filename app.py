@@ -10,6 +10,7 @@ import socket
 import platform
 import psutil
 import requests
+from engineio.async_drivers import threading
 import time
 import re
 import json
@@ -205,7 +206,7 @@ def shutdown():
 @app.route('/setLocation',methods = ['POST'])
 def setLocation():
     try:
-        with open(os.path.dirname(os.path.realpath(__file__))+"/location", 'w') as f:
+        with open(os.path.dirname(os.path.realpath(__file__))+"/host/location", 'w') as f:
             f.write(request.values.get('location'))
         return "success"
     except:
@@ -214,7 +215,7 @@ def setLocation():
 
 @app.route('/getLocation')
 def getLocation():
-    file = open(os.path.dirname(os.path.realpath(__file__))+"/location", 'r')
+    file = open(os.path.dirname(os.path.realpath(__file__))+"/host/location", 'r')
     location = file.readlines()
     if len(location) > 0:
         return location[0]
