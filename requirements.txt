@@ -1,7 +1,7 @@
 Flask
 Flask-Cors
 waitress
-flask-socketio
+flask-socketio==5.2.0
 eventlet
 python-vlc
 requests
