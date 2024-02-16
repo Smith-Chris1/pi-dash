@@ -1,8 +1,6 @@
 [Unit]
 Description=Pi-Dashboard Service
 After=network-online.target
-Wants=network-online.target docker.socket
-Requires=docker.socket
 
 [Service]
 TimeoutStartSec=0
