@@ -233,6 +233,7 @@ def sysinfo():
     inf = 'eth0'
     # print('work ')
     try:
+        print(inf)
         return f"{socket.gethostname().split('.')[0]},{psutil.cpu_percent()},{psutil.virtual_memory().percent},{net_usage(inf)}"
     except:
         return "unknown,unknown,unknown,unknown"
