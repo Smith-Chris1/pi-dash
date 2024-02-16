@@ -3,13 +3,15 @@ to install:
 ##Installation 
 ```wget "https://raw.githubusercontent.com/Smith-Chris1/pi-dash/main/setup.py" -P /home/pi/ && sudo python3 /home/pi/setup.py```
 
-##Build Docker
+##Build App
 
-```docker build --platform=linux/386 -t pi-dash .```
+On a raspberry pi install pyinstaller ```pip3 install pyinstaller```
 
-```docker save -o pi-dash.tar pi-dash```
+```cd /home/pi-dash```
 
-```sudo docker run --rm -it -p 5000:5000 --name pi-dash-container pi-dash ```
+```pyinstaller --add-data "static:static" --add-data "templates:templates" --add-data "scripts:scripts" --add-data "services:services" --add-data "vlc:vlc" --add-data "host:host" app.py```
+
+use the app binary in the dist folder to distribue.
 
 ##FFmpeg UDP test stream
 If you're testing on a VM with virtualbox, you need a bridged network configuration

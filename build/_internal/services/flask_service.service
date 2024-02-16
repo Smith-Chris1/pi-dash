@@ -1,0 +1,26 @@
+[Unit]
+Description=Pi-Dashboard Service
+After=network-online.target
+Wants=network-online.target docker.socket
+Requires=docker.socket
+
+[Service]
+TimeoutStartSec=0
+Type=forking
+Restart=always
+RestartSec=10s
+ExecStartPre=-/usr/bin/docker rm pi-dash-container
+ExecStartPre=-/usr/bin/docker load --input /home/pi/pi-dash/pi-dash.tar
+ExecStart=-/usr/bin/docker run --rm -it -p 5000:5000 --platform=linux/386 --name pi-dash-container pi-dash
+ExecStop=-/usr/bin/docker stop pi-dash-container
+StandardOutput=inherit
+StandardError=inherit
+User=pi
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/pi/.Xauthority"
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Type=simple
+NotifyAccess=All
+
+[Install]
+WantedBy=multi-user.target
